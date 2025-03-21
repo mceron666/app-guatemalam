@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #028A0F; /* Verde vibrante */
+    color: white;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#navbar img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#navbar button {
+    background-color: #026d0c; /* Verde más oscuro */
+    border: none;
+    color: white;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    text-align: left;
+    width: 90%;
+    padding: 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#navbar button:hover {
+    background-color: #014d08; /* Verde más oscuro */
+    transform: scale(1.05);
+}
+
+#navbar button:active {
+    transform: scale(0.95);
+}
+
+#navbar button.selected {
+    background-color: #00A12B; /* Verde más brillante para el seleccionado */
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px;
+}
+
+.table-header {
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+}
+.btn-modify {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+}
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+.btn-add {
+    background-color: #ffc107;
+    color: white;
+}
+#tablaPeriodos {
+    border: 2px solid black;
+    border-radius: 10px;
+}
