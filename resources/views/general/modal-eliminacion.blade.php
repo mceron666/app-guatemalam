@@ -8,10 +8,10 @@
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div id="errorMessageContainer" class="alert alert-danger mx-4 mt-3 mb-0 d-none">
+            <div id="errorMessageContainerdel" class="alert alert-danger mx-4 mt-3 mb-0 d-none">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <span id="errorMessage">Mensaje de error aquí</span>
+                    <span id="errorMessagedel">Mensaje de error aquí</span>
                 </div>
             </div>
             <div class="modal-body">

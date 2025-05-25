@@ -307,14 +307,6 @@ $(document).on("click", ".btn-editar", function () {
   $("#nombreMateria").val(descripcion)
   $("#titulo").text("Modificar materia")
 })
-$(document).on("click", ".btn-eliminar", function () {
-  hideError();
-  const boton = $(this);
-  const codigo = boton.data("id");
-  const descripcion = boton.data("nombre");
-  $("#CodigoEliminar").text(codigo);
-  $("#DescripcionEliminar").text(descripcion);
-});
 $("#btnGuardar").click(() => {
   const titulo = document.getElementById("titulo").textContent.trim()
   const accion = titulo === "Ingresar materia" ? "I" : "U"
@@ -353,6 +345,25 @@ function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 };
+function showErrordel(message) {
+    const errorContainer = document.getElementById("errorMessageContainerdel");
+    const errorMessageElement = document.getElementById("errorMessagedel");
+    errorMessageElement.textContent = message;
+    errorContainer.classList.remove("d-none");
+}
+
+function hideErrordel() {
+    const errorContainer = document.getElementById('errorMessageContainerdel');
+    errorContainer.classList.add('d-none');
+}
+$(document).on("click", ".btn-eliminar", function () {
+  hideErrordel();
+  const boton = $(this);
+  const codigo = boton.data("id");
+  const descripcion = boton.data("nombre");
+  $("#CodigoEliminar").text(codigo);
+  $("#DescripcionEliminar").text(descripcion);
+});
 $("#btnConfirmDelete").click(() => {
     const datos = {
         CODIGO_MATERIA: $("#CodigoEliminar").text().trim(),
@@ -370,12 +381,12 @@ $("#btnConfirmDelete").click(() => {
                 $("#deleteModal").modal("hide");
                 cargarmaterias(currentUrl, currentPage);
             } else {
-                showError(response.mensaje);
+                showErrordel(response.mensaje);
             }
         },
         error: (err) => {
             console.error(err);
-            showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+            showErrordel("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
         }
     });
 });

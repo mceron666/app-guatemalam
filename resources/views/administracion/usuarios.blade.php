@@ -1,6 +1,7 @@
 @extends("layouts.header")
 
 @section("contenido")
+@include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
 <div id="header-usuarios" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
     <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
@@ -143,7 +144,11 @@ $(document).ready(function () {
                                             onclick="window.location.href='/modificar-usuario/${persona.PERFIL_PERSONA}'">
                                             <i class="bi bi-pencil-square"></i> Modificar
                                         </button>
-                                        <button class="btn btn-danger btn-sm btn-eliminar" data-id="${persona.ID_PERSONA}">
+                                        <button data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal" 
+                                                class="btn btn-danger btn-sm btn-eliminar" 
+                                                data-id="${persona.PERFIL_PERSONA}" 
+                                                data-nombre="${persona.NOMBRE_COMPLETO}">
                                             <i class="bi bi-trash"></i> Eliminar
                                         </button>
                                     </div>
@@ -287,6 +292,68 @@ $(document).ready(function () {
     }
 $('#agregar').click(function () {
     window.location.href = '/agregar-usuario';
+});
+function hideError() {
+    const errorContainer = document.getElementById('errorMessageContainer');
+    errorContainer.classList.add('d-none');
+};
+function showErrordel(message) {
+    const errorContainer = document.getElementById("errorMessageContainerdel");
+    const errorMessageElement = document.getElementById("errorMessagedel");
+    errorMessageElement.textContent = message;
+    errorContainer.classList.remove("d-none");
+}
+
+function hideErrordel() {
+    const errorContainer = document.getElementById('errorMessageContainerdel');
+    errorContainer.classList.add('d-none');
+}
+$(document).on("click", ".btn-eliminar", function () {
+  hideErrordel();
+  const boton = $(this);
+  const codigo = boton.data("id");
+  const descripcion = boton.data("nombre");
+  $("#CodigoEliminar").text(codigo);
+  $("#DescripcionEliminar").text(descripcion);
+});
+$("#btnConfirmDelete").click(() => {
+    const datos = {
+  NOMBRES_PERSONA: null,
+  APELLIDOS_PERSONA: null,
+  CORREO_PERSONA: null,
+  PERFIL_PERSONA: null,
+  SEXO_PERSONA: null,
+  ROL_PERSONA: null,
+  NUMERO_PERSONA: null,
+  ID_PERSONA_INGRESO: null,
+  ESPECIALIDAD: null,
+  TITULO_ACADEMICO: null,
+  SALARIO_ACTUAL: null,
+  NUMERO_DPI: null,
+  NOMBRE_CONTACTO_1: null,
+  NUMERO_CONTACTO_1: null,
+  NOMBRE_CONTACTO_2: null,
+  NUMERO_CONTACTO_2: null,
+  ACCION: "D"
+};
+    $.ajax({
+        url: apiBaseUrl,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: (response) => {
+            if (response.mensaje === "") {
+                $("#deleteModal").modal("hide");
+                cargarusuarios(currentUrl, currentPage);
+            } else {
+                showErrordel(response.mensaje);
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            showErrordel("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+        }
+    });
 });
 });
 </script>

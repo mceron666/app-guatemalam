@@ -361,9 +361,13 @@ function cargarGrados(url, page = 1) {
                                         data-carrera="${grado.IDENTIFICADOR_CARRERA_ESTUDIANTIL}">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </button>
-                                    <button class="btn btn-danger btn-sm btn-eliminar" data-id="${grado.CODIGO_GRADO}" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <button data-bs-toggle="modal" 
+                                            data-bs-target="#deleteModal" 
+                                            class="btn btn-danger btn-sm btn-eliminar" 
+                                            data-id="${grado.CODIGO_GRADO}" 
+                                            data-nombre="${grado.NOMBRE_GRADO}">
                                         <i class="bi bi-trash"></i> Eliminar
-                                    </button>
+                                    </button>                                    
                                 </div>
                             </td>
                         </tr>
@@ -477,28 +481,34 @@ function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 }      
-$('#deleteModal').on('hidden.bs.modal', function () {
-    hideError();
-});    
+function showErrordel(message) {
+    const errorContainer = document.getElementById("errorMessageContainerdel");
+    const errorMessageElement = document.getElementById("errorMessagedel");
+    errorMessageElement.textContent = message;
+    errorContainer.classList.remove("d-none");
+}
+
+function hideErrordel() {
+    const errorContainer = document.getElementById('errorMessageContainerdel');
+    errorContainer.classList.add('d-none');
+}
+$(document).on("click", ".btn-eliminar", function () {
+  hideErrordel();
+  const boton = $(this);
+  const codigo = boton.data("id");
+  const descripcion = boton.data("nombre");
+  $("#CodigoEliminar").text(codigo);
+  $("#DescripcionEliminar").text(descripcion);
+});
 $("#btnConfirmDelete").click(() => {
     const datos = {
-        CODIGO_PERIODO: periodoAEliminar.codigo,
-        DESCRIPCION_PERIODO: periodoAEliminar.descripcion,
-        FECHA_INICIO_PERIODO: null,
-        FECHA_FINALIZA_PERIODO: null,
-        FECHA_INICIO_BLOQUE_1: null,
-        FECHA_FINALIZA_BLOQUE_1: null,
-        FECHA_INICIO_BLOQUE_2: null,
-        FECHA_FINALIZA_BLOQUE_2: null,
-        FECHA_INICIO_BLOQUE_3: null,
-        FECHA_FINALIZA_BLOQUE_3: null,
-        FECHA_INICIO_BLOQUE_4: null,
-        FECHA_FINALIZA_BLOQUE_4: null,
-        ESTADO_PERIODO: null,
-        ID_PERSONA_INGRESO: ID_PERSONA,
+        CODIGO_GRADO: $("#CodigoEliminar").text().trim(),
+        NOMBRE_GRADO: null,
+        SECCION_GRADO: null, 
+        NIVEL_GRADO : null,
+        ID_PERSONA_INGRESO : null,
         ACCION: "D"
     };
-    
     $.ajax({
         url: apiBaseUrl,
         type: "POST",
@@ -507,14 +517,14 @@ $("#btnConfirmDelete").click(() => {
         success: (response) => {
             if (response.mensaje === "") {
                 $("#deleteModal").modal("hide");
-                cargarPeriodos(currentUrl, currentPage);
+                cargarGrados(currentUrl, currentPage);
             } else {
-                showError(response.mensaje);
+                showErrordel(response.mensaje);
             }
         },
         error: (err) => {
             console.error(err);
-            showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+            showErrordel("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
         }
     });
 });

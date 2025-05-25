@@ -1,6 +1,7 @@
 @extends("layouts.header")
 
 @section("contenido")
+@include('general.modal-eliminacion')
 <!-- Imagen -->
 <link href="/css/modal.css" rel="stylesheet">
 <div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
@@ -224,7 +225,11 @@ $(document).ready(function () {
                                             data-anios="${carrera.ANIOS_DURACION}">
                                             <i class="bi bi-pencil-square"></i> Modificar
                                         </button>
-                                        <button class="btn btn-danger btn-sm btn-eliminar" data-codigo="${carrera.CODIGO_CARRERA}">
+                                        <button data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal" 
+                                                class="btn btn-danger btn-sm btn-eliminar" 
+                                                data-id="${carrera.CODIGO_CARRERA}" 
+                                                data-nombre="${carrera.DESCRIPCION_CARRERA}">
                                             <i class="bi bi-trash"></i> Eliminar
                                         </button>
                                     </div>
@@ -446,6 +451,54 @@ function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 }
+function showErrordel(message) {
+    const errorContainer = document.getElementById("errorMessageContainerdel");
+    const errorMessageElement = document.getElementById("errorMessagedel");
+    errorMessageElement.textContent = message;
+    errorContainer.classList.remove("d-none");
+}
+
+function hideErrordel() {
+    const errorContainer = document.getElementById('errorMessageContainerdel');
+    errorContainer.classList.add('d-none');
+}
+$(document).on("click", ".btn-eliminar", function () {
+    hideErrordel();
+    const boton = $(this);
+    const codigo = boton.data("id");
+    const descripcion = boton.data("nombre");
+    $("#CodigoEliminar").text(codigo);
+    $("#DescripcionEliminar").text(descripcion);
+  });
+
+  $("#btnConfirmDelete").click(() => {
+    const datos = {
+      CODIGO_CARRERA: $("#CodigoEliminar").text().trim(),
+      DESCRIPCION_CARRERA: null,
+      TIPO_CARRERA: null,
+      ANIOS_DURACION: null,
+      ID_PERSONA_INGRESO: null,
+      ACCION: "D"
+    };
+    $.ajax({
+      url: apiBaseUrl, // Usar la variable del scope
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(datos),
+      success: (response) => {
+        if (response.mensaje === "") {
+          $("#deleteModal").modal("hide");
+          cargarCarreras(apiBaseUrl); // Ahora SÍ puede acceder a la función
+        } else {
+          showErrordel(response.mensaje);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        showErrordel("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+      }
+    });
+  });
 });
 </script>
 
