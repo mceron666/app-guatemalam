@@ -1,6 +1,7 @@
 @extends("layouts.header")
 
 @section("contenido")
+@include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
 <script src="/js/pagineo.js"></script>
 <div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
@@ -61,8 +62,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal para Agregar/Editar Materia -->
 <div class="modal fade custom-modal" id="materiaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content shadow-lg">
@@ -108,25 +107,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- Modal de confirmación para eliminar -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ¿Está seguro que desea eliminar esta materia? Esta acción no se puede deshacer.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Eliminar</button>
-            </div>
-        </div>
-    </div>
 </div>
 <script>
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};    
@@ -176,12 +156,16 @@ const apiBaseUrl = 'http://localhost:3000/materias'; // URL base de la API
                                             data-bs-toggle="modal" 
                                             data-bs-target="#materiaModal"
                                             data-codigo="${materia.CODIGO_MATERIA}"
-                                            data-descripcion="${materia.NOMBRE_MATERIA}"
+                                            data-descripcion="${materia.NOMBRE_MATERIA}">
                                             <i class="bi bi-pencil-square"></i> Modificar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm btn-eliminar" data-id="${materia.CODIGO_MATERIA}">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </button>
+                                    </button>
+                                    <button data-bs-toggle="modal" 
+                                            data-bs-target="#deleteModal" 
+                                            class="btn btn-danger btn-sm btn-eliminar" 
+                                            data-id="${materia.CODIGO_MATERIA}" 
+                                            data-nombre="${materia.NOMBRE_MATERIA}">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
                                     </div>
                                 </td>
                             </tr>
@@ -323,6 +307,14 @@ $(document).on("click", ".btn-editar", function () {
   $("#nombreMateria").val(descripcion)
   $("#titulo").text("Modificar materia")
 })
+$(document).on("click", ".btn-eliminar", function () {
+  hideError();
+  const boton = $(this);
+  const codigo = boton.data("id");
+  const descripcion = boton.data("nombre");
+  $("#CodigoEliminar").text(codigo);
+  $("#DescripcionEliminar").text(descripcion);
+});
 $("#btnGuardar").click(() => {
   const titulo = document.getElementById("titulo").textContent.trim()
   const accion = titulo === "Ingresar materia" ? "I" : "U"
@@ -361,5 +353,31 @@ function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 };
+$("#btnConfirmDelete").click(() => {
+    const datos = {
+        CODIGO_MATERIA: $("#CodigoEliminar").text().trim(),
+        NOMBRE_MATERIA: null,
+        ID_PERSONA_INGRESO: null, 
+        ACCION: "D"
+    };
+    $.ajax({
+        url: apiBaseUrl,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: (response) => {
+            if (response.mensaje === "") {
+                $("#deleteModal").modal("hide");
+                cargarmaterias(currentUrl, currentPage);
+            } else {
+                showError(response.mensaje);
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+        }
+    });
+});
 </script>
 @endsection

@@ -1,6 +1,7 @@
 @extends("layouts.header")
 
 @section("contenido")
+@include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
 <div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
     <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
@@ -360,7 +361,7 @@ function cargarGrados(url, page = 1) {
                                         data-carrera="${grado.IDENTIFICADOR_CARRERA_ESTUDIANTIL}">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </button>
-                                    <button class="btn btn-danger btn-sm btn-eliminar" data-id="${grado.CODIGO_GRADO}">
+                                    <button class="btn btn-danger btn-sm btn-eliminar" data-id="${grado.CODIGO_GRADO}" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                         <i class="bi bi-trash"></i> Eliminar
                                     </button>
                                 </div>
@@ -476,5 +477,46 @@ function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 }      
+$('#deleteModal').on('hidden.bs.modal', function () {
+    hideError();
+});    
+$("#btnConfirmDelete").click(() => {
+    const datos = {
+        CODIGO_PERIODO: periodoAEliminar.codigo,
+        DESCRIPCION_PERIODO: periodoAEliminar.descripcion,
+        FECHA_INICIO_PERIODO: null,
+        FECHA_FINALIZA_PERIODO: null,
+        FECHA_INICIO_BLOQUE_1: null,
+        FECHA_FINALIZA_BLOQUE_1: null,
+        FECHA_INICIO_BLOQUE_2: null,
+        FECHA_FINALIZA_BLOQUE_2: null,
+        FECHA_INICIO_BLOQUE_3: null,
+        FECHA_FINALIZA_BLOQUE_3: null,
+        FECHA_INICIO_BLOQUE_4: null,
+        FECHA_FINALIZA_BLOQUE_4: null,
+        ESTADO_PERIODO: null,
+        ID_PERSONA_INGRESO: ID_PERSONA,
+        ACCION: "D"
+    };
+    
+    $.ajax({
+        url: apiBaseUrl,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: (response) => {
+            if (response.mensaje === "") {
+                $("#deleteModal").modal("hide");
+                cargarPeriodos(currentUrl, currentPage);
+            } else {
+                showError(response.mensaje);
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
+        }
+    });
+});
 </script>
 @endsection

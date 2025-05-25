@@ -62,79 +62,10 @@
         </div>
     </div>
 </div>
-<!-- <div class="modal fade custom-modal" id="periodoModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content shadow-lg">
-      <div class="modal-header text-white" style="background-color: #198754;">
-        <div class="d-flex align-items-center">
-          <img src="/images/image.webp" alt="Icono" width="45" height="45" class="me-2">
-          <h4 class="modal-title" id="titulo">Ingresar Período Escolar</h4>
-        </div>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div id="errorMessageContainer" class="alert alert-danger mx-4 mt-3 mb-0 d-none">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-exclamation-triangle-fill me-2"></i>
-          <span id="errorMessage">Mensaje de error aquí</span>
-        </div>
-      </div>      
-      <div class="modal-body p-4">
-        <form id="periodoForm">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                  <h5 class="card-title mb-3">Información Básica</h5>
-                  <div class="mb-4">
-                    <label for="codigoPeriodo" class="form-label fw-semibold">Código del Período</label>
-                    <input type="text" class="form-control form-control-lg" id="codigoPeriodo" name="CODIGO_PERIODO"/>
-                  </div>
-                  <div class="mb-3">
-                    <label for="descripcionPeriodo" class="form-label fw-semibold">Descripción del Período</label>
-                    <input type="text" class="form-control form-control-lg" id="descripcionPeriodo" name="DESCRIPCION_PERIODO"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                  <h5 class="card-title mb-3">Fechas del Período</h5>
-                  <div class="mb-4">
-                    <label for="fechaInicioPeriodo" class="form-label fw-semibold">Fecha de Inicio</label>
-                    <div class="input-group input-group-lg">
-                      <span class="input-group-text bg-light"><i class="bi bi-calendar-date"></i></span>
-                      <input type="date" class="form-control" id="fechaInicioPeriodo" name="FECHA_INICIO_PERIODO">
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="fechaFinalizaPeriodo" class="form-label fw-semibold">Fecha de Finalización</label>
-                    <div class="input-group input-group-lg">
-                      <span class="input-group-text bg-light"><i class="bi bi-calendar-date"></i></span>
-                      <input type="date" class="form-control" id="fechaFinalizaPeriodo" name="FECHA_FINALIZA_PERIODO">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-2"></i>Cancelar
-        </button>
-        <button type="submit" class="btn btn-success btn-lg px-4" id="btnGuardar">
-          <i class="bi bi-check-circle me-2"></i>Guardar
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};        
+const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};  
+let periodoAEliminar = null;  
 $(document).ready(function () {
     const apiBaseUrl = 'http://localhost:3000/periodos'; // URL base de la API
     let currentPage = 1;
@@ -178,32 +109,29 @@ $(document).ready(function () {
                             ? 'badge bg-success text-white' 
                             : 'badge bg-danger text-white';
                         
-                        const fila = `
-                            <tr>
-                                <td>${periodo.CODIGO_PERIODO}</td>
-                                <td>${periodo.DESCRIPCION_PERIODO}</td>
-                                <td>${periodo.FECHA_INICIO_PERIODO}</td>
-                                <td>${periodo.FECHA_FINALIZA_PERIODO}</td>                            
-                                <td class="text-center">
-                                    <span class="${estadoBadge}" style="padding: 5px 10px; font-size: 14px;">
-                                        ${periodo.DESCRIPCION_ESTADO_PERIODO}
-                                    </span>
-                                </td>
-                                <td>${periodo.PERFIL_PERSONA}</td>
-                                <td>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button 
-                                            class="btn btn-warning btn-sm me-2 btn-editar" 
-                                            onclick="window.location.href='/modificar-periodo/${periodo.CODIGO_PERIODO}'">
-                                            <i class="bi bi-pencil-square"></i> Modificar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
+                            const fila = `
+                        <tr>
+                            <td>${periodo.CODIGO_PERIODO}</td>
+                            <td>${periodo.DESCRIPCION_PERIODO}</td>
+                            <td>${periodo.FECHA_INICIO_PERIODO}</td>
+                            <td>${periodo.FECHA_FINALIZA_PERIODO}</td>                            
+                            <td class="text-center">
+                                <span class="${estadoBadge}" style="padding: 5px 10px; font-size: 14px;">
+                                    ${periodo.DESCRIPCION_ESTADO_PERIODO}
+                                </span>
+                            </td>
+                            <td>${periodo.PERFIL_PERSONA}</td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <button 
+                                        class="btn btn-warning btn-sm me-2 btn-editar" 
+                                        onclick="window.location.href='/modificar-periodo/${periodo.CODIGO_PERIODO}'">
+                                        <i class="bi bi-pencil-square"></i> Modificar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                         tbody.append(fila);
                     });
                 }
@@ -342,78 +270,15 @@ $(document).ready(function () {
     $('#agregar').click(function () {
     window.location.href = '/agregar-periodo';
     });
-// $(document).on('click', '.btn-editar', function () {
-//     hideError();
-//     const boton = $(this);
-//     const codigo = boton.data('codigo');
-//     const descripcion = boton.data('descripcion');
-//     const inicio = boton.data('inicio');
-//     const fin = boton.data('fin');
-
-//     $('#codigoPeriodo').val(codigo).prop('disabled', true);
-//     $('#descripcionPeriodo').val(descripcion);
-//     $('#fechaInicioPeriodo').val(inicio);
-//     $('#fechaFinalizaPeriodo').val(fin);
-//     $('#titulo').text('Modificar período');
-// });
-// $('#btnGuardar').click(function () {    
-//     const titulo = document.getElementById("titulo").textContent.trim();
-//     const accion = titulo === "Ingresar período" ? "I" : "U";
-
-//     // Get date values
-//     const fechaInicio = $("#fechaInicioPeriodo").val();
-//     const fechaFin = $("#fechaFinalizaPeriodo").val();
-
-//     const datos = {
-//         CODIGO_PERIODO: $("#codigoPeriodo").val(),
-//         DESCRIPCION_PERIODO: $("#descripcionPeriodo").val(),
-//         // Set dates to null if they're empty
-//         FECHA_INICIO_PERIODO: fechaInicio ? fechaInicio : null,
-//         FECHA_FINALIZA_PERIODO: fechaFin ? fechaFin : null,
-//         ESTADO_PERIODO: "A", 
-//         ID_PERSONA_INGRESO: ID_PERSONA, 
-//         ACCION: accion
-//     };
-    
-//     $.ajax({
-//         url: 'http://localhost:3000/periodos',
-//         type: 'POST',
-//         contentType: 'application/json',
-//         data: JSON.stringify(datos),
-//         success: function (response) {
-//             if (response.mensaje === "") {
-//                 // Éxito
-//                 $('#periodoModal').modal('hide');
-//                 cargarPeriodos('http://localhost:3000/periodos'); 
-//                 // Opcional: mostrar mensaje de éxito con toast o notificación
-//             } else {
-//                 // Mostrar el mensaje de error de la API en el contenedor de errores
-//                 showError(response.mensaje);
-//             }
-//         },
-//         error: function (err) {
-//             console.error(err);
-//             // Mostrar mensaje de error genérico en el contenedor de errores
-//             showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
-//         }
-//     });
-// });
-
-// // Función para mostrar mensajes de error
-// function showError(message) {
-//     const errorContainer = document.getElementById('errorMessageContainer');
-//     const errorMessageElement = document.getElementById('errorMessage');
-    
-//     errorMessageElement.textContent = message;
-//     errorContainer.classList.remove('d-none');
-// }
-
-// // Función para ocultar mensajes de error
-// function hideError() {
-//     const errorContainer = document.getElementById('errorMessageContainer');
-//     errorContainer.classList.add('d-none');
-// }
-
+    $(document).on("click", ".btn-eliminar", function () {
+    hideError();
+    const boton = $(this);
+    periodoAEliminar = {
+        codigo: boton.data("codigo"),
+        descripcion: boton.data("descripcion")
+    };
+    $('#deleteModal').modal('show');
+});
 
 });
 </script>
