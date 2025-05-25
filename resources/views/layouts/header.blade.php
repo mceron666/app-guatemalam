@@ -8,55 +8,235 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
     <link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Vertical Sidebar -->
     <div id="navbar">
+    <!-- Fixed header section -->
+    <div id="navbar-header">
         <img src="/images/image.webp" alt="Logo">
-        <button id="inicio" onclick="selectNav('inicio'); loadPage('/')"><i class="fas fa-home"></i> Inicio</button>
-        <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')"><i class="fas fa-calendar-alt"></i> Períodos Escolares</button>
-        <button id="maestros" onclick="selectNav('maestros'); loadPage('/maestros')"><i class="fas fa-users"></i> Maestros</button>
-        <button id="alumnos" onclick="selectNav('alumnos'); loadPage('/alumnos')"><i class="fas fa-users"></i> Alumnos</button>
-        <button id="materias" onclick="selectNav('materias'); loadPage('/materias')"><i class="fas fa-book"></i> Materias Escolares</button>
-        <button id="grados" onclick="selectNav('grados'); loadPage('/grados')"><i class="fas fa-graduation-cap"></i> Grados y Carreras</button>
-        <button id="bloques" onclick="selectNav('bloques'); loadPage('/bloques')"><i class="fas fa-th-large"></i> Bloques</button>
     </div>
+    
+    <!-- Scroll indicators -->
+    <div class="scroll-indicator scroll-up" id="scroll-up">
+        <i class="bi bi-chevron-up"></i>
+    </div>
+    <div class="scroll-indicator scroll-down" id="scroll-down">
+        <i class="bi bi-chevron-down"></i>
+    </div>
+    
+    <!-- Scrollable menu section -->
+    <div id="navbar-menu">
+        <!-- Title for the menu -->
+        <h6 class="navbar-section-title">Datos generales</h6>
+
+        <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
+            <i class="fas fa-home"></i> <span>Inicio</span>
+        </button>
+        <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')">
+            <i class="fas fa-calendar-alt"></i> <span>Períodos Escolares</span>
+        </button>
+        <button id="carreras" onclick="selectNav('carreras'); loadPage('/carreras')">
+            <i class="bi bi-mortarboard"></i> <span>Carreras</span>
+        </button>        
+        <button id="usuarios" onclick="selectNav('usuarios'); loadPage('/usuarios')">
+            <i class="fas fa-users"></i> <span>Usuarios</span>
+        </button>
+        <button id="materias" onclick="selectNav('materias'); loadPage('/materias')">
+            <i class="fas fa-book"></i> <span>Materias</span>
+        </button>
+        <button id="grados" onclick="selectNav('grados'); loadPage('/grados')">
+            <i class="fas fa-graduation-cap"></i> <span>Grados</span>
+        </button>      
+        <!-- Add more menu items to demonstrate scrolling -->
+        <h6 class="navbar-section-title">Administración @php
+        $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}</h6> 
+        <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
+            <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
+        </button>                
+    </div>
+</div>
+
+    
+    <!-- Horizontal Top Navbar -->
+    <div id="topnav">
+        <div class="left-section">
+            <div class="nav-item" id="toggle-sidebar">
+                <i class="bi bi-list"></i>
+            </div>
+            <div class="page-title">
+                <span id="current-page-title">Inicio</span>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="nav-item">
+                <i class="bi bi-gear"></i>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <span class="user-name">
+                        @if(Session::has('usuario'))
+                            {{ Session::get('usuario')['NOMBRES_PERSONA'] }}
+                        @else
+                            Usuario
+                        @endif
+                    </span>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu" id="userMenu">
+                    @if(Session::has('usuario'))
+                        <div class="user-info">
+                            <span class="user-name">{{ Session::get('usuario')['NOMBRES_PERSONA'] }} {{ Session::get('usuario')['APELLIDOS_PERSONA'] }}</span>
+                            <span class="user-role">
+                                @php
+                                    $rol = Session::get('usuario')['PERFIL_PERSONA'];
+                                @endphp
+                                {{ $rol }}
+                            </span>
+                            <span class="user-role">
+                                @php
+                                    $correo = Session::get('usuario')['CORREO_PERSONA'];
+                                @endphp
+                                {{ $correo }}
+                            </span>                                                      
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="bi bi-person me-2"></i> Mi Perfil
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="bi bi-gear me-2"></i> Configuración
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item logout-btn">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="dropdown-item">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content Area -->
     <div id="content"> 
         @yield("contenido")
     </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
+    const anioActual = "{{ session('usuario.ANIO_ACTUAL', '') }}";
     function loadPage(route) {
-        axios.get(route, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-            .then(response => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(response.data, "text/html");
-
-                // Mantener la tabla de usuarios si existe
-                let tablaUsuarios = document.getElementById("tablaUsuarios");
-                if (tablaUsuarios) {
-                    let nuevaTabla = doc.getElementById("tablaUsuarios");
-                    if (nuevaTabla) {
-                        nuevaTabla.innerHTML = tablaUsuarios.innerHTML;
-                    }
-                }
-
-                document.getElementById('content').innerHTML = doc.body.innerHTML;
-                window.history.pushState({}, '', route);
-
-                // Vuelve a cargar los usuarios si la tabla existe
-                if (document.getElementById("tablaUsuarios")) {
-                    fetchUsuarios();
-                }
-            })
-            .catch(error => {
-                console.error('Error al cargar la página:', error);
-            });
+        axios.get(route, { 
+            headers: { 
+                "X-Requested-With": "XMLHttpRequest" 
+            } 
+        })
+        .then(response => {
+            document.getElementById('content').innerHTML = response.data;
+            window.history.pushState({}, '', route);
+            
+            // Execute any scripts in the loaded content
+            const scripts = document.getElementById('content').getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+            
+            // Update page title in top navbar
+            updatePageTitle(route);
+            
+            // Trigger a custom event to notify that content has been loaded
+            document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { route } }));
+        })
+        .catch(error => {
+            console.error('Error al cargar la página:', error);
+        });
     }
 
     function selectNav(id) {
         document.querySelectorAll('#navbar button').forEach(btn => btn.classList.remove('selected'));
         document.getElementById(id).classList.add('selected');
+        
+        // Scroll the selected item into view
+        const selectedButton = document.getElementById(id);
+        selectedButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    function updatePageTitle(route) {
+    let title;
+
+    // Evaluación exacta primero
+    switch (route) {
+        case '/':
+            title = 'Inicio';
+            break;
+        case '/materias':
+            title = 'Materias Escolares';
+            break;
+        case '/periodos':
+            title = 'Períodos Escolares';
+            break;
+        case '/carreras':
+            title = 'Carreras Estudiantiles';
+            break;
+        case '/usuarios':
+            title = 'Usuarios';
+            break;
+        case '/grados':
+            title = 'Grados y Carreras';
+            break;
+        case '/administracion-grados':
+            title = 'Administración de grados ' + anioActual;
+            break;
+        case '/agregar-usuario':
+            title = 'Usuarios - Agregar';
+            break;
+        case '/agregar-periodo':
+            title = 'Períodos - Agregar';
+            break;
+        default:
+            // Evaluación parcial para rutas con parámetros
+            if (route.includes('/modificar-usuario')) {
+                title = 'Usuarios - Modificar';
+            } else if (route.includes('/modificar-periodo')) {
+                title = 'Períodos - Modificar';
+            } else {
+                title = 'Inicio'; // Fallback
+            }
+    }
+    document.getElementById('current-page-title').textContent = title;
+}
+
+    function updateScrollIndicators() {
+        const menu = document.getElementById('navbar-menu');
+        const scrollUp = document.getElementById('scroll-up');
+        const scrollDown = document.getElementById('scroll-down');
+        
+        // Show/hide scroll up indicator
+        if (menu.scrollTop > 20) {
+            scrollUp.classList.add('visible');
+        } else {
+            scrollUp.classList.remove('visible');
+        }
+        
+        // Show/hide scroll down indicator
+        if (menu.scrollHeight - menu.scrollTop - menu.clientHeight > 20) {
+            scrollDown.classList.add('visible');
+        } else {
+            scrollDown.classList.remove('visible');
+        }
     }
 
     window.onpopstate = () => {
@@ -66,9 +246,47 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         loadPage(window.location.pathname);
+        
+        // Toggle sidebar functionality
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-collapsed');
+        });
+        
+        // Navbar scroll functionality
+        const menu = document.getElementById('navbar-menu');
+        const scrollUp = document.getElementById('scroll-up');
+        const scrollDown = document.getElementById('scroll-down');
+        
+        // Initialize scroll indicators
+        updateScrollIndicators();
+        
+        // Update indicators when scrolling
+        menu.addEventListener('scroll', updateScrollIndicators);
+        
+        // Scroll up when clicking the up indicator
+        scrollUp.addEventListener('click', function() {
+            menu.scrollBy({ top: -100, behavior: 'smooth' });
+        });
+        
+        // Scroll down when clicking the down indicator
+        scrollDown.addEventListener('click', function() {
+            menu.scrollBy({ top: 100, behavior: 'smooth' });
+        });
+        
+        // User dropdown functionality
+        const userDropdown = document.getElementById('userDropdown');
+        const userMenu = document.getElementById('userMenu');
+        
+        userDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userMenu.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            userMenu.classList.remove('show');
+        });
     });
-</script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    
+    </script>
 </body>
 </html>

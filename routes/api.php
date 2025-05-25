@@ -16,6 +16,7 @@ use App\Http\Controllers\Apis\AuthController;
 |
 */
 use App\Http\Controllers\Apis\UsuariosController;
+use App\Http\Controllers\Apis\PeriodosController;
 
 Route::middleware(['authsession'])->group(function () {
     Route::get('/dashboard', function () {
@@ -26,3 +27,4 @@ Route::middleware(['authsession'])->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::resource(name: 'usuarios', controller: UsuariosController::class);
+Route::resource(name: 'periodos', controller: PeriodosController::class);

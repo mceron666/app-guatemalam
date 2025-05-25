@@ -1,0 +1,128 @@
+.form-control, .form-select, .input-group {
+    border: 1px solid #333 !important;
+    border-radius: 4px !important;
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover para los campos */
+.form-control:hover, .form-select:hover {
+    border-color: #198754 !important;
+    box-shadow: 0 0 0 0.1rem rgba(25, 135, 84, 0.2);
+}
+
+/* Efecto focus para los campos */
+.form-control:focus, .form-select:focus {
+    border-color: #198754 !important;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25) !important;
+}
+
+/* Estilo para las tarjetas */
+.card {
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+/* Estilo para los encabezados de las tarjetas */
+.card-header {
+    border-bottom: 2px solid #198754 !important;
+    padding: 1rem 1.5rem !important;
+}
+
+/* Estilo para el cuerpo de las tarjetas */
+.card-body {
+    background-color: #f8f9fa !important;
+    padding: 1.5rem !important;
+}
+
+/* Estilo para los radio buttons */
+.form-check-input {
+    border: 1px solid #333 !important;
+}
+
+.form-check-input:checked {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+
+/* Estilo para los botones */
+.btn {
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 4px !important;
+    padding: 0.5rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-success {
+    background-color: #198754 !important;
+    border: 2px solid #198754 !important;
+}
+
+.btn-success:hover {
+    background-color: #146c43 !important;
+    border-color: #146c43 !important;
+    box-shadow: 0 0 10px rgba(20, 108, 67, 0.5) !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+    border: 2px solid #6c757d !important;
+}
+
+.btn-secondary:hover {
+    background-color: #5c636a !important;
+    border-color: #5c636a !important;
+    box-shadow: 0 0 10px rgba(92, 99, 106, 0.5) !important;
+}
+
+/* Estilo para los campos requeridos */
+.form-label .text-danger {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Estilo para los campos deshabilitados */
+.form-control:disabled, .form-control[readonly],
+.form-select:disabled, .form-select[readonly] {
+    background-color: #e9ecef !important;
+    border: 1px solid #6c757d !important;
+    opacity: 0.8;
+}
+
+/* Estilo para el grupo de entrada con prefijo */
+.input-group-text {
+    border: 1px solid #333 !important;
+    border-right: none !important;
+}
+
+.input-group .form-control {
+    border-left: none !important;
+}
+
+/* Estilo para las alertas */
+.alert {
+    border: 1px solid #333 !important;
+    border-radius: 6px !important;
+}
+
+/* Añadir separación entre secciones */
+.card.mb-4 {
+    margin-bottom: 2rem !important;
+}
+
+/* Estilo para etiquetas */
+.form-label {
+    margin-bottom: 0.5rem !important;
+    color: #333 !important;
+}
+
+/* Estilo para iconos */
+.bi {
+    margin-right: 0.5rem !important;
+}
+
+/* Añadir un poco de espacio entre filas */
+.row.mb-3 {
+    margin-bottom: 1.5rem !important;
+}

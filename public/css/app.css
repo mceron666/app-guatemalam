@@ -1,10 +1,11 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    display: flex;
     height: 100vh;
+    overflow: hidden; /* Prevent body scrolling */
 }
 
+/* Vertical Sidebar */
 #navbar {
     position: fixed;
     top: 0;
@@ -15,9 +16,20 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    z-index: 1000; /* Ensure navbar stays on top */
+    transition: all 0.3s ease;
+}
+
+/* Fixed header section of navbar */
+#navbar-header {
     padding-top: 20px;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 160px; /* Height of logo + some padding */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    background-color: #028A0F; /* Match navbar background */
 }
 
 #navbar img {
@@ -27,6 +39,34 @@ body {
     border-radius: 50%;
     border: 3px solid white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Scrollable section of navbar */
+#navbar-menu {
+    flex-grow: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+/* Custom scrollbar for Webkit browsers */
+#navbar-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+#navbar-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#navbar-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
 }
 
 #navbar button {
@@ -45,6 +85,13 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    overflow: hidden; /* Ensure text doesn't overflow when collapsed */
+}
+
+#navbar button i {
+    font-size: 18px;
+    min-width: 24px; /* Ensure icons have consistent width */
+    text-align: center;
 }
 
 #navbar button:hover {
@@ -62,12 +109,188 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#content {
-    flex-grow: 1;
-    padding: 20px;
-    margin-left: 250px;
+/* Horizontal Top Navbar */
+#topnav {
+    position: fixed;
+    top: 0;
+    left: 250px; /* Same as sidebar width */
+    right: 0;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 999;
+    transition: all 0.3s ease;
 }
 
+#topnav .left-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#topnav .right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#topnav .nav-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+#topnav .nav-item:hover {
+    background-color: #f0f0f0;
+}
+
+#topnav .nav-item i {
+    font-size: 18px;
+    color: #555;
+}
+
+#topnav .page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-left: 10px;
+}
+
+#topnav .notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    padding: 3px 6px;
+}
+
+#topnav .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#topnav .user-profile:hover {
+    background-color: #f0f0f0;
+}
+
+#topnav .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #028A0F;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#topnav .user-name {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Content Area */
+#content {
+    margin-left: 250px;
+    margin-top: 60px; /* Height of top navbar */
+    height: calc(100vh - 60px); /* Subtract top navbar height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 20px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar Collapse Functionality */
+body.sidebar-collapsed #navbar {
+    width: 70px;
+}
+
+body.sidebar-collapsed #navbar-header {
+    padding-top: 10px;
+    min-height: 80px;
+}
+
+body.sidebar-collapsed #navbar img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+body.sidebar-collapsed #navbar button {
+    width: 50px;
+    justify-content: center;
+    padding: 12px 0;
+}
+
+/* This is the key part - hide text when sidebar is collapsed */
+body.sidebar-collapsed #navbar button span,
+body.sidebar-collapsed #navbar button:after {
+    display: none;
+}
+
+/* Hide all text content except the icon */
+body.sidebar-collapsed #navbar button > *:not(i) {
+    display: none;
+    width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body.sidebar-collapsed #topnav {
+    left: 70px;
+}
+
+body.sidebar-collapsed #content {
+    margin-left: 70px;
+}
+
+/* Scroll indicator for navbar */
+.scroll-indicator {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    color: white;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 20;
+}
+
+.scroll-indicator.visible {
+    opacity: 1;
+}
+
+.scroll-up {
+    top: 160px; /* Just below the header */
+}
+
+.scroll-down {
+    bottom: 10px;
+}
+
+/* Table Styles */
 .table-header {
     background-color: #28a745;
     color: white;
@@ -87,7 +310,181 @@ body {
     background-color: #ffc107;
     color: white;
 }
-#tablaPeriodos {
+.tabla-con-borde {
     border: 2px solid black;
     border-radius: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    #navbar {
+        width: 200px;
+    }
+    #topnav {
+        left: 200px;
+    }
+    #content {
+        margin-left: 200px;
+    }
+    body.sidebar-collapsed #navbar {
+        width: 60px;
+    }
+    body.sidebar-collapsed #topnav {
+        left: 60px;
+    }
+    body.sidebar-collapsed #content {
+        margin-left: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    #navbar {
+        width: 70px;
+    }
+    #navbar-header {
+        padding-top: 10px;
+        min-height: 80px;
+    }
+    #navbar img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 15px;
+    }
+    #navbar button {
+        width: 50px;
+        justify-content: center;
+        padding: 12px 0;
+    }
+    /* Hide text on smaller screens by default */
+    #navbar button > *:not(i) {
+        display: none;
+    }
+    #topnav {
+        left: 70px;
+    }
+    #content {
+        margin-left: 70px;
+    }
+    #topnav .user-name {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    #navbar {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    body:not(.sidebar-collapsed) #navbar {
+        width: 200px;
+    }
+    body:not(.sidebar-collapsed) #navbar-header {
+        padding-top: 20px;
+        min-height: 160px;
+    }
+    body:not(.sidebar-collapsed) #navbar img {
+        width: 120px;
+        height: 120px;
+    }
+    /* Show text when sidebar is expanded on mobile */
+    body:not(.sidebar-collapsed) #navbar button > *:not(i) {
+        display: inline;
+    }
+    body:not(.sidebar-collapsed) #navbar button {
+        width: 90%;
+        justify-content: flex-start;
+        padding: 12px;
+        gap: 10px;
+    }
+    #topnav {
+        left: 0;
+    }
+    #content {
+        margin-left: 0;
+    }
+    body:not(.sidebar-collapsed) #topnav {
+        left: 200px;
+    }
+    body:not(.sidebar-collapsed) #content {
+        margin-left: 200px;
+    }
+}
+.user-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 5px 0;
+}
+
+.user-info {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.user-info .user-name {
+    font-weight: bold;
+    display: block;
+}
+
+.user-info .user-role {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: #dc3545;
+}
+
+.logout-btn:hover {
+    background-color: #f8d7da;
+}
+.navbar-section-title {
+    margin: 15px 0 10px 0;
+    padding: 8px 15px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #2e7d32; /* Verde oscuro bonito */
+    background-color: #e8f5e9; /* Verde muy clarito de fondo */
+    border-left: 4px solid #2e7d32; /* Línea verde al lado izquierdo */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 5px;
 }
