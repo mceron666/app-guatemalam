@@ -9,6 +9,61 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+    <style>
+        .period-selector-container {
+            margin: 15px 10px 20px 10px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .period-selector-label {
+            color: #e8f5e9;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .period-selector select {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #2e7d32;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .period-selector select:focus {
+            outline: none;
+            border-color: #00A12B;
+            box-shadow: 0 0 0 2px rgba(0, 161, 43, 0.3);
+            background-color: white;
+        }
+        
+        .period-selector select option {
+            color: #2e7d32;
+            background-color: white;
+            padding: 8px;
+        }
+        
+        /* Responsive adjustments for collapsed sidebar */
+        body.sidebar-collapsed .period-selector-container {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .period-selector-container {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Vertical Sidebar -->
@@ -29,6 +84,16 @@
     <!-- Scrollable menu section -->
     <div id="navbar-menu">
         <!-- Title for the menu -->
+        <div class="period-selector-container">
+            <label class="period-selector-label" for="period-select">
+                <i class="fas fa-calendar-check"></i> Período Activo
+            </label>
+            <div class="period-selector">
+                <select id="period-select" onchange="onPeriodChange()">
+                    <option value="">Cargando períodos...</option>
+                </select>
+            </div>
+        </div>         
         <h6 class="navbar-section-title">Datos generales</h6>
 
         <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
@@ -51,7 +116,9 @@
         </button>      
         <!-- Add more menu items to demonstrate scrolling -->
         <h6 class="navbar-section-title">Administración @php
-        $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}</h6> 
+        $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}</h6>
+        
+        <!-- Period Selector -->
         <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
             <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
         </button>                
@@ -138,6 +205,89 @@
     
     <script>
     const anioActual = "{{ session('usuario.ANIO_ACTUAL', '') }}";
+    
+    // Global variable to store periods
+    let schoolPeriods = [];
+    
+    // Function to get the selected period ID (can be called from other Blade files)
+    function getSelectedPeriodId() {
+        const selectedValue = document.getElementById('period-select').value;
+        return selectedValue || localStorage.getItem('selectedPeriodId') || null;
+    }
+    
+    // Function to get the selected period object
+    function getSelectedPeriod() {
+        const selectedId = getSelectedPeriodId();
+        if (!selectedId) return null;
+        
+        return schoolPeriods.find(period => period.ID_PERIODO_ESCOLAR == selectedId) || null;
+    }
+    
+    // Function to set the selected period programmatically
+    function setSelectedPeriod(periodId) {
+        const select = document.getElementById('period-select');
+        select.value = periodId;
+        localStorage.setItem('selectedPeriodId', periodId);
+        
+        // Trigger change event
+        const event = new Event('change');
+        select.dispatchEvent(event);
+    }
+    
+    // Function to load school periods from API
+    function loadSchoolPeriods() {
+        axios.get('http://localhost:3000/periodos/seleccion')
+            .then(response => {
+                schoolPeriods = response.data;
+                populatePeriodSelector(schoolPeriods);
+            })
+            .catch(error => {
+                console.error('Error al cargar períodos escolares:', error);
+                const select = document.getElementById('period-select');
+                select.innerHTML = '<option value="">Error al cargar períodos</option>';
+            });
+    }
+    
+    // Function to populate the period selector
+    function populatePeriodSelector(periods) {
+        const select = document.getElementById('period-select');
+        select.innerHTML = '<option value="">Seleccionar período...</option>';
+        
+        periods.forEach(period => {
+            const option = document.createElement('option');
+            option.value = period.ID_PERIODO_ESCOLAR;
+            option.textContent = period.DESCRIPCION_PERIODO;
+            select.appendChild(option);
+        });
+        
+        // Auto-select the first period if no period is saved
+        const savedPeriodId = localStorage.getItem('selectedPeriodId');
+        if (savedPeriodId && periods.find(p => p.ID_PERIODO_ESCOLAR == savedPeriodId)) {
+            select.value = savedPeriodId;
+        } else if (periods.length > 0) {
+            // Select the first period by default
+            const firstPeriod = periods[0];
+            select.value = firstPeriod.ID_PERIODO_ESCOLAR;
+            localStorage.setItem('selectedPeriodId', firstPeriod.ID_PERIODO_ESCOLAR);
+            
+            // Trigger the change event for the auto-selected period
+            setTimeout(() => {
+                $(document).trigger('periodoSeleccionado', [firstPeriod.ID_PERIODO_ESCOLAR, firstPeriod]);
+            }, 100);
+        }
+    }
+    
+    // Function called when period selection changes
+    function onPeriodChange() {
+        const selectedId = getSelectedPeriodId();
+        if (selectedId) {
+            localStorage.setItem('selectedPeriodId', selectedId);
+            $(document).trigger('periodoSeleccionado', [selectedId, getSelectedPeriod()]);
+        } else {
+            localStorage.removeItem('selectedPeriodId');
+        }
+    }
+    
     function loadPage(route) {
         axios.get(route, { 
             headers: { 
@@ -245,6 +395,9 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Load school periods when page loads
+        loadSchoolPeriods();
+        
         loadPage(window.location.pathname);
         
         // Toggle sidebar functionality

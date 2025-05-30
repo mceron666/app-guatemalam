@@ -163,13 +163,13 @@ let currentPage = 1;
 let totalPages = 1;
 let currentUrl = apiBaseUrl;
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};    
-
-// Función para cargar las carreras en el dropdown
+const periodoId = getSelectedPeriodId();
 $(document).ready(function () {
-    // Fetch careers when page loads
     fetchCareers();
-    
-    // Add event listener for career selection
+    $(document).on('periodoSeleccionado', function(event, periodoId, periodoObj) {
+        console.log('Período cambiado:', periodoId);
+        cargarGrados(apiBaseUrl); 
+    });    
     $('#carreraEstudiantil').on('change', function() {
         const selectedCarreraId = $(this).val();
         console.log('Selected career ID:', selectedCarreraId);
@@ -238,7 +238,7 @@ $(document).ready(function () {
         $("#seccionGrado").val("");
         $("#nivelGrado").val("");
         $("#carreraEstudiantil").val("");
-        $("#titulo").text("Ingresar Grado Académico");
+        $("#titulo").text("Ingresar Grado Académico" + periodoId);
     });
     
     $(document).on("click", ".btn-editar", function () {

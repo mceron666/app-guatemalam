@@ -7,10 +7,9 @@
     <img src="/images/guatemala.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, white 100%);"></div>
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 34px; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);"> 
-    <i class="fas fa-book"></i> Administración grados @php
-    $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}
+    <i class="fas fa-book"></i> Administración grados  <span id="header-periodo-codigo">Cargando...</span>
     </div>
-</div>  
+</div>
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
         <div class="card-body">
@@ -59,15 +58,40 @@
 </div>
 <script>
 const apiBaseUrl = 'http://localhost:3000/grados'; // URL base de la API
+const periodoId = getSelectedPeriodId();
 let currentPage = 1;
 let totalPages = 1;
 let currentUrl = apiBaseUrl;
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};    
+// Función para actualizar el código del período en el encabezado
+function updateHeaderPeriodCode() {
+    const headerPeriodElement = document.getElementById('header-periodo-codigo');
+    if (headerPeriodElement) {
+        const selectedPeriod = getSelectedPeriod();
+        if (selectedPeriod) {
+            headerPeriodElement.textContent = selectedPeriod.CODIGO_PERIODO;
+        } else {
+            headerPeriodElement.textContent = "No seleccionado";
+        }
+    }
+}
 
-// Función para cargar las carreras en el dropdown
+// Actualizar el código del período cuando se carga la página
+document.addEventListener('DOMContentLoaded', function() {
+    // Actualizar inicialmente (después de cargar los períodos)
+    setTimeout(updateHeaderPeriodCode, 500);
+});
+
+document.addEventListener('contentLoaded', function() {
+    updateHeaderPeriodCode();
+});
 $(document).ready(function () {
     // Fetch careers when page loads
     fetchCareers();
+    $(document).on('periodoSeleccionado', function(event, periodoId, periodoObj) {
+    updateHeaderPeriodCode();
+});
+
     
     // Add event listener for career selection
     $('#carreraEstudiantil').on('change', function() {
