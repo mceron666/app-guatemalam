@@ -1,4 +1,5 @@
 <div class="modal fade custom-modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<input type="hidden" id="ideliminacion">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg">
             <div class="modal-header text-white" style="background-color: #dc3545; border-bottom: 2px solid #bb2d3b;">

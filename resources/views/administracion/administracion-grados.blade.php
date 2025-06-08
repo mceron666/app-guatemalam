@@ -89,7 +89,9 @@ $(document).ready(function () {
     // Fetch careers when page loads
     fetchCareers();
     $(document).on('periodoSeleccionado', function(event, periodoId, periodoObj) {
+    periodoId = getSelectedPeriodId();        
     updateHeaderPeriodCode();
+    cargarGrados(apiBaseUrl);
 });
 
     
@@ -216,7 +218,7 @@ function cargarGrados(url, page = 1) {
                             <td>
 <div class="d-flex justify-content-center align-items-center">
     <a 
-        href="/administracion-grados/materias/${grado.CODIGO_GRADO}" 
+        href="/administracion-grados/materias/${periodoId}/${grado.ID_GRADO}" 
         class="btn btn-primary btn-sm me-2">
         <i class="bi bi-book"></i> Materias
     </a>

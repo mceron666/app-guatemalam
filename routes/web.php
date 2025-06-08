@@ -90,12 +90,19 @@ Route::middleware(['auth.custom'])->group(function () {
         }
         return view('administracion.administracion-grados');
     });    
-    Route::get('/administracion-grados/materias/{id}', function ($id) {
+    Route::get('/administracion-grados/materias/{id}/{otroId}', function ($id, $otroId) {
         if (request()->ajax()) {
             return view('content')->with([
-                'contenido' => view('administracion.administracion-grados-views.materias', ['id' => $id])
+                'contenido' => view('administracion.administracion-grados-views.materias', [
+                    'id' => $id,
+                    'otroId' => $otroId
+                ])
             ]);
         }
-        return view('administracion.administracion-grados-views.materias', ['id' => $id]);
-    });    
+        return view('administracion.administracion-grados-views.materias', [
+            'id' => $id,
+            'otroId' => $otroId
+        ]);
+    });
+    
 });
