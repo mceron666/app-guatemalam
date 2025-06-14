@@ -1,4 +1,4 @@
-@extends("layouts.header")
+@extends("layouts.maestro")
 
 @section("contenido")
 <div id="header" style="position: relative; width: 100%; height: 200px; overflow: hidden;">

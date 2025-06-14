@@ -10,7 +10,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Middleware para verificar si el usuario está autenticado
 Route::middleware(['auth.custom'])->group(function () {
-    // Ruta para la página de inicio
+    //Administración
     Route::get('/', function () {
         if (request()->ajax()) {
             return view('content')->with(['contenido' => view('administracion.index')]);
@@ -104,5 +104,17 @@ Route::middleware(['auth.custom'])->group(function () {
             'otroId' => $otroId
         ]);
     });
-    
+    //Maestros
+    Route::get('maestro/', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('maestros.index')]);
+        }
+        return view('maestros.index');
+    });    
+    Route::get('maestro/mis-clases', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('maestros.mis-clases')]);
+        }
+        return view('maestros.mis-clases');
+    });        
 });

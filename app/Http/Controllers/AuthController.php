@@ -62,9 +62,14 @@ class AuthController extends Controller
             // Guardar datos del usuario en la sesión
             Session::put('usuario', $usuario);
             Session::put('autenticado', true);
-
-            // Redirigir a la página principal
-            return redirect('/');
+            if ($rol == 'M')
+            {
+                return redirect('maestro/');
+            } 
+            else
+            {
+                return redirect('/');                
+            }
 
         } catch (\Exception $e) {
             return back()->withErrors(['auth' => 'Error al conectar con el servidor: ' . $e->getMessage()])->withInput($request->except('CLAVE_PERFIL'));

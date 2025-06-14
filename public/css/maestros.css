@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
-    overflow: hidden; /* Prevent body scrolling */
+    overflow: hidden;
 }
 
 /* Vertical Sidebar */
@@ -10,26 +10,25 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #028A0F; /* Verde vibrante */
+    background-color: #007bff;
     color: white;
     width: 250px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    z-index: 1000; /* Ensure navbar stays on top */
+    z-index: 1000;
     transition: all 0.3s ease;
 }
 
-/* Fixed header section of navbar */
 #navbar-header {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 160px; /* Height of logo + some padding */
+    min-height: 160px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    background-color: #028A0F; /* Match navbar background */
+    background-color: #007bff;
 }
 
 #navbar img {
@@ -42,35 +41,30 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Scrollable section of navbar */
 #navbar-menu {
     flex-grow: 1;
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: auto;
     padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Custom scrollbar */
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
 }
 
-/* Custom scrollbar for Webkit browsers */
 #navbar-menu::-webkit-scrollbar {
     width: 6px;
 }
-
 #navbar-menu::-webkit-scrollbar-track {
     background: transparent;
 }
-
 #navbar-menu::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 6px;
 }
 
 #navbar button {
-    background-color: #026d0c; /* Verde más oscuro */
+    background-color: #0056b3;
     border: none;
     color: white;
     font-size: 16px;
@@ -85,17 +79,17 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    overflow: hidden; /* Ensure text doesn't overflow when collapsed */
+    overflow: hidden;
 }
 
 #navbar button i {
     font-size: 18px;
-    min-width: 24px; /* Ensure icons have consistent width */
+    min-width: 24px;
     text-align: center;
 }
 
 #navbar button:hover {
-    background-color: #014d08; /* Verde más oscuro */
+    background-color: #004099;
     transform: scale(1.05);
 }
 
@@ -104,16 +98,16 @@ body {
 }
 
 #navbar button.selected {
-    background-color: #00A12B; /* Verde más brillante para el seleccionado */
+    background-color: #3399ff;
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Horizontal Top Navbar */
+/* Top Navbar */
 #topnav {
     position: fixed;
     top: 0;
-    left: 250px; /* Same as sidebar width */
+    left: 250px;
     right: 0;
     height: 60px;
     background-color: white;
@@ -126,16 +120,11 @@ body {
     transition: all 0.3s ease;
 }
 
-#topnav .left-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
+#topnav .left-section,
 #topnav .right-section {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 #topnav .nav-item {
@@ -192,7 +181,7 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: #028A0F;
+    background-color: #007bff;
     color: white;
     display: flex;
     align-items: center;
@@ -204,62 +193,47 @@ body {
     color: #333;
 }
 
-/* Content Area */
 #content {
     margin-left: 250px;
-    margin-top: 60px; /* Height of top navbar */
-    height: calc(100vh - 60px); /* Subtract top navbar height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
     padding: 20px;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
-/* Sidebar Collapse Functionality */
+/* Sidebar Collapse */
 body.sidebar-collapsed #navbar {
     width: 70px;
 }
-
 body.sidebar-collapsed #navbar-header {
     padding-top: 10px;
     min-height: 80px;
 }
-
 body.sidebar-collapsed #navbar img {
     width: 50px;
     height: 50px;
     margin-bottom: 15px;
 }
-
 body.sidebar-collapsed #navbar button {
     width: 50px;
     justify-content: center;
     padding: 12px 0;
 }
-
-/* This is the key part - hide text when sidebar is collapsed */
 body.sidebar-collapsed #navbar button span,
-body.sidebar-collapsed #navbar button:after {
-    display: none;
-}
-
-/* Hide all text content except the icon */
+body.sidebar-collapsed #navbar button:after,
 body.sidebar-collapsed #navbar button > *:not(i) {
     display: none;
-    width: 0;
-    margin: 0;
-    padding: 0;
 }
-
 body.sidebar-collapsed #topnav {
     left: 70px;
 }
-
 body.sidebar-collapsed #content {
     margin-left: 70px;
 }
 
-/* Scroll indicator for navbar */
+/* Scroll Indicator */
 .scroll-indicator {
     position: absolute;
     left: 50%;
@@ -277,22 +251,19 @@ body.sidebar-collapsed #content {
     transition: opacity 0.3s;
     z-index: 20;
 }
-
 .scroll-indicator.visible {
     opacity: 1;
 }
-
 .scroll-up {
-    top: 160px; /* Just below the header */
+    top: 160px;
 }
-
 .scroll-down {
     bottom: 10px;
 }
 
 /* Table Styles */
 .table-header {
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
     font-weight: bold;
 }
@@ -315,7 +286,7 @@ body.sidebar-collapsed #content {
     border-radius: 10px;
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 992px) {
     #navbar {
         width: 200px;
@@ -355,7 +326,6 @@ body.sidebar-collapsed #content {
         justify-content: center;
         padding: 12px 0;
     }
-    /* Hide text on smaller screens by default */
     #navbar button > *:not(i) {
         display: none;
     }
@@ -387,7 +357,6 @@ body.sidebar-collapsed #content {
         width: 120px;
         height: 120px;
     }
-    /* Show text when sidebar is expanded on mobile */
     body:not(.sidebar-collapsed) #navbar button > *:not(i) {
         display: inline;
     }
@@ -410,11 +379,9 @@ body.sidebar-collapsed #content {
         margin-left: 200px;
     }
 }
-.user-dropdown {
-    position: relative;
-    cursor: pointer;
-}
 
+/* Dropdown */
+.user-dropdown { position: relative; cursor: pointer; }
 .dropdown-menu {
     position: absolute;
     right: 0;
@@ -426,11 +393,7 @@ body.sidebar-collapsed #content {
     z-index: 1000;
     display: none;
 }
-
-.dropdown-menu.show {
-    display: block;
-}
-
+.dropdown-menu.show { display: block; }
 .dropdown-item {
     padding: 10px 15px;
     display: block;
@@ -438,32 +401,26 @@ body.sidebar-collapsed #content {
     text-decoration: none;
     transition: background-color 0.2s;
 }
-
 .dropdown-item:hover {
     background-color: #f8f9fa;
 }
-
 .dropdown-divider {
     height: 1px;
     background-color: #e9ecef;
     margin: 5px 0;
 }
-
 .user-info {
     padding: 10px 15px;
     border-bottom: 1px solid #e9ecef;
 }
-
 .user-info .user-name {
     font-weight: bold;
     display: block;
 }
-
 .user-info .user-role {
     font-size: 0.8rem;
     color: #6c757d;
 }
-
 .logout-btn {
     background: none;
     border: none;
@@ -472,22 +429,23 @@ body.sidebar-collapsed #content {
     cursor: pointer;
     color: #dc3545;
 }
-
 .logout-btn:hover {
     background-color: #f8d7da;
 }
+
 .navbar-section-title {
     margin: 15px 0 10px 0;
     padding: 8px 15px;
     font-size: 15px;
     font-weight: bold;
-    color: #2e7d32; /* Verde oscuro bonito */
-    background-color: #e8f5e9; /* Verde muy clarito de fondo */
-    border-left: 4px solid #2e7d32; /* Línea verde al lado izquierdo */
+    color: #004085;
+    background-color: #e7f1ff;
+    border-left: 4px solid #004085;
     text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 5px;
 }
+
 .period-selector-container {
     margin: 15px 10px 20px 10px;
     padding: 12px;
@@ -495,9 +453,8 @@ body.sidebar-collapsed #content {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 .period-selector-label {
-    color: #e8f5e9;
+    color: #e7f1ff;
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 8px;
@@ -505,37 +462,31 @@ body.sidebar-collapsed #content {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
 .period-selector select {
     width: 100%;
     background-color: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     padding: 8px 12px;
-    color: #2e7d32;
+    color: #004085;
     font-size: 13px;
     font-weight: 500;
     transition: all 0.3s ease;
 }
-
 .period-selector select:focus {
     outline: none;
-    border-color: #00A12B;
-    box-shadow: 0 0 0 2px rgba(0, 161, 43, 0.3);
+    border-color: #3399ff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
     background-color: white;
 }
-
 .period-selector select option {
-    color: #2e7d32;
+    color: #004085;
     background-color: white;
     padding: 8px;
 }
-
-/* Responsive adjustments for collapsed sidebar */
 body.sidebar-collapsed .period-selector-container {
     display: none;
 }
-
 @media (max-width: 768px) {
     .period-selector-container {
         display: none;

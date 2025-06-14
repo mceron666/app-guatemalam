@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administracion</title>
+    <title>Maestro</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/maestros.css" rel="stylesheet">
 </head>
 <body>
     <!-- Vertical Sidebar -->
@@ -39,34 +39,14 @@
                 </select>
             </div>
         </div>         
-        <h6 class="navbar-section-title">Datos generales</h6>
+        <h6 class="navbar-section-title">Administración</h6>
 
-        <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
+        <button id="inicio" onclick="selectNav('inicio'); loadPage('/maestro/')">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>
-        <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')">
-            <i class="fas fa-calendar-alt"></i> <span>Períodos Escolares</span>
-        </button>
-        <button id="carreras" onclick="selectNav('carreras'); loadPage('/carreras')">
-            <i class="bi bi-mortarboard"></i> <span>Carreras</span>
-        </button>        
-        <button id="usuarios" onclick="selectNav('usuarios'); loadPage('/usuarios')">
-            <i class="fas fa-users"></i> <span>Usuarios</span>
-        </button>
-        <button id="materias" onclick="selectNav('materias'); loadPage('/materias')">
-            <i class="fas fa-book"></i> <span>Materias</span>
-        </button>
-        <button id="grados" onclick="selectNav('grados'); loadPage('/grados')">
-            <i class="fas fa-graduation-cap"></i> <span>Grados</span>
-        </button>      
-        <!-- Add more menu items to demonstrate scrolling -->
-        <h6 class="navbar-section-title">Administración @php
-        $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}</h6>
-        
-        <!-- Period Selector -->
-        <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
-            <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
-        </button>                
+        <button id="clases" onclick="selectNav('clases'); loadPage('/maestro/mis-clases')">
+            <i class="fas fa-calendar-alt"></i> <span>Mis clases</span>
+        </button>         
     </div>
 </div>
 

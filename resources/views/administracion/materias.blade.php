@@ -45,6 +45,7 @@
                         <tr>
                             <th scope="col" class="border border-dark">Código Materia</th>
                             <th scope="col" class="border border-dark">Nombre Materia</th>
+                            <th scope="col" class="border border-dark">Color</th>
                             <th scope="col" class="border border-dark">Estado</th>
                             <th scope="col" class="border border-dark">Perfil ingreso</th>
                             <th scope="col" class="border border-dark">Acciones</th>
@@ -82,27 +83,60 @@
         <form id="materiaForm">
           @csrf
           <input type="hidden" id="editMode" name="editMode" value="0">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Información de la Materia</h5>
-              <div class="mb-4">
-                <label for="codigoMateria" class="form-label fw-semibold">Código de la Materia</label>
-                <input type="text" class="form-control form-control-lg" id="codigoMateria" name="CODIGO_MATERIA" maxlength="15"/>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="codigoMateria" class="form-label">Código</label>
+              <input type="text" class="form-control" id="codigoMateria" name="CODIGO_MATERIA" maxlength="15"/>
+            </div>
+            <div class="col-md-6">
+              <label for="nombreMateria" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombreMateria" name="NOMBRE_MATERIA" maxlength="50"/>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="colorMateria" class="form-label">Color</label>
+              <div class="d-flex">
+                <input type="color" class="form-control form-control-color me-2" id="colorMateria" name="COLOR_MATERIA" value="#198754" style="width: 50px;">
+                <input type="text" class="form-control" id="colorMateriaText" placeholder="#198754" maxlength="7" style="font-family: monospace; font-size: 12px;">
               </div>
-              <div class="mb-3">
-                <label for="nombreMateria" class="form-label fw-semibold">Nombre de la Materia</label>
-                <input type="text" class="form-control form-control-lg" id="nombreMateria" name="NOMBRE_MATERIA" maxlength="50"/>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label">Letras Blancas</label>
+              <div class="form-check form-switch mt-2">
+                <input class="form-check-input" type="checkbox" id="usaLetrasBlancas" name="USA_LETRAS_BLANCAS">
+                <label class="form-check-label" for="usaLetrasBlancas" id="labelLetrasBlancas">No</label>
+              </div>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label">Estado</label>
+              <div class="form-check form-switch mt-2">
+                <input class="form-check-input" type="checkbox" id="estadoMateria" name="ESTADO_MATERIA" checked>
+                <label class="form-check-label" for="estadoMateria" id="labelEstadoMateria">Activo</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <label class="form-label">Vista Previa</label>
+              <div id="colorPreview" class="border rounded px-3 py-2" style="background-color: #198754; color: black; text-align: center;">
+                Ejemplo de Materia
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-2"></i>Cancelar
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i>Cancelar
         </button>
-        <button type="submit" class="btn btn-success btn-lg px-4" id="btnGuardar">
-          <i class="bi bi-check-circle me-2"></i>Guardar
+        <button type="submit" class="btn btn-success" id="btnGuardar">
+          <i class="bi bi-check-circle me-1"></i>Guardar
         </button>
       </div>
     </div>
@@ -114,6 +148,7 @@ const apiBaseUrl = 'http://localhost:3000/materias'; // URL base de la API
     let currentPage = 1;
     let totalPages = 1;
     let currentUrl = apiBaseUrl;
+    
     function cargarmaterias(url, page = 1) {
         // Construir URL con parámetros de paginación
         let urlFinal = url;
@@ -140,13 +175,22 @@ const apiBaseUrl = 'http://localhost:3000/materias'; // URL base de la API
                 tbody.empty(); 
                 
                 if (data.length === 0) {
-                    tbody.append('<tr><td colspan="7" class="text-center">No se encontró materia</td></tr>');
+                    tbody.append('<tr><td colspan="6" class="text-center">No se encontró materia</td></tr>');
                 } else {
                     data.forEach(materia => {
+                        const colorStyle = materia.COLOR_MATERIA ? `background-color: ${materia.COLOR_MATERIA}; color: ${materia.USA_LETRAS_BLANCAS === 'Y' ? 'white' : 'black'};` : '';
                         const fila = `
                             <tr>
                                 <td>${materia.CODIGO_MATERIA}</td>
                                 <td>${materia.NOMBRE_MATERIA}</td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="rounded px-2 py-1 me-2" style="${colorStyle} min-width: 80px; text-align: center; border: 1px solid #dee2e6;">
+                                            ${materia.NOMBRE_MATERIA || 'Ejemplo'}
+                                        </div>
+                                        <small class="text-muted">${materia.COLOR_MATERIA || '#000000'}</small>
+                                    </div>
+                                </td>
                                 <td>${materia.DESCRIPCION_ESTADO_MATERIA}</td>
                                 <td>${materia.ID_PERSONA_INGRESO}</td>
                                 <td>
@@ -156,7 +200,10 @@ const apiBaseUrl = 'http://localhost:3000/materias'; // URL base de la API
                                             data-bs-toggle="modal" 
                                             data-bs-target="#materiaModal"
                                             data-codigo="${materia.CODIGO_MATERIA}"
-                                            data-descripcion="${materia.NOMBRE_MATERIA}">
+                                            data-descripcion="${materia.NOMBRE_MATERIA}"
+                                            data-color="${materia.COLOR_MATERIA || '#198754'}"
+                                            data-letras-blancas="${materia.USA_LETRAS_BLANCAS || 'N'}"
+                                            data-estado="${materia.ESTADO_MATERIA || 'A'}">
                                             <i class="bi bi-pencil-square"></i> Modificar
                                     </button>
                                     <button data-bs-toggle="modal" 
@@ -171,17 +218,17 @@ const apiBaseUrl = 'http://localhost:3000/materias'; // URL base de la API
                             </tr>
                         `;
                         tbody.append(fila);
-
                     });
                 }
                 actualizarPaginacion();
             },
             error: function (error) {
                 console.error('Error al cargar las Materias:', error);
-                $('#tablaMaterias tbody').html('<tr><td colspan="7" class="text-center">Error al cargar datos</td></tr>');
+                $('#tablaMaterias tbody').html('<tr><td colspan="6" class="text-center">Error al cargar datos</td></tr>');
             }
         });
     }
+
 function actualizarPaginacion() {
     const paginationContainer = $('#paginacion');
     paginationContainer.empty();
@@ -267,84 +314,153 @@ function actualizarPaginacion() {
         }
     });
 }    
+
+// Función para actualizar la vista previa del color
+function actualizarVistaPrevia() {
+    const color = $('#colorMateria').val();
+    const usaLetrasBlancas = $('#usaLetrasBlancas').is(':checked');
+    const textColor = usaLetrasBlancas ? 'white' : 'black';
+    
+    $('#colorPreview').css({
+        'background-color': color,
+        'color': textColor
+    });
+    
+    $('#colorMateriaText').val(color.toUpperCase());
+}
+
+// Función para actualizar etiquetas de switches
+function actualizarEtiquetas() {
+    const usaLetrasBlancas = $('#usaLetrasBlancas').is(':checked');
+    const estadoActivo = $('#estadoMateria').is(':checked');
+    
+    $('#labelLetrasBlancas').text(usaLetrasBlancas ? 'Sí' : 'No');
+    $('#labelEstadoMateria').text(estadoActivo ? 'Activo' : 'Inactivo');
+}
+
 $(document).ready(function () {
-cargarmaterias(apiBaseUrl)
+    cargarmaterias(apiBaseUrl)
 
-$('#btnBuscar').click(function () {
-    const textoBusqueda = $('#inputBusqueda').val().trim();
-    const urlBusqueda = textoBusqueda ? `${apiBaseUrl}/busqueda/${encodeURIComponent(textoBusqueda)}` : apiBaseUrl;
-    cargarmaterias(urlBusqueda, 1); // Siempre empezar en la página 1 al realizar una búsqueda
-});
+    // Event listeners para el selector de color
+    $('#colorMateria').on('input change', actualizarVistaPrevia);
+    
+    $('#colorMateriaText').on('input', function() {
+        const colorValue = $(this).val();
+        if (/^#[0-9A-F]{6}$/i.test(colorValue)) {
+            $('#colorMateria').val(colorValue);
+            actualizarVistaPrevia();
+        }
+    });
+    
+    // Event listeners para los switches
+    $('#usaLetrasBlancas').on('change', function() {
+        actualizarEtiquetas();
+        actualizarVistaPrevia();
+    });
+    
+    $('#estadoMateria').on('change', actualizarEtiquetas);
 
-$('#inputBusqueda').on('keypress', function(e) {
-    if (e.which === 13) { // Código de tecla Enter
-        $('#btnBuscar').click();
-    }
-});
+    $('#btnBuscar').click(function () {
+        const textoBusqueda = $('#inputBusqueda').val().trim();
+        const urlBusqueda = textoBusqueda ? `${apiBaseUrl}/busqueda/${encodeURIComponent(textoBusqueda)}` : apiBaseUrl;
+        cargarmaterias(urlBusqueda, 1); // Siempre empezar en la página 1 al realizar una búsqueda
+    });
 
-$('#btnLimpiar').on('click', function() {
-    $('#inputBusqueda').val('');
-    cargarmaterias(apiBaseUrl, 1);
-});    
-    cargarmaterias(apiBaseUrl);
+    $('#inputBusqueda').on('keypress', function(e) {
+        if (e.which === 13) { // Código de tecla Enter
+            $('#btnBuscar').click();
+        }
+    });
+
+    $('#btnLimpiar').on('click', function() {
+        $('#inputBusqueda').val('');
+        cargarmaterias(apiBaseUrl, 1);
+    });    
     
     if ($('#paginacion').length === 0) {
         $('#tablaMaterias').after('<div id="paginacion" class="mt-3"></div>');
     }
 })
+
 $("#agregar").click(() => {
-  hideError()
-  $("#codigoMateria").val("").prop("disabled", false)
-  $("#nombreMateria").val("")
-  $("#titulo").text("Ingresar materia")
+    hideError()
+    $("#codigoMateria").val("").prop("disabled", false)
+    $("#nombreMateria").val("")
+    $("#colorMateria").val("#198754")
+    $("#colorMateriaText").val("#198754")
+    $("#usaLetrasBlancas").prop("checked", false)
+    $("#estadoMateria").prop("checked", true)
+    $("#titulo").text("Ingresar materia")
+    actualizarEtiquetas()
+    actualizarVistaPrevia()
 })
+
 $(document).on("click", ".btn-editar", function () {
-  hideError()
-  const boton = $(this)
-  const codigo = boton.data("codigo")
-  const descripcion = boton.data("descripcion")
-  $("#codigoMateria").val(codigo).prop('disabled', true)
-  $("#nombreMateria").val(descripcion)
-  $("#titulo").text("Modificar materia")
+    hideError()
+    const boton = $(this)
+    const codigo = boton.data("codigo")
+    const descripcion = boton.data("descripcion")
+    const color = boton.data("color") || "#198754"
+    const letrasBlancas = boton.data("letras-blancas") === "Y"
+    const estado = boton.data("estado") === "A"
+    
+    $("#codigoMateria").val(codigo).prop('disabled', true)
+    $("#nombreMateria").val(descripcion)
+    $("#colorMateria").val(color)
+    $("#colorMateriaText").val(color.toUpperCase())
+    $("#usaLetrasBlancas").prop("checked", letrasBlancas)
+    $("#estadoMateria").prop("checked", estado)
+    $("#titulo").text("Modificar materia")
+    
+    actualizarEtiquetas()
+    actualizarVistaPrevia()
 })
+
 $("#btnGuardar").click(() => {
-  const titulo = document.getElementById("titulo").textContent.trim()
-  const accion = titulo === "Ingresar materia" ? "I" : "U"
-  const datos = {
-    CODIGO_MATERIA: $("#codigoMateria").val(),
-    NOMBRE_MATERIA: $("#nombreMateria").val(),
-    ID_PERSONA_INGRESO: ID_PERSONA,
-    ACCION: accion,
-  }
-  $.ajax({
-    url: "http://localhost:3000/materias",
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify(datos),
-    success: (response) => {
-      if (response.mensaje === "") {
-        $("#materiaModal").modal("hide")
-        cargarmaterias("http://localhost:3000/materias")
-      } else {
-        showError(response.mensaje)
-      }
-    },
-    error: (err) => {
-      console.error(err)
-      showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.")
-    },
-  })
+    const titulo = document.getElementById("titulo").textContent.trim()
+    const accion = titulo === "Ingresar materia" ? "I" : "U"
+    const datos = {
+        CODIGO_MATERIA: $("#codigoMateria").val(),
+        NOMBRE_MATERIA: $("#nombreMateria").val(),
+        COLOR_MATERIA: $("#colorMateria").val(),
+        USA_LETRAS_BLANCAS: $("#usaLetrasBlancas").is(':checked') ? "Y" : "N",
+        ESTADO_MATERIA: $("#estadoMateria").is(':checked') ? "A" : "I",
+        ID_PERSONA_INGRESO: ID_PERSONA,
+        ACCION: accion,
+    }
+    
+    $.ajax({
+        url: "http://localhost:3000/materias",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: (response) => {
+            if (response.mensaje === "") {
+                $("#materiaModal").modal("hide")
+                cargarmaterias("http://localhost:3000/materias")
+            } else {
+                showError(response.mensaje)
+            }
+        },
+        error: (err) => {
+            console.error(err)
+            showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.")
+        },
+    })
 })
+
 function showError(message) {
-  const errorContainer = document.getElementById("errorMessageContainer")
-  const errorMessageElement = document.getElementById("errorMessage")
-  errorMessageElement.textContent = message
-  errorContainer.classList.remove("d-none")
+    const errorContainer = document.getElementById("errorMessageContainer")
+    const errorMessageElement = document.getElementById("errorMessage")
+    errorMessageElement.textContent = message
+    errorContainer.classList.remove("d-none")
 }
+
 function hideError() {
     const errorContainer = document.getElementById('errorMessageContainer');
     errorContainer.classList.add('d-none');
 };
+
 function showErrordel(message) {
     const errorContainer = document.getElementById("errorMessageContainerdel");
     const errorMessageElement = document.getElementById("errorMessagedel");
@@ -356,21 +472,27 @@ function hideErrordel() {
     const errorContainer = document.getElementById('errorMessageContainerdel');
     errorContainer.classList.add('d-none');
 }
+
 $(document).on("click", ".btn-eliminar", function () {
-  hideErrordel();
-  const boton = $(this);
-  const codigo = boton.data("id");
-  const descripcion = boton.data("nombre");
-  $("#CodigoEliminar").text(codigo);
-  $("#DescripcionEliminar").text(descripcion);
+    hideErrordel();
+    const boton = $(this);
+    const codigo = boton.data("id");
+    const descripcion = boton.data("nombre");
+    $("#CodigoEliminar").text(codigo);
+    $("#DescripcionEliminar").text(descripcion);
 });
+
 $("#btnConfirmDelete").click(() => {
     const datos = {
         CODIGO_MATERIA: $("#CodigoEliminar").text().trim(),
         NOMBRE_MATERIA: null,
+        COLOR_MATERIA: null,
+        USA_LETRAS_BLANCAS: null,
+        ESTADO_MATERIA: null,
         ID_PERSONA_INGRESO: null, 
         ACCION: "D"
     };
+    
     $.ajax({
         url: apiBaseUrl,
         type: "POST",
