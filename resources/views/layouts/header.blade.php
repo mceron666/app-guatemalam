@@ -29,18 +29,7 @@
     <!-- Scrollable menu section -->
     <div id="navbar-menu">
         <!-- Title for the menu -->
-        <div class="period-selector-container">
-            <label class="period-selector-label" for="period-select">
-                <i class="fas fa-calendar-check"></i> Período Activo
-            </label>
-            <div class="period-selector">
-                <select id="period-select" onchange="onPeriodChange()">
-                    <option value="">Cargando períodos...</option>
-                </select>
-            </div>
-        </div>         
         <h6 class="navbar-section-title">Datos generales</h6>
-
         <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>

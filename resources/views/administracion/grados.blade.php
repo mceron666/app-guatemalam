@@ -3,12 +3,13 @@
 @section("contenido")
 @include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
-<div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
-    <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, white 100%);"></div>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 34px; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);"> 
-    <i class="fas fa-graduation-cap"></i> Grados
+<div class="header-section">
+    <div class="header-title">
+        <i class="fas fa-graduation-cap"></i>
+        <span>Grados</span>
     </div>
+    <div class="header-decoration-1"></div>
+    <div class="header-decoration-2"></div>
 </div>
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
@@ -39,15 +40,15 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="tablaGrados" class="table table-bordered border-dark tabla-con-borde">
+                <table id="tablaGrados" class="table">
                     <thead class="bg-success text-white text-center">
                         <tr>
-                            <th scope="col" class="border border-dark">Código Grado</th>
-                            <th scope="col" class="border border-dark">Nombre Grado</th>
-                            <th scope="col" class="border border-dark">Sección</th>
-                            <th scope="col" class="border border-dark">Nivel</th>
-                            <th scope="col" class="border border-dark">Perfil ingreso</th>                         
-                            <th scope="col" class="border border-dark">Acciones</th>
+                            <th scope="col"  >Código Grado</th>
+                            <th scope="col"  >Nombre Grado</th>
+                            <th scope="col"  >Sección</th>
+                            <th scope="col"  >Nivel</th>
+                            <th scope="col"  >Perfil ingreso</th>                         
+                            <th scope="col"  >Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -163,13 +164,9 @@ let currentPage = 1;
 let totalPages = 1;
 let currentUrl = apiBaseUrl;
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};    
-const periodoId = getSelectedPeriodId();
 $(document).ready(function () {
     fetchCareers();
-    $(document).on('periodoSeleccionado', function(event, periodoId, periodoObj) {
-        console.log('Período cambiado:', periodoId);
-        cargarGrados(apiBaseUrl); 
-    });    
+    cargarGrados(apiBaseUrl); 
     $('#carreraEstudiantil').on('change', function() {
         const selectedCarreraId = $(this).val();
         console.log('Selected career ID:', selectedCarreraId);
@@ -209,10 +206,10 @@ $(document).ready(function () {
 
     // Cargar grados y configurar eventos
     cargarGrados(apiBaseUrl);
-    
+
     $('#btnBuscar').click(function () {
         const textoBusqueda = $('#inputBusqueda').val().trim();
-        const urlBusqueda = textoBusqueda ? `${apiBaseUrl}/busqueda/${encodeURIComponent(textoBusqueda)}` : apiBaseUrl;
+        const urlBusqueda = textoBusqueda ? `${apiBaseUrl}/busqueda/${encodeURIComponent(textoBusqueda)}/busqueda` : apiBaseUrl;
         cargarGrados(urlBusqueda, 1); // Siempre empezar en la página 1 al realizar una búsqueda
     });
 
@@ -238,7 +235,7 @@ $(document).ready(function () {
         $("#seccionGrado").val("");
         $("#nivelGrado").val("");
         $("#carreraEstudiantil").val("");
-        $("#titulo").text("Ingresar Grado Académico" + periodoId);
+        $("#titulo").text("Ingresar Grado Académico");
     });
     
     $(document).on("click", ".btn-editar", function () {

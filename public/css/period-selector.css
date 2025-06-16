@@ -1,106 +1,162 @@
-/* Period Selector Styles */
-.period-selector {
-    width: 90%;
-    margin: 10px auto;
-    position: relative;
-  }
-  
-  .period-dropdown {
-    position: relative;
-    width: 100%;
-  }
-  
-  .period-button {
-    background-color: #026d0c;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 10px 15px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  .period-button:hover {
-    background-color: #014d08;
-    transform: scale(1.02);
-  }
-  
-  .period-button .fa-calendar-alt {
-    font-size: 16px;
-    min-width: 20px;
-    text-align: center;
-  }
-  
-  .period-button .period-text {
-    flex-grow: 1;
-    font-weight: 500;
-  }
-  
-  .period-button .fa-chevron-down {
-    font-size: 12px;
-    transition: transform 0.3s;
-  }
-  
-  .period-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 100%;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    border-radius: 10px;
-    margin-top: 5px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .period-dropdown-content.show {
-    display: block;
-  }
-  
-  .period-item {
-    color: #333;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .period-item:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    body:not(.sidebar-collapsed) .period-selector {
-      width: 90%;
+    .period-filter-container {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
     }
-  
-    body.sidebar-collapsed .period-selector {
-      width: 50px;
+    
+    .period-filter-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        pointer-events: none;
     }
-  
-    body.sidebar-collapsed .period-button {
-      width: 50px;
-      justify-content: center;
-      padding: 12px 0;
+    
+    .period-filter-label {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
-  
-    body.sidebar-collapsed .period-button .period-text,
-    body.sidebar-collapsed .period-button .fa-chevron-down {
-      display: none;
+    
+    .period-filter-label i {
+        font-size: 16px;
+        color: #fff;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
-  
-    body.sidebar-collapsed .period-dropdown-content {
-      left: 60px;
-      top: 0;
+    
+    .custom-period-select {
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #2d3748;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
-  }
-  
+    
+    .custom-period-select:focus {
+        outline: none;
+        border-color: #fff;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+    }
+    
+    .custom-period-select option {
+        background: #fff;
+        color: #2d3748;
+        padding: 10px;
+    }
+    
+    .search-container {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+    }
+    
+    .search-input-group {
+        position: relative;
+    }
+    
+    .search-input-group .input-group-text {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        border: none;
+        color: white;
+        border-radius: 12px 0 0 12px;
+    }
+    
+    .search-input-group .form-control {
+        border: 2px solid #e9ecef;
+        border-left: none;
+        padding: 12px 16px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+    
+    .search-input-group .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    }
+    
+    .btn-search {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        padding: 12px 20px;
+        font-weight: 600;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-clear {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        border: none;
+        padding: 12px 16px;
+        font-weight: 600;
+        border-radius: 0 12px 12px 0;
+        transition: all 0.3s ease;
+        color: white;
+    }
+    
+    .btn-clear:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+        color: white;
+    }
+    
+    .filter-section-title {
+        color: #495057;
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .filter-section-title i {
+        color: #28a745;
+        font-size: 18px;
+    }
+    
+    .controls-wrapper {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+        .period-filter-container,
+        .search-container {
+            margin-bottom: 15px;
+        }
+        
+        .controls-wrapper {
+            padding: 20px 15px;
+        }
+    }

@@ -4,12 +4,13 @@
 @include('general.modal-eliminacion')
 <!-- Imagen -->
 <link href="/css/modal.css" rel="stylesheet">
-<div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
-    <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, white 100%);"></div>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 34px; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);"> 
-    <i class="bi bi-mortarboard"></i> Carreras
+<div class="header-section">
+    <div class="header-title">
+        <i class="bi bi-mortarboard"></i>
+        <span>Carreras</span>
     </div>
+    <div class="header-decoration-1"></div>
+    <div class="header-decoration-2"></div>
 </div>
 <!-- Tabla -->
 <div class="container-fluid mt-4">
@@ -41,15 +42,15 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="tablaCarreras" class="table table-bordered border-dark tabla-con-borde">
+                <table id="tablaCarreras" class="table">
                     <thead class="bg-success text-white text-center">
                         <tr>
-                            <th scope="col" class="border border-dark">Código Carrera</th>
-                            <th scope="col" class="border border-dark">Descripción Carrera</th>
-                            <th scope="col" class="border border-dark">Tipo Carrera</th>
-                            <th scope="col" class="border border-dark">Años Duración</th>
-                            <th scope="col" class="border border-dark">Perfil ingreso</th>                         
-                            <th scope="col" class="border border-dark">Acciones</th>
+                            <th scope="col"  >Código Carrera</th>
+                            <th scope="col"  >Descripción Carrera</th>
+                            <th scope="col"  >Tipo Carrera</th>
+                            <th scope="col"  >Años Duración</th>
+                            <th scope="col"  >Perfil ingreso</th>                         
+                            <th scope="col"  >Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">

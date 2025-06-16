@@ -3,13 +3,14 @@
 @section("contenido")
 <link href="/css/modal.css" rel="stylesheet">
 <!-- Imagen -->
-<div id="header-periodos" class="mb-4" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
-    <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, white 100%);"></div>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 34px; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);"> 
-    <i class="fas fa-calendar-alt"> </i>  Períodos Escolares
+<div class="header-section">
+    <div class="header-title">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Períodos Escolares</span>
     </div>
-</div> 
+    <div class="header-decoration-1"></div>
+    <div class="header-decoration-2"></div>
+</div>
 <!-- Tabla -->
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
@@ -23,7 +24,7 @@
                             <i class="bi bi-search text-muted"></i>
                         </span>
                         <input type="text" id="inputBusqueda" class="form-control border-start-0" 
-                               placeholder="Buscar por descripción de período..." aria-label="Buscar período">
+                               placeholder="Buscar por descripción de período" aria-label="Buscar período">
                         <button id="btnBuscar" class="btn btn-success px-3">
                             Buscar
                         </button>
@@ -41,7 +42,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="tablaPeriodos" class="table table-bordered tabla-con-borde">
+                <table id="tablaPeriodos" class="table">
                     <thead class="bg-success text-white text-center">
                         <tr>
                             <th scope="col">Código Período</th>

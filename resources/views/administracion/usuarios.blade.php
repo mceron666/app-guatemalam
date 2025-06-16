@@ -3,11 +3,13 @@
 @section("contenido")
 @include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
-<div id="header-usuarios" style="position: relative; width: 100%; height: 200px; overflow: hidden;">
-    <img src="/images/ruinas.jpg" alt="Header" style="width: 100%; height: 200px; object-fit: cover;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, white 100%);"></div>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 34px; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);"> 
-    <i class="fas fa-users"></i>    Usuarios
+<div class="header-section">
+    <div class="header-title">
+        <i class="fas fa-users"></i>
+        <span>Usuarios</span>
+    </div>
+    <div class="header-decoration-1"></div>
+    <div class="header-decoration-2"></div>
 </div>
 </div> 
 <div class="container-fluid mt-4">

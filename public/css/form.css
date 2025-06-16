@@ -1,128 +1,178 @@
-.form-control, .form-select, .input-group {
-    border: 1px solid #333 !important;
-    border-radius: 4px !important;
-    transition: all 0.3s ease;
+/* Títulos principales - cambiar de verde a azul oscuro del tema */
+:root {
+    --verde-oscuro: #0f172a;
+    --verde-principal: #1e293b;
+    --verde-medio: #334155;
+    --verde-claro: #475569;
+    --verde-acento: #22c55e;
+    --verde-hover: #16a34a;
+    --verde-sutil: rgba(34, 197, 94, 0.1);
+    --verde-border: rgba(34, 197, 94, 0.2);
+    
+    --blanco: #ffffff;
+    --blanco-suave: #fafafa;
+    --gris-muy-claro: #f8fafc;
+    --gris-claro: #f1f5f9;
+    --gris-medio: #e2e8f0;
+    --gris-texto: #64748b;
+    --gris-oscuro: #334155;
+    --negro: #0f172a;
+    
+    --sombra-sutil: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --sombra-media: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --sombra-verde: 0 4px 14px 0 rgba(34, 197, 94, 0.15);
+    
+    --border-sutil: #e2e8f0;
+    --border-medio: #cbd5e1;
+    --border-fuerte: #94a3b8;
+}
+.card-header h4,
+.card-header h5,
+h4#titulo,
+h5.text-success {
+    color: var(--gris-oscuro) !important;
 }
 
-/* Efecto hover para los campos */
-.form-control:hover, .form-select:hover {
-    border-color: #198754 !important;
-    box-shadow: 0 0 0 0.1rem rgba(25, 135, 84, 0.2);
+/* Títulos de secciones específicos */
+.card-header h5.mb-0.text-success {
+    color: var(--gris-oscuro) !important;
 }
 
-/* Efecto focus para los campos */
-.form-control:focus, .form-select:focus {
-    border-color: #198754 !important;
-    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25) !important;
+/* Íconos en títulos - cambiar de verde a azul oscuro */
+.card-header h4 i,
+.card-header h5 i,
+h4#titulo i,
+h5.text-success i {
+    color: var(--gris-oscuro) !important;
 }
 
-/* Estilo para las tarjetas */
-.card {
-    border: 1px solid #333 !important;
-    border-radius: 8px !important;
-    overflow: hidden;
+/* Íconos en labels - mantener verde para consistencia */
+.form-label i.text-success {
+    color: var(--verde-acento) !important;
 }
 
-/* Estilo para los encabezados de las tarjetas */
-.card-header {
-    border-bottom: 2px solid #198754 !important;
-    padding: 1rem 1.5rem !important;
+/* Íconos en botones - hacer blancos para mejor contraste */
+.btn i {
+    color: white !important;
 }
 
-/* Estilo para el cuerpo de las tarjetas */
-.card-body {
-    background-color: #f8f9fa !important;
-    padding: 1.5rem !important;
+/* Específicamente para botones de acción */
+.btn-success i,
+.btn-primary i,
+.btn-danger i,
+.btn-warning i {
+    color: white !important;
 }
 
-/* Estilo para los radio buttons */
-.form-check-input {
-    border: 1px solid #333 !important;
+/* Íconos en botones secundarios y outline */
+.btn-secondary i,
+.btn-outline-secondary i {
+    color: white !important;
 }
 
-.form-check-input:checked {
-    background-color: #198754 !important;
-    border-color: #198754 !important;
+.btn-outline-secondary:hover i {
+    color: var(--gris-oscuro) !important;
 }
 
-/* Estilo para los botones */
-.btn {
-    font-weight: 500 !important;
-    letter-spacing: 0.5px !important;
-    border-radius: 4px !important;
-    padding: 0.5rem 1.5rem !important;
-    transition: all 0.3s ease !important;
+/* Headers de cards - mantener el fondo pero cambiar texto */
+.card-header.bg-success {
+    background-color: var(--verde-acento) !important;
+    color: white !important;
 }
 
-.btn-success {
-    background-color: #198754 !important;
-    border: 2px solid #198754 !important;
+.card-header.bg-success h4,
+.card-header.bg-success h5 {
+    color: white !important;
 }
 
-.btn-success:hover {
-    background-color: #146c43 !important;
-    border-color: #146c43 !important;
-    box-shadow: 0 0 10px rgba(20, 108, 67, 0.5) !important;
+.card-header.bg-success i {
+    color: white !important;
 }
 
-.btn-secondary {
-    background-color: #6c757d !important;
-    border: 2px solid #6c757d !important;
+/* Headers de cards con fondo blanco - texto azul oscuro */
+.card-header.bg-white h5,
+.card-header.bg-white h4 {
+    color: var(--gris-oscuro) !important;
 }
 
-.btn-secondary:hover {
-    background-color: #5c636a !important;
-    border-color: #5c636a !important;
-    box-shadow: 0 0 10px rgba(92, 99, 106, 0.5) !important;
+.card-header.bg-white i {
+    color: var(--verde-acento) !important;
 }
 
-/* Estilo para los campos requeridos */
-.form-label .text-danger {
-    font-weight: bold;
-    font-size: 1.2em;
+/* Títulos en alertas y otros elementos */
+.alert h4,
+.alert h5,
+.alert h6 {
+    color: inherit !important;
 }
 
-/* Estilo para los campos deshabilitados */
-.form-control:disabled, .form-control[readonly],
-.form-select:disabled, .form-select[readonly] {
-    background-color: #e9ecef !important;
-    border: 1px solid #6c757d !important;
-    opacity: 0.8;
+/* Íconos en radio buttons y checkboxes labels */
+.form-check-label i {
+    color: var(--verde-acento) !important;
 }
 
-/* Estilo para el grupo de entrada con prefijo */
-.input-group-text {
-    border: 1px solid #333 !important;
-    border-right: none !important;
+/* Íconos en input groups */
+.input-group-text i {
+    color: var(--verde-acento) !important;
 }
 
-.input-group .form-control {
-    border-left: none !important;
+/* Títulos de error y estados especiales */
+.text-danger {
+    color: #ef4444 !important;
 }
 
-/* Estilo para las alertas */
-.alert {
-    border: 1px solid #333 !important;
-    border-radius: 6px !important;
+/* Asegurar que los íconos en botones hover mantengan color blanco */
+.btn:hover i,
+.btn:focus i,
+.btn:active i {
+    color: white !important;
 }
 
-/* Añadir separación entre secciones */
-.card.mb-4 {
-    margin-bottom: 2rem !important;
+/* Excepción para botones outline en hover */
+.btn-outline-secondary:hover i,
+.btn-outline-primary:hover i {
+    color: var(--gris-oscuro) !important;
 }
 
-/* Estilo para etiquetas */
-.form-label {
-    margin-bottom: 0.5rem !important;
-    color: #333 !important;
+/* Títulos en modales */
+.modal-header h4,
+.modal-header h5,
+.modal-title {
+    color: white !important;
 }
 
-/* Estilo para iconos */
-.bi {
-    margin-right: 0.5rem !important;
+.modal-header i {
+    color: white !important;
 }
 
-/* Añadir un poco de espacio entre filas */
-.row.mb-3 {
-    margin-bottom: 1.5rem !important;
+/* Títulos en el contenido del modal */
+.modal-body h4,
+.modal-body h5,
+.modal-body h6 {
+    color: var(--gris-oscuro) !important;
+}
+
+/* Asegurar consistencia en todos los elementos de formulario */
+.fw-bold,
+.fw-semibold {
+    color: var(--gris-oscuro) !important;
+}
+
+/* Títulos de páginas principales */
+.container h1,
+.container h2,
+.container h3 {
+    color: var(--gris-oscuro) !important;
+}
+
+/* Breadcrumbs y navegación */
+.breadcrumb-item,
+.nav-link {
+    color: var(--gris-texto) !important;
+}
+
+.breadcrumb-item.active,
+.nav-link.active {
+    color: var(--gris-oscuro) !important;
 }

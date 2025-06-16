@@ -3,13 +3,20 @@
 @section("contenido")
 @include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
-<div id="header-periodos" class="mb-4" style="background-color: #2e7d32; color: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
+<!-- <div id="header-periodos" class="mb-4" style="background-color: #2e7d32; color: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
     <div style="font-size: 36px; font-weight: bold;">
         <i class="fas fa-book"></i> Asignación de Materias
     </div>
-    <div style="font-size: 20px; margin-top: 10px;">
+
+</div> -->
+<div class="header-section">
+    <div class="header-title">
+        <i class="fas fa-book"></i>
+        <span>Administración grados</span>  
+    <div class="font-size: 20px; margin-top: 10px;">
         Período: <span id="header-periodo-codigo" style="font-weight: 500;">Cargando...</span> |
         Grado: <span id="header-grado-nombre" style="font-weight: 500;">Cargando...</span>
+    </div>                  
     </div>
 </div>
 
@@ -17,27 +24,6 @@
     <div class="card shadow w-100">
         <div class="card-body">
             <div class="row mb-4 align-items-center">
-                <!-- Filtros -->
-                <div class="col-md-8 col-lg-8">
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <label for="filtroMateria" class="form-label">Filtrar por Materia:</label>
-                            <select id="filtroMateria" class="form-select">
-                                <option value="">Todas las materias</option>
-                                <!-- Se llenará dinámicamente -->
-                            </select>
-                        </div>
-                        <div class="col-md-6 d-flex align-items-end">
-                            <button id="btnFiltrar" class="btn btn-success px-3 me-2">
-                                <i class="bi bi-filter me-1"></i>Filtrar
-                            </button>
-                            <button id="btnLimpiarFiltros" class="btn btn-outline-secondary">
-                                <i class="bi bi-x-circle me-1"></i>Limpiar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Botón de agregar -->
                 <div class="col-md-4 col-lg-4 text-md-end mt-3 mt-md-0">
                     <button type="button" class="btn btn-primary" id="agregar" data-bs-toggle="modal" data-bs-target="#asignacionModal">
@@ -46,14 +32,14 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="tablaAsignaciones" class="table table-bordered border-dark tabla-con-borde">
+                <table id="tablaAsignaciones" class="table">
                     <thead class="bg-success text-white text-center">
                         <tr>
-                            <th scope="col" class="border border-dark">Materia</th>
-                            <th scope="col" class="border border-dark">Nombre materia</th>                            
-                            <th scope="col" class="border border-dark">Maestro</th>
-                            <th scope="col" class="border border-dark">Fecha Asignación</th>
-                            <th scope="col" class="border border-dark">Acciones</th>
+                            <th scope="col" >Materia</th>
+                            <th scope="col" >Nombre materia</th>                            
+                            <th scope="col" >Maestro</th>
+                            <th scope="col" >Fecha Asignación</th>
+                            <th scope="col" >Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
