@@ -97,10 +97,10 @@
 
 .grade-section {
     background: white;
-    border-radius: 15px; /* Reducido de 20px a 15px */
-    padding: 15px; /* Reducido de 20px a 15px */
-    margin-bottom: 15px; /* Reducido de 20px a 15px */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Sombra más sutil */
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     border: 1px solid #e3e6f0;
     position: relative;
     overflow: hidden;
@@ -112,34 +112,34 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px; /* Reducido de 5px a 4px */
+    height: 4px;
     background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
 }
 
 .grade-header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px; /* Reducido de 15px a 10px */
-    padding-bottom: 8px; /* Reducido de 10px a 8px */
-    border-bottom: 1px solid #f1f3f4; /* Reducido de 2px a 1px */
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f3f4;
 }
 
 .grade-icon {
-    width: 40px; /* Reducido de 50px a 40px */
-    height: 40px; /* Reducido de 50px a 40px */
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 10px; /* Reducido de 12px a 10px */
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.1rem; /* Reducido de 1.3rem a 1.1rem */
-    margin-right: 12px; /* Reducido de 15px a 12px */
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3); /* Sombra más sutil */
+    font-size: 1.1rem;
+    margin-right: 12px;
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
 .grade-title {
-    font-size: 1.2rem; /* Reducido de 1.3rem a 1.2rem */
+    font-size: 1.2rem;
     font-weight: 700;
     color: #2d3748;
     margin: 0;
@@ -148,26 +148,31 @@
 
 .grade-subtitle {
     color: #718096;
-    font-size: 0.8rem; /* Reducido de 0.85rem a 0.8rem */
-    margin: 2px 0 0 0; /* Reducido de 3px a 2px */
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
     font-weight: 500;
 }
 
-.subject-card {
+/* MODIFICADO: Recuadro de materia no interactuable */
+.subject-box {
     background: white;
-    border-radius: 12px; /* Reducido de 15px a 12px */
-    padding: 12px; /* Reducido de 20px a 12px */
-    margin-bottom: 10px; /* Reducido de 15px a 10px */
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid transparent; /* Reducido de 2px a 1px */
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e3e6f0;
     position: relative;
     overflow: hidden;
-    height: 100%; /* Asegura altura uniforme */
-    min-height: 100px; /* Altura mínima para mantener proporción */
+    height: 100px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    /* Removido cursor pointer y efectos hover */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.subject-card::before {
+.subject-box::before {
     content: '';
     position: absolute;
     top: 0;
@@ -176,17 +181,6 @@
     bottom: 0;
     background: inherit;
     opacity: 0.1;
-    transition: opacity 0.3s ease;
-}
-
-.subject-card:hover {
-    transform: translateY(-3px); /* Reducido de -5px a -3px */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Sombra más sutil */
-    border-color: rgba(255,255,255,0.3);
-}
-
-.subject-card:hover::before {
-    opacity: 0.2;
 }
 
 .subject-content {
@@ -196,17 +190,60 @@
 }
 
 .subject-icon {
-    font-size: 1.8rem; /* Reducido de 2.5rem a 1.8rem */
-    margin-bottom: 8px; /* Reducido de 15px a 8px */
+    font-size: 1.8rem;
+    margin-bottom: 8px;
     opacity: 0.9;
 }
 
 .subject-name {
-    font-size: 0.95rem; /* Reducido de 1.1rem a 0.95rem */
+    font-size: 0.95rem;
     font-weight: 700;
     margin: 0;
     line-height: 1.3;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* NUEVO: Botón de evaluación */
+.evaluation-btn {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.evaluation-btn:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+}
+
+.evaluation-btn:active {
+    transform: translateY(0);
+}
+
+.evaluation-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.materia-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .loading-container {
@@ -275,14 +312,14 @@
 @media (min-width: 992px) {
     .materia-col {
         flex: 0 0 auto;
-        width: 25%; /* 4 por fila en pantallas grandes */
+        width: 25%;
     }
 }
 
 @media (min-width: 1200px) {
     .materia-col {
         flex: 0 0 auto;
-        width: 20%; /* 5 por fila en pantallas extra grandes */
+        width: 20%;
     }
 }
 
@@ -340,6 +377,7 @@
                                 <span id="periodoDescripcion"></span>
                             </small>
                         </div>
+                        <!-- Debug info -->
                     </div>
                     <div class="col-md-4">
                         <div class="stats-card">
@@ -380,6 +418,18 @@ const apiBaseUrl = 'http://localhost:3000';
 let periodoSeleccionado = null;
 let clasesData = [];
 
+// Función para actualizar debug info
+
+// Función para obtener el período seleccionado actual
+function obtenerPeriodoSeleccionado() {
+    const selectValue = $('#selectorPeriodo').val();
+    if (selectValue && selectValue !== '') {
+        periodoSeleccionado = parseInt(selectValue);
+    }
+    console.log('Período obtenido:', periodoSeleccionado);
+    return periodoSeleccionado;
+}
+
 $(document).ready(function() {
     cargarPeriodos();
 });
@@ -400,8 +450,13 @@ function cargarPeriodos() {
                 });
                 
                 // Seleccionar el primer período por defecto
-                periodoSeleccionado = response[0].ID_PERIODO_ESCOLAR;
-                selector.val(periodoSeleccionado);
+                const primerPeriodo = response[0].ID_PERIODO_ESCOLAR;
+                selector.val(primerPeriodo);
+                
+                // IMPORTANTE: Actualizar la variable global después de establecer el valor
+                periodoSeleccionado = parseInt(primerPeriodo);
+                
+                console.log('Período inicial seleccionado:', periodoSeleccionado);
                 actualizarInfoPeriodo();
                 cargarClasesAsignadas();
             } else {
@@ -415,11 +470,18 @@ function cargarPeriodos() {
     });
 }
 
+// Evento change del selector - MEJORADO
 $('#selectorPeriodo').on('change', function() {
-    periodoSeleccionado = $(this).val();
-    if (periodoSeleccionado) {
+    const nuevoValor = $(this).val();
+    console.log('Cambio detectado en selector:', nuevoValor);
+    
+    if (nuevoValor && nuevoValor !== '') {
+        periodoSeleccionado = parseInt(nuevoValor);
+        console.log('Nuevo período seleccionado:', periodoSeleccionado);
         actualizarInfoPeriodo();
         cargarClasesAsignadas();
+    } else {
+        periodoSeleccionado = null;
     }
 });
 
@@ -436,7 +498,11 @@ function actualizarInfoPeriodo() {
 }
 
 function cargarClasesAsignadas() {
+    // Asegurar que tenemos el período correcto
+    obtenerPeriodoSeleccionado();
+    
     if (!periodoSeleccionado || ID_PERSONA === 'null') {
+        console.log('No se puede cargar clases - Período:', periodoSeleccionado, 'ID_PERSONA:', ID_PERSONA);
         return;
     }
 
@@ -444,8 +510,10 @@ function cargarClasesAsignadas() {
     
     const datos = {
         ID_PERSONA: ID_PERSONA,
-        ID_PERIODO_ESCOLAR: parseInt(periodoSeleccionado)
+        ID_PERIODO_ESCOLAR: periodoSeleccionado
     };
+
+    console.log('Cargando clases con datos:', datos);
 
     $.ajax({
         url: `${apiBaseUrl}/materias-grado/maestros`,
@@ -520,30 +588,31 @@ function mostrarClases(clases) {
         grado.materias.forEach((materia, materiaIndex) => {
             const colorFondo = materia.color || '#6c757d';
             const colorTexto = materia.usaLetrasBlancas === 'Y' ? 'white' : 'black';
+            const periodoActual = obtenerPeriodoSeleccionado();
             
             const materiaHtml = `
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2 materia-col">
-                    <div class="subject-card" 
-                         style="background-color: ${colorFondo}; color: ${colorTexto}; animation-delay: ${(index * 0.1) + (materiaIndex * 0.05)}s;"
-                         data-id-materia-grado="${materia.idMateriaGrado}">
-                        <div class="subject-content">
-                            <div class="subject-icon">
-                                <i class="bi bi-book-fill"></i>
+                    <div class="materia-container">
+                        <!-- Recuadro no interactuable -->
+                        <div class="subject-box" 
+                             style="background-color: ${colorFondo}; color: ${colorTexto}; animation-delay: ${(index * 0.1) + (materiaIndex * 0.05)}s;">
+                            <div class="subject-content">
+                                <div class="subject-icon">
+                                    <i class="bi bi-book-fill"></i>
+                                </div>
+                                <h5 class="subject-name">${materia.nombreMateria}</h5>
                             </div>
-                            <h5 class="subject-name">${materia.nombreMateria}</h5>
                         </div>
+                        <a 
+                            href="/maestro/evaluaciones/${periodoActual}/${grado.idGrado}/${materia.idMateria}"
+                            class="bevaluation-btn">
+                            <i class="bi bi-clipboard-check"></i> Evaluación
+                        </a>                            
                     </div>
                 </div>
             `;
             materiasContainer.append(materiaHtml);
         });
-    });
-    
-    // Agregar event listeners para los clicks
-    $('.subject-card').on('click', function() {
-        const idMateriaGrado = $(this).data('id-materia-grado');
-        // Redirigir a la ruta predefinida con el ID como parámetro
-        window.location.href = `/materia-detalle/${idMateriaGrado}`;
     });
 }
 

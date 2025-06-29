@@ -178,9 +178,8 @@ function cargarGrados(url, page = 1) {
                     
                     // Construir URL de materias con período seleccionado
                     // CORREGIDO: El orden debe ser grado primero, luego período
-                    const materiasUrl = selectedPeriodoId 
-                        ? `/administracion-grados/materias/${selectedPeriodoId}/${grado.ID_GRADO}`
-                        : '#';
+                    const materiasUrl = selectedPeriodoId ? `/administracion-grados/materias/${selectedPeriodoId}/${grado.ID_GRADO}`: '#';
+                    const alumnosUrl  = selectedPeriodoId ? `/administracion-grados/alumnos/${selectedPeriodoId}/${grado.ID_GRADO}`: '#';
                     
                     // Mejorar el estado del botón
                     const materiasButtonClass = selectedPeriodoId 
@@ -209,6 +208,11 @@ function cargarGrados(url, page = 1) {
                                         class="${materiasButtonClass}">
                                         <i class="bi bi-book"></i> Materias
                                     </a>
+                                    <a 
+                                        href="${alumnosUrl}"
+                                        class="btn btn-primary btn-sm me-2">
+                                        <i class="bi bi-book"></i> Alumnos
+                                    </a>                                    
                                     <a 
                                         href="/administracion-grados/calendario/${grado.CODIGO_GRADO}" 
                                         class="btn btn-secondary btn-sm">

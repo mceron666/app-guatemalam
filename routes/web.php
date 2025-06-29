@@ -84,6 +84,12 @@ Route::middleware(['auth.custom'])->group(function () {
         }
         return view('administracion.grados');
     });
+    Route::get('/precios', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('administracion.precios')]);
+        }
+        return view('administracion.precios');
+    });    
     Route::get('/administracion-grados', function () {
         if (request()->ajax()) {
             return view('content')->with(['contenido' => view('administracion.administracion-grados')]);
@@ -104,6 +110,34 @@ Route::middleware(['auth.custom'])->group(function () {
             'otroId' => $otroId
         ]);
     });
+    Route::get('/administracion-grados/calendario/{id}/{otroId}', function ($id, $otroId) {
+        if (request()->ajax()) {
+            return view('content')->with([
+                'contenido' => view('administracion.administracion-grados-views.calendario', [
+                    'id' => $id,
+                    'otroId' => $otroId
+                ])
+            ]);
+        }
+        return view('administracion.administracion-grados-views.calendario', [
+            'id' => $id,
+            'otroId' => $otroId
+        ]);
+    });    
+    Route::get('/administracion-grados/alumnos/{id}/{otroId}', function ($id, $otroId) {
+        if (request()->ajax()) {
+            return view('content')->with([
+                'contenido' => view('administracion.administracion-grados-views.alumnos', [
+                    'id' => $id,
+                    'otroId' => $otroId
+                ])
+            ]);
+        }
+        return view('administracion.administracion-grados-views.alumnos', [
+            'id' => $id,
+            'otroId' => $otroId
+        ]);
+    });    
     //Maestros
     Route::get('maestro/', function () {
         if (request()->ajax()) {
@@ -116,5 +150,43 @@ Route::middleware(['auth.custom'])->group(function () {
             return view('content')->with(['contenido' => view('maestros.mis-clases')]);
         }
         return view('maestros.mis-clases');
-    });        
+    });       
+    Route::get('maestro/evaluaciones/{periodo}/{grado}/{materia}', function ($periodo, $grado, $materia) {
+        if (request()->ajax()) {
+            return view('content')->with([
+                'contenido' => view('maestros.evaluaciones', [
+                    'periodo' => $periodo,
+                    'grado' => $grado,
+                    'materia' => $materia
+                ])
+            ]);
+        }
+        return view('maestros.evaluaciones', [
+            'periodo' => $periodo,
+            'grado' => $grado,
+            'materia' => $materia
+        ]);
+    });   
+Route::get('maestro/evaluaciones/{periodo}/{grado}/{materia}/{bloque}/{orden}', function ($periodo, $grado, $materia, $bloque, $orden) {
+    if (request()->ajax()) {
+        return view('content')->with([
+            'contenido' => view('maestros.puntuacion', [
+                'periodo' => $periodo,
+                'grado' => $grado,
+                'materia' => $materia,
+                'bloque' => $bloque,
+                'orden' => $orden
+            ])
+        ]);
+    }
+
+    return view('maestros.puntuacion', [
+        'periodo' => $periodo,
+        'grado' => $grado,
+        'materia' => $materia,
+        'bloque' => $bloque,
+        'orden' => $orden
+    ]);
+});
+         
 });

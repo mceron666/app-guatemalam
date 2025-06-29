@@ -55,7 +55,10 @@
         <!-- Period Selector -->
         <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
             <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
-        </button>                
+        </button>      
+        <button id="administracion-precios" onclick="selectNav('administracion-precios'); loadPage('/precios')">
+            <i class="fa-solid fa-dollar-sign"></i> <span>Administrar precios</span>
+        </button>                       
     </div>
 </div>
 
