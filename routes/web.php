@@ -10,6 +10,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Middleware para verificar si el usuario está autenticado
 Route::middleware(['auth.custom'])->group(function () {
+    Route::get('/modo', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('general.modo')]);
+        }
+        return view('general.modo');
+    });             
     //Administración
     Route::get('/', function () {
         if (request()->ajax()) {
@@ -95,7 +101,13 @@ Route::middleware(['auth.custom'])->group(function () {
             return view('content')->with(['contenido' => view('administracion.administracion-grados')]);
         }
         return view('administracion.administracion-grados');
-    });    
+    });  
+    Route::get('/administracion-pagos', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('administracion.administracion-pagos')]);
+        }
+        return view('administracion.administracion-pagos');
+    });         
     Route::get('/administracion-grados/materias/{id}/{otroId}', function ($id, $otroId) {
         if (request()->ajax()) {
             return view('content')->with([
@@ -188,5 +200,23 @@ Route::get('maestro/evaluaciones/{periodo}/{grado}/{materia}/{bloque}/{orden}', 
         'orden' => $orden
     ]);
 });
-         
+//Alumnos
+Route::get('alumno/', function () {
+    if (request()->ajax()) {
+        return view('content')->with(['contenido' => view('alumnos.index')]);
+    }
+    return view('alumnos.index');
+});    
+Route::get('alumno/notas', function () {
+    if (request()->ajax()) {
+        return view('content')->with(['contenido' => view('alumnos.notas')]);
+    }
+    return view('alumnos.notas');
+});  
+Route::get('alumno/calendario', function () {
+    if (request()->ajax()) {
+        return view('content')->with(['contenido' => view('alumnos.calendario')]);
+    }
+    return view('alumnos.calendario ');
+});           
 });

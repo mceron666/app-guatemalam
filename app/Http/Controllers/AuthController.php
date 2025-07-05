@@ -66,11 +66,18 @@ class AuthController extends Controller
             {
                 return redirect('maestro/');
             } 
-            else
+            elseif ($rol == 'A')
+            {
+                return redirect('alumno/');                
+            }
+            elseif ($rol == 'G')
             {
                 return redirect('/');                
-            }
-
+            }            
+            elseif ($rol == 'P')
+            {
+                return redirect('/modo');                
+            }            
         } catch (\Exception $e) {
             return back()->withErrors(['auth' => 'Error al conectar con el servidor: ' . $e->getMessage()])->withInput($request->except('CLAVE_PERFIL'));
         }

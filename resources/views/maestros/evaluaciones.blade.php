@@ -66,10 +66,6 @@
 <div id="headerSectionDynamic" class="header-section-dynamic" style="background-color: #6c757d;">
     <div class="container">
         <div class="header-content-dynamic">
-            <div class="header-title-dynamic">
-                <i class="fas fa-clipboard-check header-icon-dynamic"></i>
-                Administración de Evaluaciones
-            </div>
             <div id="headerSubjectName" class="header-subject-dynamic">
                 Cargando materia...
             </div>
@@ -442,35 +438,41 @@ function cargarEvaluaciones(page = 1) {
                     const bloque = bloquesData.find(b => b.ID_BLOQUE_ESCOLAR == evaluacion.ID_BLOQUE_ESCOLAR);
                     const nombreBloque = bloque ? bloque.NOMBRE_BLOQUE : 'N/A';
                     
-                    const fila = `
-                        <tr>
-                            <td><span class="badge bg-primary">${evaluacion.ORDEN_EVALUACION}</span></td>
-                            <td>${evaluacion.DESCRIPCION_EVALUACION}</td>
-                            <td><span class="badge bg-success">${evaluacion.PUNTEO_ESTIPULADO} pts</span></td>
-                            <td>${nombreBloque}</td>
-                            <td>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <button 
-                                        class="btn btn-warning btn-sm me-2 btn-editar" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#evaluacionModal"
-                                        data-orden="${evaluacion.ORDEN_EVALUACION}"
-                                        data-descripcion="${evaluacion.DESCRIPCION_EVALUACION}"
-                                        data-punteo="${evaluacion.PUNTEO_ESTIPULADO}"
-                                        data-bloque="${evaluacion.ID_BLOQUE_ESCOLAR}">
-                                        <i class="bi bi-pencil-square"></i> Modificar
-                                    </button>
-                                    <button data-bs-toggle="modal" 
-                                            data-bs-target="#deleteModal" 
-                                            class="btn btn-danger btn-sm btn-eliminar" 
-                                            data-orden="${evaluacion.ORDEN_EVALUACION}" 
-                                            data-descripcion="${evaluacion.DESCRIPCION_EVALUACION}">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+const fila = `
+<tr>
+    <td><span class="badge bg-primary">${evaluacion.ORDEN_EVALUACION}</span></td>
+    <td>${evaluacion.DESCRIPCION_EVALUACION}</td>
+    <td><span class="badge bg-success">${evaluacion.PUNTEO_ESTIPULADO} pts</span></td>
+    <td>${nombreBloque}</td>
+    <td>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a 
+                href="/maestro/evaluaciones/${urlParams.periodo}/${urlParams.grado}/${urlParams.materia}/${bloqueSeleccionado}/${evaluacion.ORDEN_EVALUACION}" 
+                class="btn btn-secondary btn-sm">
+                <i class="bi bi-pencil"></i> Calificar
+            </a>
+            <button 
+                class="btn btn-warning btn-sm btn-editar" 
+                data-bs-toggle="modal" 
+                data-bs-target="#evaluacionModal"
+                data-orden="${evaluacion.ORDEN_EVALUACION}"
+                data-descripcion="${evaluacion.DESCRIPCION_EVALUACION}"
+                data-punteo="${evaluacion.PUNTEO_ESTIPULADO}"
+                data-bloque="${evaluacion.ID_BLOQUE_ESCOLAR}">
+                <i class="bi bi-pencil-square"></i> Modificar
+            </button>
+            <button 
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteModal" 
+                class="btn btn-danger btn-sm btn-eliminar" 
+                data-orden="${evaluacion.ORDEN_EVALUACION}" 
+                data-descripcion="${evaluacion.DESCRIPCION_EVALUACION}">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                     tbody.append(fila);
                 });
                 

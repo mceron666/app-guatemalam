@@ -29,18 +29,7 @@
     <!-- Scrollable menu section -->
     <div id="navbar-menu">
         <!-- Title for the menu -->
-        <div class="period-selector-container">
-            <label class="period-selector-label" for="period-select">
-                <i class="fas fa-calendar-check"></i> Período Activo
-            </label>
-            <div class="period-selector">
-                <select id="period-select" onchange="onPeriodChange()">
-                    <option value="">Cargando períodos...</option>
-                </select>
-            </div>
-        </div>         
         <h6 class="navbar-section-title">Administración</h6>
-
         <button id="inicio" onclick="selectNav('inicio'); loadPage('/maestro/')">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>
@@ -49,7 +38,6 @@
         </button>         
     </div>
 </div>
-
     
     <!-- Horizontal Top Navbar -->
     <div id="topnav">
@@ -131,169 +119,7 @@
     <script>
     const anioActual = "{{ session('usuario.ANIO_ACTUAL', '') }}";
     
-    // Global variable to store periods
-    let schoolPeriods = [];
-    
-    // Function to get the selected period ID (can be called from other Blade files)
-    function getSelectedPeriodId() {
-        const selectedValue = document.getElementById('period-select').value;
-        return selectedValue || localStorage.getItem('selectedPeriodId') || null;
-    }
-    
-    // Function to get the selected period object
-    function getSelectedPeriod() {
-        const selectedId = getSelectedPeriodId();
-        if (!selectedId) return null;
-        
-        return schoolPeriods.find(period => period.ID_PERIODO_ESCOLAR == selectedId) || null;
-    }
-    
-    // Function to set the selected period programmatically
-    function setSelectedPeriod(periodId) {
-        const select = document.getElementById('period-select');
-        select.value = periodId;
-        localStorage.setItem('selectedPeriodId', periodId);
-        
-        // Trigger change event
-        const event = new Event('change');
-        select.dispatchEvent(event);
-    }
-    
-    // Function to load school periods from API
-    function loadSchoolPeriods() {
-        axios.get('http://localhost:3000/periodos/seleccion')
-            .then(response => {
-                schoolPeriods = response.data;
-                populatePeriodSelector(schoolPeriods);
-            })
-            .catch(error => {
-                console.error('Error al cargar períodos escolares:', error);
-                const select = document.getElementById('period-select');
-                select.innerHTML = '<option value="">Error al cargar períodos</option>';
-            });
-    }
-    
-    // Function to populate the period selector
-    function populatePeriodSelector(periods) {
-        const select = document.getElementById('period-select');
-        select.innerHTML = '<option value="">Seleccionar período...</option>';
-        
-        periods.forEach(period => {
-            const option = document.createElement('option');
-            option.value = period.ID_PERIODO_ESCOLAR;
-            option.textContent = period.DESCRIPCION_PERIODO;
-            select.appendChild(option);
-        });
-        
-        // Auto-select the first period if no period is saved
-        const savedPeriodId = localStorage.getItem('selectedPeriodId');
-        if (savedPeriodId && periods.find(p => p.ID_PERIODO_ESCOLAR == savedPeriodId)) {
-            select.value = savedPeriodId;
-        } else if (periods.length > 0) {
-            // Select the first period by default
-            const firstPeriod = periods[0];
-            select.value = firstPeriod.ID_PERIODO_ESCOLAR;
-            localStorage.setItem('selectedPeriodId', firstPeriod.ID_PERIODO_ESCOLAR);
-            
-            // Trigger the change event for the auto-selected period
-            setTimeout(() => {
-                $(document).trigger('periodoSeleccionado', [firstPeriod.ID_PERIODO_ESCOLAR, firstPeriod]);
-            }, 100);
-        }
-    }
-    
-    // Function called when period selection changes
-    function onPeriodChange() {
-        const selectedId = getSelectedPeriodId();
-        if (selectedId) {
-            localStorage.setItem('selectedPeriodId', selectedId);
-            $(document).trigger('periodoSeleccionado', [selectedId, getSelectedPeriod()]);
-        } else {
-            localStorage.removeItem('selectedPeriodId');
-        }
-    }
-    
-    function loadPage(route) {
-        axios.get(route, { 
-            headers: { 
-                "X-Requested-With": "XMLHttpRequest" 
-            } 
-        })
-        .then(response => {
-            document.getElementById('content').innerHTML = response.data;
-            window.history.pushState({}, '', route);
-            
-            // Execute any scripts in the loaded content
-            const scripts = document.getElementById('content').getElementsByTagName('script');
-            for (let i = 0; i < scripts.length; i++) {
-                eval(scripts[i].innerText);
-            }
-            
-            // Update page title in top navbar
-            updatePageTitle(route);
-            
-            // Trigger a custom event to notify that content has been loaded
-            document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { route } }));
-        })
-        .catch(error => {
-            console.error('Error al cargar la página:', error);
-        });
-    }
-
-    function selectNav(id) {
-        document.querySelectorAll('#navbar button').forEach(btn => btn.classList.remove('selected'));
-        document.getElementById(id).classList.add('selected');
-        
-        // Scroll the selected item into view
-        const selectedButton = document.getElementById(id);
-        selectedButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-    
-    function updatePageTitle(route) {
-    let title;
-
-    // Evaluación exacta primero
-    switch (route) {
-        case '/':
-            title = 'Inicio';
-            break;
-        case '/materias':
-            title = 'Materias Escolares';
-            break;
-        case '/periodos':
-            title = 'Períodos Escolares';
-            break;
-        case '/carreras':
-            title = 'Carreras Estudiantiles';
-            break;
-        case '/usuarios':
-            title = 'Usuarios';
-            break;
-        case '/grados':
-            title = 'Grados y Carreras';
-            break;
-        case '/administracion-grados':
-            title = 'Administración de grados ' + anioActual;
-            break;
-        case '/agregar-usuario':
-            title = 'Usuarios - Agregar';
-            break;
-        case '/agregar-periodo':
-            title = 'Períodos - Agregar';
-            break;
-        default:
-            // Evaluación parcial para rutas con parámetros
-            if (route.includes('/modificar-usuario')) {
-                title = 'Usuarios - Modificar';
-            } else if (route.includes('/modificar-periodo')) {
-                title = 'Períodos - Modificar';
-            } else {
-                title = 'Inicio'; // Fallback
-            }
-    }
-    document.getElementById('current-page-title').textContent = title;
-}
-
+    // Función para actualizar indicadores de scroll
     function updateScrollIndicators() {
         const menu = document.getElementById('navbar-menu');
         const scrollUp = document.getElementById('scroll-up');
@@ -314,23 +140,113 @@
         }
     }
 
+    function updatePageTitle(route) {
+        let title;
+        // Evaluación exacta primero
+        switch (route) {
+            case '/maestro/':
+            case '/maestro':
+                title = 'Inicio';
+                break;
+            case '/maestro/mis-clases':
+                title = 'Mis Clases';
+                break;
+            default:
+                // Evaluación parcial para rutas con parámetros
+                if (route.includes('/maestro/mis-clases')) {
+                    title = 'Mis Clases';
+                } else if (route.includes('/maestro/')) {
+                    title = 'Maestro';
+                } else {
+                    title = 'Inicio'; // Fallback
+                }
+        }
+        document.getElementById('current-page-title').textContent = title;
+        
+        // Actualizar selección del menú basado en la ruta
+        updateMenuSelection(route);
+    }
+
+    function updateMenuSelection(route) {
+        // Limpiar todas las selecciones actuales
+        document.querySelectorAll('#navbar button').forEach(btn => btn.classList.remove('selected'));
+        
+        let selectedMenuId = null;
+        
+        // Determinar qué elemento del menú debe estar seleccionado basado en la ruta
+        if (route === '/maestro/' || route === '/maestro') {
+            selectedMenuId = 'inicio';
+        } else if (route === '/maestro/mis-clases' || route.includes('/maestro/mis-clases' )
+        || route.includes('evaluaciones' )) {
+            selectedMenuId = 'clases';
+        }
+        
+        // Aplicar la selección si se encontró una coincidencia
+        if (selectedMenuId) {
+            const menuElement = document.getElementById(selectedMenuId);
+            if (menuElement) {
+                menuElement.classList.add('selected');
+                
+                // Scroll the selected item into view
+                menuElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    }
+
+    // Modificar la función selectNav para que solo maneje el scroll, no la selección
+    function selectNav(id) {
+        // Solo hacer scroll al elemento, la selección se maneja automáticamente por la ruta
+        const selectedButton = document.getElementById(id);
+        if (selectedButton) {
+            selectedButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // Modificar la función loadPage para que actualice la selección automáticamente
+    function loadPage(route) {
+        axios.get(route, { 
+            headers: { 
+                "X-Requested-With": "XMLHttpRequest" 
+            } 
+        })
+        .then(response => {
+            document.getElementById('content').innerHTML = response.data;
+            window.history.pushState({}, '', route);
+            
+            // Execute any scripts in the loaded content
+            const scripts = document.getElementById('content').getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+            
+            // Update page title and menu selection based on route
+            updatePageTitle(route);
+            
+            // Trigger a custom event to notify that content has been loaded
+            document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { route } }));
+        })
+        .catch(error => {
+            console.error('Error al cargar la página:', error);
+        });
+    }
+
+    // Modificar el event listener del popstate para actualizar la selección
     window.onpopstate = () => {
         const currentPath = window.location.pathname;
         loadPage(currentPath);
     };
 
+    // Modificar la inicialización para establecer la selección correcta al cargar
     document.addEventListener('DOMContentLoaded', () => {
-        // Load school periods when page loads
-        loadSchoolPeriods();
-        
-        loadPage(window.location.pathname);
+        // Cargar la página actual y establecer la selección correcta
+        const currentPath = window.location.pathname;
+        loadPage(currentPath);
         
         // Toggle sidebar functionality
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             document.body.classList.toggle('sidebar-collapsed');
         });
         
-        // Navbar scroll functionality
         const menu = document.getElementById('navbar-menu');
         const scrollUp = document.getElementById('scroll-up');
         const scrollDown = document.getElementById('scroll-down');
@@ -351,19 +267,36 @@
             menu.scrollBy({ top: 100, behavior: 'smooth' });
         });
         
-        // User dropdown functionality
+        // User dropdown functionality - CORREGIDO
         const userDropdown = document.getElementById('userDropdown');
         const userMenu = document.getElementById('userMenu');
         
         userDropdown.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
             userMenu.classList.toggle('show');
         });
         
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            userMenu.classList.remove('show');
+        // Prevenir que el menú se cierre al hacer clic dentro de él
+        userMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!userDropdown.contains(e.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+        
+        // Manejar el envío del formulario de logout
+        const logoutForm = userMenu.querySelector('form');
+        if (logoutForm) {
+            logoutForm.addEventListener('submit', function(e) {
+                // Permitir que el formulario se envíe normalmente
+                userMenu.classList.remove('show');
+            });
+        }
     });
     </script>
 </body>

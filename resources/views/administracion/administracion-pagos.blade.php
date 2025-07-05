@@ -1,29 +1,32 @@
 @extends("layouts.header")
 
 @section("contenido")
+
 <link href="/css/modal.css" rel="stylesheet">
+
 <div class="header-section">
     <div class="header-title">
-        <i class="fas fa-book"></i>
-        <span>Administración grados</span>
+        <i class="fa fa-credit-card-alt"></i>
+        <span>Administrar pagos</span>
     </div>
     <div class="header-decoration-1"></div>
     <div class="header-decoration-2"></div>
 </div>
+
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
         <div class="card-body">
             <div class="row mb-4 align-items-center">
-                <!-- Barra de búsqueda y filtro de período -->
+                <!-- Barra de búsqueda y filtros -->
                 <div class="col-md-12 col-lg-12">
                     <div class="row g-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text bg-light">
                                     <i class="bi bi-search text-muted"></i>
                                 </span>
                                 <input type="text" id="inputBusqueda" class="form-control border-start-0" 
-                                       placeholder="Buscar por nombre de grado..." aria-label="Buscar grado">
+                                       placeholder="Buscar por nombre completo..." aria-label="Buscar alumno">
                                 <button id="btnBuscar" class="btn btn-success px-3">
                                     Buscar
                                 </button>
@@ -32,14 +35,26 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text bg-light">
-                                    <i class="bi bi-calendar-alt text-muted"></i>
+                                    <i class="bi bi-book text-muted"></i>
                                 </span>
-                                <select id="filtroPeriodo" class="form-select">
-                                    <option value="">Seleccione un período...</option>
+                                <select id="filtroGrado" class="form-select">
+                                    <option value="">Todos los grados</option>
                                     <!-- Se llenará dinámicamente -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-cash text-muted"></i>
+                                </span>
+                                <select id="filtroSolvencia" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="Y">Solvente</option>
+                                    <option value="N">Insolvente</option>
                                 </select>
                             </div>
                         </div>
@@ -47,14 +62,15 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="tablaGrados" class="table">
+                <table id="tablaAlumnos" class="table">
                     <thead class="bg-success text-white text-center">
                         <tr>
-                            <th scope="col">Código Grado</th>
-                            <th scope="col">Nombre Grado</th>
+                            <th scope="col">Perfil</th>
+                            <th scope="col">Nombre Completo</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Grado</th>
                             <th scope="col">Sección</th>
-                            <th scope="col">Nivel</th>
-                            <th scope="col">Perfil ingreso</th>                         
+                            <th scope="col">Diferencia Solvencia</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -69,154 +85,151 @@
         </div>
     </div>
 </div>
+
 <script>
-const apiBaseUrl = 'http://localhost:3000/grados';
+const apiBaseUrl = 'http://localhost:3000/alumnos-grado/lista';
+const gradosApiUrl = 'http://localhost:3000/grados';
 let currentPage = 1;
 let totalPages = 1;
-let currentUrl = apiBaseUrl;
-let selectedPeriodoId = null; // Variable para almacenar el período seleccionado
+let selectedGradoId = null;
+let selectedSolvencia = null;
+let currentSearchTerm = '';
+
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};    
 
 $(document).ready(function () {
-    // Cargar períodos y grados al inicializar
-    cargarPeriodos();
-    cargarGrados(apiBaseUrl);
+    // Cargar grados y alumnos al inicializar
+    cargarGrados();
+    cargarAlumnos();
     
-    // Event listener para el cambio de período
-    $('#filtroPeriodo').on('change', function() {
-        selectedPeriodoId = $(this).val();
-        console.log('Período seleccionado:', selectedPeriodoId);
-        
-        // IMPORTANTE: Recargar la tabla para actualizar los enlaces
-        cargarGrados(currentUrl, currentPage);
+    // Event listeners para los filtros
+    $('#filtroGrado').on('change', function() {
+        selectedGradoId = $(this).val();
+        console.log('Grado seleccionado:', selectedGradoId);
+        cargarAlumnos(1);
+    });
+
+    $('#filtroSolvencia').on('change', function() {
+        selectedSolvencia = $(this).val();
+        console.log('Solvencia seleccionada:', selectedSolvencia);
+        cargarAlumnos(1);
     });
 });
 
-// Función para cargar períodos
-function cargarPeriodos() {
+// Función para cargar grados
+function cargarGrados() {
     $.ajax({
-        url: 'http://localhost:3000/periodos/seleccion',
+        url: gradosApiUrl,
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
-            populatePeriodosDropdown(data);
+        success: function(response) {
+            populateGradosDropdown(response.data);
         },
         error: function(xhr, status, error) {
-            console.error('Error al cargar períodos:', error);
+            console.error('Error al cargar grados:', error);
         }
     });
 }
 
-// Función para llenar el dropdown de períodos
-function populatePeriodosDropdown(periodos) {
-    const dropdown = $('#filtroPeriodo');
+// Función para llenar el dropdown de grados
+function populateGradosDropdown(grados) {
+    const dropdown = $('#filtroGrado');
     
     // Limpiar opciones existentes excepto la primera
     dropdown.find('option:not(:first)').remove();
     
     // Agregar nuevas opciones
-    $.each(periodos, function(index, periodo) {
+    $.each(grados, function(index, grado) {
         dropdown.append($('<option>', {
-            value: periodo.ID_PERIODO_ESCOLAR,
-            text: periodo.DESCRIPCION_PERIODO
+            value: grado.ID_GRADO,
+            text: grado.NOMBRE_GRADO
         }));
     });
-    
-    // Seleccionar automáticamente el primer período si hay períodos disponibles
-    if (periodos.length > 0) {
-        selectedPeriodoId = periodos[0].ID_PERIODO_ESCOLAR;
-        dropdown.val(selectedPeriodoId);
-        
-        // Cargar la tabla con el período seleccionado por defecto
-        cargarGrados(apiBaseUrl, 1);
-    }
 }
 
-// Función para cargar grados
-function cargarGrados(url, page = 1) {
-    let urlFinal = url;
-    
-    if (urlFinal.includes('?')) {
-        urlFinal += `&page=${page}&limit=10`;
-    } else {
-        urlFinal += `?page=${page}&limit=10`;
-    }
-    
+// Función para cargar alumnos
+function cargarAlumnos(page = 1) {
+    const requestData = {
+        ID_GRADO: selectedGradoId || null,
+        NOMBRE_COMPLETO: currentSearchTerm || "",
+        CORREO_PERSONA: "",
+        SOLVENCIA: selectedSolvencia || ""
+    };
+
     $.ajax({
-        url: urlFinal,
-        type: 'GET',
+        url: apiBaseUrl,
+        type: 'POST',
         dataType: 'json',
-        cache: false, 
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+        cache: false,
         success: function (response) {
             const data = response.data;
             const pagination = response.pagination;
             currentPage = pagination.currentPage;
             totalPages = pagination.totalPages;
-            currentUrl = url; 
-            const tbody = $('#tablaGrados tbody');
+            
+            const tbody = $('#tablaAlumnos tbody');
             tbody.empty(); 
             
             if (data.length === 0) {
-                tbody.append('<tr><td colspan="6" class="text-center">No se encontraron grados</td></tr>');
+                tbody.append('<tr><td colspan="7" class="text-center">No se encontraron alumnos</td></tr>');
             } else {
-                data.forEach(grado => {
-                    let rolClase = '';
-                    switch (grado.SECCION_GRADO) {
+                data.forEach(alumno => {
+                    // Determinar el color de la diferencia de solvencia
+                    let solvenciaClass = '';
+                    let solvenciaStyle = '';
+                    if (alumno.DIFERENCIA_SOLVENCIA < 0) {
+                        solvenciaClass = 'text-danger fw-bold';
+                        solvenciaStyle = 'color: red !important;';
+                    } else {
+                        solvenciaClass = 'text-success fw-bold';
+                        solvenciaStyle = 'color: green !important;';
+                    }
+                    
+                    // Formatear la diferencia de solvencia como moneda
+                    const diferenciaSolvencia = new Intl.NumberFormat('es-GT', {
+                        style: 'currency',
+                        currency: 'GTQ'
+                    }).format(alumno.DIFERENCIA_SOLVENCIA);
+                    
+                    // Determinar la clase del badge para la sección
+                    let seccionClase = '';
+                    switch (alumno.SECCION_GRADO) {
                         case 'A':
-                            rolClase = 'badge bg-primary';
+                            seccionClase = 'badge bg-primary';
                             break;
                         case 'B':
-                            rolClase = 'badge bg-danger';
+                            seccionClase = 'badge bg-danger';
                             break;
                         case 'C':
-                            rolClase = 'badge bg-success';
+                            seccionClase = 'badge bg-success';
                             break;
                         default:
-                            rolClase = 'badge bg-secondary';
+                            seccionClase = 'badge bg-secondary';
                             break;
                     }
                     
-                    // Construir URL de materias con período seleccionado
-                    // CORREGIDO: El orden debe ser grado primero, luego período
-                    const materiasUrl = selectedPeriodoId ? `/administracion-grados/materias/${selectedPeriodoId}/${grado.ID_GRADO}`: '#';
-                    const alumnosUrl  = selectedPeriodoId ? `/administracion-grados/alumnos/${selectedPeriodoId}/${grado.ID_GRADO}`: '#';
-                    
-                    // Mejorar el estado del botón
-                    const materiasButtonClass = selectedPeriodoId 
-                        ? 'btn btn-primary btn-sm me-2' 
-                        : 'btn btn-outline-secondary btn-sm me-2 disabled';
-                    
-                    const materiasAttributes = selectedPeriodoId 
-                        ? `href="${materiasUrl}"` 
-                        : 'href="#" onclick="return false;" title="Seleccione un período primero"';
-                    
                     const fila = `
                         <tr>
-                            <td>${grado.CODIGO_GRADO}</td>
-                            <td>${grado.NOMBRE_GRADO}</td>
-                            <td class="text-center">
-                                <span class="${rolClase}" style="padding: 5px 10px; font-size: 14px;">
-                                    ${grado.SECCION_GRADO}
+                            <td>${alumno.PERFIL_PERSONA}</td>
+                            <td class="text-start">${alumno.NOMBRE_COMPLETO}</td>
+                            <td class="text-start">${alumno.CORREO_PERSONA}</td>
+                            <td class="text-start">${alumno.NOMBRE_GRADO}</td>
+                            <td>
+                                <span class="${seccionClase}" style="padding: 5px 10px; font-size: 14px;">
+                                    ${alumno.SECCION_GRADO}
                                 </span>
                             </td>
-                            <td>${grado.NIVEL_GRADO}</td>
-                            <td>${grado.PERFIL_PERSONA}</td>
+                            <td class="${solvenciaClass}" style="${solvenciaStyle}">
+                                ${diferenciaSolvencia}
+                            </td>
                             <td>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <a 
-                                        ${materiasAttributes}
-                                        class="${materiasButtonClass}">
-                                        <i class="bi bi-book"></i> Materias
-                                    </a>
-                                    <a 
-                                        href="${alumnosUrl}"
-                                        class="btn btn-primary btn-sm me-2">
-                                        <i class="bi bi-book"></i> Alumnos
-                                    </a>                                    
-                                    <a 
-                                        href="/administracion-grados/calendario/${selectedPeriodoId}/${grado.ID_GRADO}" 
-                                        class="btn btn-primary btn-sm me-2">
-                                        <i class="bi bi-book"></i> Calendario
+                                        href="/pagos/${alumno.ID_ALUMNO}"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="bi bi-credit-card"></i> Control de pagos
                                     </a>
                                 </div>
                             </td>
@@ -228,16 +241,16 @@ function cargarGrados(url, page = 1) {
             actualizarPaginacion();
         },
         error: function (error) {
-            console.error('Error al cargar los Grados:', error);
-            $('#tablaGrados tbody').html('<tr><td colspan="6" class="text-center">Error al cargar datos</td></tr>');
+            console.error('Error al cargar los alumnos:', error);
+            $('#tablaAlumnos tbody').html('<tr><td colspan="7" class="text-center">Error al cargar datos</td></tr>');
         }
     });
 }
+
 // Event listeners para búsqueda
 $('#btnBuscar').click(function () {
-    const textoBusqueda = $('#inputBusqueda').val().trim();
-    const urlBusqueda = textoBusqueda ? `${apiBaseUrl}/busqueda/${encodeURIComponent(textoBusqueda)}` : apiBaseUrl;
-    cargarGrados(urlBusqueda, 1);
+    currentSearchTerm = $('#inputBusqueda').val().trim();
+    cargarAlumnos(1);
 });
 
 $('#inputBusqueda').on('keypress', function(e) {
@@ -248,7 +261,8 @@ $('#inputBusqueda').on('keypress', function(e) {
 
 $('#btnLimpiar').on('click', function() {
     $('#inputBusqueda').val('');
-    cargarGrados(apiBaseUrl, 1);
+    currentSearchTerm = '';
+    cargarAlumnos(1);
 });
 
 // Función de paginación
@@ -333,13 +347,14 @@ function actualizarPaginacion() {
         e.preventDefault();
         const page = $(this).data('page');
         if (page >= 1 && page <= totalPages) {
-            cargarGrados(currentUrl, page);
+            cargarAlumnos(page);
         }
     });
 }
 
 if ($('#paginacion').length === 0) {
-    $('#tablaGrados').after('<div id="paginacion" class="mt-3"></div>');
+    $('#tablaAlumnos').after('<div id="paginacion" class="mt-3"></div>');
 }
 </script>
+
 @endsection

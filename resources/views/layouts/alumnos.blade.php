@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administracion</title>
+    <title>Alumno</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/alumnos.css" rel="stylesheet">
 </head>
 <body>
     <!-- Vertical Sidebar -->
@@ -29,39 +29,19 @@
     <!-- Scrollable menu section -->
     <div id="navbar-menu">
         <!-- Title for the menu -->
-        <h6 class="navbar-section-title">Datos generales</h6>
-        <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
+        <h6 class="navbar-section-title">Opciones</h6>
+        <button id="inicio" onclick="selectNav('inicio'); loadPage('/alumno/')">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>
-        <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')">
-            <i class="fas fa-calendar-alt"></i> <span>Períodos Escolares</span>
+        <button id="notas" onclick="selectNav('notas'); loadPage('/alumno/notas')">
+            <i class="fas fa-graduation-cap"></i> <span>Mis notas</span>
         </button>
-        <button id="carreras" onclick="selectNav('carreras'); loadPage('/carreras')">
-            <i class="bi bi-mortarboard"></i> <span>Carreras</span>
-        </button>        
-        <button id="usuarios" onclick="selectNav('usuarios'); loadPage('/usuarios')">
-            <i class="fas fa-users"></i> <span>Usuarios</span>
+        <button id="calendario" onclick="selectNav('calendario'); loadPage('/alumno/calendario')">
+            <i class="fas fa-calendar-week"></i> <span>Calendario semanal</span>
         </button>
-        <button id="materias" onclick="selectNav('materias'); loadPage('/materias')">
-            <i class="fas fa-book"></i> <span>Materias</span>
-        </button>
-        <button id="grados" onclick="selectNav('grados'); loadPage('/grados')">
-            <i class="fas fa-graduation-cap"></i> <span>Grados</span>
-        </button>      
-        <!-- Add more menu items to demonstrate scrolling -->
-        <h6 class="navbar-section-title">Administración @php
-        $anio = Session::get('usuario')['ANIO_ACTUAL']; @endphp {{ $anio }}</h6>
-        
-        <!-- Period Selector -->
-        <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
-            <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
-        </button>      
-        <button id="administracion-precios" onclick="selectNav('administracion-precios'); loadPage('/precios')">
-            <i class="fa-solid fa-dollar-sign"></i> <span>Administrar precios</span>
-        </button>            
-        <button id="administracion-pagos" onclick="selectNav('administracion-pagos'); loadPage('/administracion-pagos')">
-            <i class="fa fa-credit-card-alt"></i> <span>Administrar pagos</span>
-        </button>                      
+        <button id="pagos" onclick="selectNav('pagos'); loadPage('/alumno/pagos')">
+            <i class="fas fa-credit-card"></i> <span>Pagos</span>
+        </button>         
     </div>
 </div>
     
@@ -170,49 +150,29 @@
         let title;
         // Evaluación exacta primero
         switch (route) {
-            case '/':
+            case '/alumno/':
+            case '/alumno':
                 title = 'Inicio';
                 break;
-            case '/materias':
-                title = 'Materias Escolares';
+            case '/alumno/notas':
+                title = 'Mis Notas';
                 break;
-            case '/periodos':
-                title = 'Períodos Escolares';
+            case '/alumno/calendario':
+                title = 'Calendario Semanal';
                 break;
-            case '/carreras':
-                title = 'Carreras Estudiantiles';
-                break;
-            case '/usuarios':
-                title = 'Usuarios';
-                break;
-            case '/grados':
-                title = 'Grados y Carreras';
-                break;
-            case '/administracion-grados':
-                title = 'Administración de grados ' + anioActual;
-                break;
-            case '/agregar-usuario':
-                title = 'Usuarios - Agregar';
-                break;
-            case '/agregar-periodo':
-                title = 'Períodos - Agregar';
-                break;
-            case '/precios':
-                title = 'Administrar precios';
-                break;
-            case '/administracion-pagos':
-                title = 'Administrar pagos';
+            case '/alumno/pagos':
+                title = 'Pagos';
                 break;
             default:
                 // Evaluación parcial para rutas con parámetros
-                if (route.includes('/modificar-usuario')) {
-                    title = 'Usuarios - Modificar';
-                } else if (route.includes('/modificar-periodo')) {
-                    title = 'Períodos - Modificar';
-                } else if (route.includes('/administracion-grados/')) {
-                    title = 'Administración de grados ' + anioActual;
-                } else if (route.includes('/pagos/')) {
-                    title = 'Control de pagos';
+                if (route.includes('/alumno/notas')) {
+                    title = 'Mis Notas';
+                } else if (route.includes('/alumno/calendario')) {
+                    title = 'Calendario Semanal';
+                } else if (route.includes('/alumno/pagos')) {
+                    title = 'Pagos';
+                } else if (route.includes('/alumno/')) {
+                    title = 'Alumno';
                 } else {
                     title = 'Inicio'; // Fallback
                 }
@@ -230,27 +190,14 @@
         let selectedMenuId = null;
         
         // Determinar qué elemento del menú debe estar seleccionado basado en la ruta
-        if (route === '/') {
+        if (route === '/alumno/' || route === '/alumno') {
             selectedMenuId = 'inicio';
-        } else if (route === '/administracion-grados' || route.includes('/administracion-grados/')) {
-            selectedMenuId = 'administracion-grados';        
-        } else if (route === '/materias' || route.includes('/materias/')) {
-            selectedMenuId = 'materias';
-        } else if (route === '/periodos' || route.includes('/periodos/') || 
-                   route.includes('/agregar-periodo') || route.includes('/modificar-periodo')) {
-            selectedMenuId = 'periodos';
-        } else if (route === '/carreras' || route.includes('/carreras/')) {
-            selectedMenuId = 'carreras';
-        } else if (route === '/usuarios' || route.includes('/usuarios/') || 
-                   route.includes('/agregar-usuario') || route.includes('/modificar-usuario')) {
-            selectedMenuId = 'usuarios';
-        } else if (route === '/grados' || route.includes('/grados/')) {
-            selectedMenuId = 'grados';
-        } else if (route === '/precios' || route.includes('/precios/')) {
-            selectedMenuId = 'administracion-precios';
-        } else if (route === '/administracion-pagos' || route.includes('/administracion-pagos/') || 
-                   route.includes('/pagos/')) {
-            selectedMenuId = 'administracion-pagos';
+        } else if (route === '/alumno/notas' || route.includes('/alumno/notas')) {
+            selectedMenuId = 'notas';
+        } else if (route === '/alumno/calendario' || route.includes('/alumno/calendario')) {
+            selectedMenuId = 'calendario';
+        } else if (route === '/alumno/pagos' || route.includes('/alumno/pagos')) {
+            selectedMenuId = 'pagos';
         }
         
         // Aplicar la selección si se encontró una coincidencia
