@@ -1,178 +1,464 @@
-/* Títulos principales - cambiar de verde a azul oscuro del tema */
+/* Variables mejoradas con tonos más suaves */
 :root {
-    --verde-oscuro: #0f172a;
-    --verde-principal: #1e293b;
-    --verde-medio: #334155;
-    --verde-claro: #475569;
-    --verde-acento: #22c55e;
-    --verde-hover: #16a34a;
-    --verde-sutil: rgba(34, 197, 94, 0.1);
-    --verde-border: rgba(34, 197, 94, 0.2);
-    
-    --blanco: #ffffff;
-    --blanco-suave: #fafafa;
-    --gris-muy-claro: #f8fafc;
-    --gris-claro: #f1f5f9;
-    --gris-medio: #e2e8f0;
-    --gris-texto: #64748b;
-    --gris-oscuro: #334155;
-    --negro: #0f172a;
-    
-    --sombra-sutil: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    --sombra-media: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --sombra-verde: 0 4px 14px 0 rgba(34, 197, 94, 0.15);
-    
-    --border-sutil: #e2e8f0;
-    --border-medio: #cbd5e1;
-    --border-fuerte: #94a3b8;
-}
-.card-header h4,
-.card-header h5,
-h4#titulo,
-h5.text-success {
-    color: var(--gris-oscuro) !important;
+    --navy-dark: #1e293b;
+    --navy-medium: #334155;
+    --navy-light: #475569;
+    --gray-light: #f8fafc;
+    --gray-medium: #e2e8f0;
+    --white: #ffffff;
+    --text-white: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+    --border-dark: #cbd5e1;
+    --border-separator: #f1f5f9;
+    --accent: #3b82f6;
+    --accent-light: #60a5fa;
+    --success: #10b981;
+    --success-light: #34d399;
+    --danger: #ef4444;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Títulos de secciones específicos */
-.card-header h5.mb-0.text-success {
-    color: var(--gris-oscuro) !important;
+/* Fondo general con gradiente sutil - más pegado arriba */
+body {
+    background: linear-gradient(135deg, var(--gray-light) 0%, var(--gray-medium) 100%);
+    color: var(--text-dark);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    margin: 0;
+    padding: 12px 20px 20px 20px; /* Reducido padding superior */
+    min-height: 100vh;
 }
 
-/* Íconos en títulos - cambiar de verde a azul oscuro */
-.card-header h4 i,
-.card-header h5 i,
-h4#titulo i,
-h5.text-success i {
-    color: var(--gris-oscuro) !important;
+/* Container más ancho y con bordes separadores */
+.container {
+    max-width: 1200px; /* Aumentado de 1000px a 1200px */
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-separator);
 }
 
-/* Íconos en labels - mantener verde para consistencia */
-.form-label i.text-success {
-    color: var(--verde-acento) !important;
+/* Card principal */
+.card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
 }
 
-/* Íconos en botones - hacer blancos para mejor contraste */
-.btn i {
-    color: white !important;
-}
-
-/* Específicamente para botones de acción */
-.btn-success i,
-.btn-primary i,
-.btn-danger i,
-.btn-warning i {
-    color: white !important;
-}
-
-/* Íconos en botones secundarios y outline */
-.btn-secondary i,
-.btn-outline-secondary i {
-    color: white !important;
-}
-
-.btn-outline-secondary:hover i {
-    color: var(--gris-oscuro) !important;
-}
-
-/* Headers de cards - mantener el fondo pero cambiar texto */
+/* Header principal - "Agregar Persona" con gradiente */
 .card-header.bg-success {
-    background-color: var(--verde-acento) !important;
-    color: white !important;
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%) !important;
+    color: var(--text-white) !important;
+    border: none;
+    border-radius: 0;
+    padding: 20px 40px; /* Aumentado padding horizontal */
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--border-separator); /* Borde separador */
 }
 
-.card-header.bg-success h4,
-.card-header.bg-success h5 {
-    color: white !important;
+.card-header.bg-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.card-header.bg-success h4 {
+    color: var(--text-white) !important;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    position: relative;
+    z-index: 1;
 }
 
 .card-header.bg-success i {
-    color: white !important;
+    color: var(--text-white) !important;
+    position: relative;
+    z-index: 1;
 }
 
-/* Headers de cards con fondo blanco - texto azul oscuro */
-.card-header.bg-white h5,
-.card-header.bg-white h4 {
-    color: var(--gris-oscuro) !important;
+/* Contenido principal con más espacio horizontal */
+.card-body.bg-light {
+    background: var(--white) !important;
+    padding: 28px 40px 32px 40px; /* Aumentado padding horizontal */
+    border-bottom: 1px solid var(--border-separator); /* Borde separador sutil */
 }
 
-.card-header.bg-white i {
-    color: var(--verde-acento) !important;
+/* Cards internas con diseño más suave y bordes separadores */
+.card .card {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    margin-bottom: 20px; /* Reducido ligeramente */
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-/* Títulos en alertas y otros elementos */
-.alert h4,
-.alert h5,
-.alert h6 {
-    color: inherit !important;
+.card .card::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border-separator) 20%, var(--border-separator) 80%, transparent 100%);
 }
 
-/* Íconos en radio buttons y checkboxes labels */
+.card .card:last-child::after {
+    display: none;
+}
+
+.card .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Headers de secciones con gradiente más sutil y bordes */
+.card .card-header.bg-white {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%) !important;
+    color: var(--text-white) !important;
+    border: none;
+    border-radius: 12px 12px 0 0;
+    padding: 14px 28px; /* Aumentado padding horizontal */
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borde separador interno */
+}
+
+.card .card-header.bg-white::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.card .card-header.bg-white h5 {
+    color: var(--text-white) !important;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.card .card-header.bg-white i {
+    color: var(--text-white) !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Contenido de las cards internas con más espacio horizontal */
+.card .card-body {
+    background: var(--white);
+    padding: 24px 28px; /* Aumentado padding horizontal */
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid var(--border-separator); /* Borde separador sutil */
+}
+
+/* Grid mejorado para formularios más anchos */
+.row {
+    margin-left: -12px;
+    margin-right: -12px;
+}
+
+.col-md-6, .col-md-4, .col-md-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* Formularios mejorados */
+.form-label {
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+    border-bottom: 1px solid transparent; /* Preparado para borde separador */
+}
+
+.form-label i {
+    color: var(--accent) !important;
+    margin-right: 8px;
+}
+
+.form-control,
+.form-select {
+    background: var(--white);
+    border: 2px solid var(--border-light);
+    color: var(--text-dark);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--white);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), var(--shadow-sm);
+    color: var(--text-dark);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: var(--border-dark);
+    box-shadow: var(--shadow-md);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Separadores entre grupos de campos */
+.mb-3 {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.mb-3:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -0.75rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border-separator) 30%, var(--border-separator) 70%, transparent 100%);
+}
+
+/* Radio buttons mejorados con separadores */
+.form-check {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-separator);
+}
+
+.form-check:last-child {
+    border-bottom: none;
+}
+
+.form-check-input {
+    background-color: var(--white);
+    border: 2px solid var(--border-dark);
+    transition: all 0.2s ease;
+}
+
+.form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-check-input:hover {
+    border-color: var(--accent-light);
+}
+
+.form-check-label {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
 .form-check-label i {
-    color: var(--verde-acento) !important;
+    color: var(--accent) !important;
 }
 
-/* Íconos en input groups */
-.input-group-text i {
-    color: var(--verde-acento) !important;
+/* Input groups */
+.input-group-text {
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%);
+    border: 2px solid var(--success);
+    color: var(--text-white);
+    border-radius: 8px 0 0 8px;
+    box-shadow: var(--shadow-sm);
 }
 
-/* Títulos de error y estados especiales */
+/* Botones elegantes con separadores */
+.btn {
+    border-radius: 8px;
+    padding: 12px 28px; /* Aumentado padding horizontal */
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    margin-right: 12px;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%);
+    color: var(--text-white);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+    color: var(--text-white);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn i {
+    color: var(--text-white) !important;
+}
+
+/* Separador para grupo de botones */
+.d-flex.gap-2 {
+    border-top: 1px solid var(--border-separator);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+/* Alertas mejoradas */
+.alert {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 8px;
+    color: var(--text-dark);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    border-left: 4px solid var(--success); /* Borde separador izquierdo */
+}
+
+.alert i {
+    color: var(--success) !important;
+}
+
+/* Texto de peligro */
 .text-danger {
-    color: #ef4444 !important;
+    color: var(--danger) !important;
 }
 
-/* Asegurar que los íconos en botones hover mantengan color blanco */
-.btn:hover i,
-.btn:focus i,
-.btn:active i {
-    color: white !important;
+/* Animaciones suaves */
+* {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* Excepción para botones outline en hover */
-.btn-outline-secondary:hover i,
-.btn-outline-primary:hover i {
-    color: var(--gris-oscuro) !important;
+/* Responsive mejorado con más espacio horizontal */
+@media (max-width: 768px) {
+    body {
+        padding: 8px 12px 20px 12px; /* Más pegado arriba en móvil */
+    }
+    
+    .container {
+        border-radius: 12px;
+        max-width: 100%;
+    }
+    
+    .card-header.bg-success {
+        padding: 18px 24px; /* Mantener buen padding horizontal en móvil */
+    }
+    
+    .card-body.bg-light {
+        padding: 24px 24px 28px 24px;
+    }
+    
+    .card .card-header.bg-white {
+        padding: 12px 20px;
+    }
+    
+    .card .card-body {
+        padding: 20px 20px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
 }
 
-/* Títulos en modales */
-.modal-header h4,
-.modal-header h5,
-.modal-title {
-    color: white !important;
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1400px; /* Aún más ancho en pantallas grandes */
+    }
+    
+    .card-body.bg-light {
+        padding: 28px 50px 32px 50px; /* Más espacio en pantallas grandes */
+    }
+    
+    .card .card-body {
+        padding: 24px 32px;
+    }
 }
 
-.modal-header i {
-    color: white !important;
+/* Estados ocultos */
+#camposMaestro,
+#camposAlumno {
+    display: none;
 }
 
-/* Títulos en el contenido del modal */
-.modal-body h4,
-.modal-body h5,
-.modal-body h6 {
-    color: var(--gris-oscuro) !important;
+/* Efectos adicionales */
+.form-control:focus + .form-label,
+.form-select:focus + .form-label {
+    color: var(--accent);
 }
 
-/* Asegurar consistencia en todos los elementos de formulario */
-.fw-bold,
-.fw-semibold {
-    color: var(--gris-oscuro) !important;
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Títulos de páginas principales */
-.container h1,
-.container h2,
-.container h3 {
-    color: var(--gris-oscuro) !important;
+::-webkit-scrollbar-track {
+    background: var(--gray-light);
+    border-radius: 4px;
 }
 
-/* Breadcrumbs y navegación */
-.breadcrumb-item,
-.nav-link {
-    color: var(--gris-texto) !important;
+::-webkit-scrollbar-thumb {
+    background: var(--navy-medium);
+    border-radius: 4px;
 }
 
-.breadcrumb-item.active,
-.nav-link.active {
-    color: var(--gris-oscuro) !important;
+::-webkit-scrollbar-thumb:hover {
+    background: var(--navy-dark);
 }

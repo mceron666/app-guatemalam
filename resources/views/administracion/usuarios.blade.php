@@ -323,7 +323,7 @@ $("#btnConfirmDelete").click(() => {
   NOMBRES_PERSONA: null,
   APELLIDOS_PERSONA: null,
   CORREO_PERSONA: null,
-  PERFIL_PERSONA: null,
+  PERFIL_PERSONA: $("#CodigoEliminar").text().trim(),
   SEXO_PERSONA: null,
   ROL_PERSONA: null,
   NUMERO_PERSONA: null,

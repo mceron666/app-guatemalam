@@ -23,7 +23,12 @@ Route::middleware(['auth.custom'])->group(function () {
         }
         return view('administracion.index');
     });
-
+    Route::get('/institucion', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('administracion.formularios.form-institucion')]);
+        }
+        return view('administracion.formularios.form-institucion');
+    });    
     Route::get('/periodos', function () {
         if (request()->ajax()) {
             return view('content')->with(['contenido' => view('administracion.periodos')]);
@@ -107,7 +112,15 @@ Route::middleware(['auth.custom'])->group(function () {
             return view('content')->with(['contenido' => view('administracion.administracion-pagos')]);
         }
         return view('administracion.administracion-pagos');
-    });         
+    });  
+    Route::get('/pagos/{id}', function ($id) {
+        if (request()->ajax()) {
+            return view('content')->with([
+                'contenido' => view('administracion.pagos-usuario', ['id' => $id])
+            ]);
+        }
+        return view('administracion.pagos-usuario', ['id' => $id]);
+    });  
     Route::get('/administracion-grados/materias/{id}/{otroId}', function ($id, $otroId) {
         if (request()->ajax()) {
             return view('content')->with([
@@ -150,6 +163,20 @@ Route::middleware(['auth.custom'])->group(function () {
             'otroId' => $otroId
         ]);
     });    
+    Route::get('/actualiza-notas', function () {
+        if (request()->ajax()) {
+            return view('content')->with(['contenido' => view('administracion.formularios.form-actualizar')]);
+        }
+        return view('administracion.formularios.form-actualizar');
+    });     
+    Route::get('/notas-alumnos/{id}', function ($id) {
+        if (request()->ajax()) {
+            return view('content')->with([
+                'contenido' => view('administracion.notas-alumnos', ['id' => $id])
+            ]);
+        }
+        return view('administracion.notas-alumnos', ['id' => $id]);
+    });       
     //Maestros
     Route::get('maestro/', function () {
         if (request()->ajax()) {

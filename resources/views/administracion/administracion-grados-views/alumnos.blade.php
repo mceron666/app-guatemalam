@@ -5,22 +5,6 @@
 <link href="/css/modal.css" rel="stylesheet">
 
 <style>
-.header-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.header-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
 .student-selector-card {
     background: white;
     border-radius: 15px;
@@ -152,37 +136,50 @@
 <div class="header-section">
     <div class="header-title">
         <i class="fas fa-users"></i>
-        <span>Administración de Alumnos por Grado</span>  
-        <div style="font-size: 20px; margin-top: 10px;">
-            Período: <span id="header-periodo-codigo" style="font-weight: 500;">Cargando...</span> |
-            Grado: <span id="header-grado-nombre" style="font-weight: 500;">Cargando...</span>
-        </div>                  
+        <span>Alumnos por grado</span>                 
     </div>
 </div>
 
+<!-- Sub-información detallada -->
+<div class="container-fluid mt-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-body py-3">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar-alt fa-2x text-success me-3"></i>
+                        <div>
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <span class="fw-bold">Período: </span>
+                                <span id="header-periodo-codigo" class="fw-bold">Cargando...</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex align-items-center">
+                        <div class="text-end me-3">
+                            <h5 class="mb-0 fw-bold text-success">
+                                <span id="header-grado-nombre">Cargando grado...</span>
+                            </h5>
+                        </div>
+                        <i class="fas fa-graduation-cap fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
         <div class="card-body">
             <div class="row mb-4 align-items-center">
-                <div class="col-md-6">
-                    <h5 class="mb-0">
-                        <i class="bi bi-people-fill text-primary me-2"></i>
-                        Alumnos Asignados al Grado
-                    </h5>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <div class="stats-number" id="totalAlumnos">0</div>
-                        <div class="stats-label">Total Alumnos</div>
-                    </div>
-                </div>
-                <div class="col-md-3 text-end">
+                <div class="col-12 d-flex justify-content-end">
                     <button type="button" class="btn btn-primary btn-lg" id="agregar" data-bs-toggle="modal" data-bs-target="#asignacionModal">
                         <i class="bi bi-plus-circle me-1"></i>Asignar Alumno
                     </button>
                 </div>
             </div>
-            
             <div class="table-responsive">
                 <table id="tablaAlumnos" class="table table-striped">
                     <thead class="bg-success text-white text-center">

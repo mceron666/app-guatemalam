@@ -1,13 +1,43 @@
-@extends("layouts.alumnos")
-
+@extends("layouts.header")
 @section("contenido")
-
 <link href="/css/modal.css" rel="stylesheet">
 
 <div class="header-section">
     <div class="header-title">
         <i class="fas fa-chart-line"></i>
         <span>Notas del Alumno</span>
+    </div>
+</div>
+
+<!-- Nueva sección de información del alumno -->
+<div class="container-fluid mt-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-body py-3">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div class="me-4">
+                            <i class="fas fa-user-graduate fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1 fw-bold" id="alumno-nombre-completo">Cargando información del alumno...</h5>
+                            <p class="mb-0 text-muted">
+                                <span id="alumno-grado">-</span> | 
+                                <span id="alumno-correo">-</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex flex-column align-items-md-end">
+                        <span class="text-muted small">Estado de Solvencia</span>
+                        <h4 class="mb-0 fw-bold" id="diferencia-solvencia">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando...
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -28,16 +58,15 @@
                     </div>
                 </div>
             </div>
-
             <!-- Grid de Notas -->
             <div class="table-responsive">
                 <div class="notas-grid">
                     <div class="notas-header">
                         <div class="materia-header">Materia</div>
-                        <div id="bloque-1" class="bloque-header solvente">Primer bloque</div>
-                        <div id="bloque-2" class="bloque-header no-solvente">Segundo bloque</div>
-                        <div id="bloque-3" class="bloque-header no-solvente">Tercer bloque</div>
-                        <div id="bloque-4" class="bloque-header no-solvente">Cuarto bloque</div>
+                        <div id="bloque-1" class="bloque-header">Primer bloque</div>
+                        <div id="bloque-2" class="bloque-header">Segundo bloque</div>
+                        <div id="bloque-3" class="bloque-header">Tercer bloque</div>
+                        <div id="bloque-4" class="bloque-header">Cuarto bloque</div>
                     </div>
                     <div id="notas-body" class="notas-body">
                         <div class="loading-message">Cargando notas...</div>
@@ -77,16 +106,6 @@
     font-weight: bold;
     border-right: 1px solid rgba(255,255,255,0.2);
     background-color: #198754;
-}
-
-.bloque-header.no-solvente {
-    background-color: #dc3545;
-    position: relative;
-}
-
-.bloque-header.no-solvente::after {
-    content: " 🔒";
-    font-size: 0.8rem;
 }
 
 .notas-body {
@@ -138,35 +157,107 @@
     font-style: italic;
     font-size: 0.9rem;
 }
-
-.bloque-no-solvente {
-    background-color: #f8d7da;
-    color: #721c24;
-    position: relative;
-}
-
-.bloque-no-solvente::after {
-    content: "🔒";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    opacity: 0.7;
-}
 </style>
 
 <script>
-const ID_ALUMNO = {{ Session::get('usuario')['ID_ALUMNO'] ?? 'null' }};
-const apiNotasUrl = 'http://localhost:3000/notas';
-const periodosApiUrl = 'http://localhost:3000/periodos/alumno/'+ID_ALUMNO;
+// Obtener parámetros de la URL
+function getUrlParameters() {
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    
+    // Buscar el índice de 'notas-alumnos' en la URL
+    const notasIndex = segments.indexOf('notas-alumnos');
+    
+    if (notasIndex !== -1 && segments.length > notasIndex + 1) {
+        return {
+            alumno: parseInt(segments[notasIndex + 1])
+        };
+    }
+    
+    return { alumno: null };
+}
 
+// Variables globales
+let urlParams = getUrlParameters();
+const ID_ALUMNO = urlParams.alumno;
+const periodosApiUrl = `http://localhost:3000/periodos/alumno/${ID_ALUMNO}`;
 let selectedPeriodoId = null;
 let notasData = null;
 let periodosData = [];
 
+// Cargar información del alumno
+function cargarInfoAlumno() {
+    if (!ID_ALUMNO) {
+        console.error('ID de alumno no válido');
+        return;
+    }
+    
+    const datos = {
+        ID_ALUMNO: ID_ALUMNO
+    };
+    
+    $.ajax({
+        url: 'http://localhost:3000/alumnos-grado/lista',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(datos),
+        success: function(response) {
+            if (response.data && response.data.length > 0) {
+                const alumno = response.data[0];
+                
+                // Actualizar información del alumno
+                document.getElementById('alumno-nombre-completo').textContent = alumno.NOMBRE_COMPLETO;
+                document.getElementById('alumno-grado').textContent = alumno.NOMBRE_GRADO;
+                document.getElementById('alumno-correo').textContent = alumno.CORREO_PERSONA;
+                
+                // Mostrar diferencia de solvencia con colores
+                const diferenciaSolvencia = parseFloat(alumno.DIFERENCIA_SOLVENCIA);
+                const elementoSolvencia = document.getElementById('diferencia-solvencia');
+                
+                if (diferenciaSolvencia < 0) {
+                    // Debe dinero - color rojizo
+                    elementoSolvencia.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>Q ${Math.abs(diferenciaSolvencia).toFixed(2)}`;
+                    elementoSolvencia.className = 'mb-0 fw-bold text-danger';
+                    elementoSolvencia.title = 'El alumno tiene saldo pendiente';
+                } else if (diferenciaSolvencia > 0) {
+                    // Tiene saldo a favor - color verde
+                    elementoSolvencia.innerHTML = `<i class="fas fa-check-circle me-2"></i>Q ${diferenciaSolvencia.toFixed(2)}`;
+                    elementoSolvencia.className = 'mb-0 fw-bold text-success';
+                    elementoSolvencia.title = 'El alumno tiene saldo a favor';
+                } else {
+                    // Está al día - color verde
+                    elementoSolvencia.innerHTML = `<i class="fas fa-check-circle me-2"></i>Q 0.00`;
+                    elementoSolvencia.className = 'mb-0 fw-bold text-success';
+                    elementoSolvencia.title = 'El alumno está al día con sus pagos';
+                }
+            } else {
+                document.getElementById('alumno-nombre-completo').textContent = 'Alumno no encontrado';
+                document.getElementById('diferencia-solvencia').innerHTML = '<i class="fas fa-times-circle me-2"></i>Error';
+                document.getElementById('diferencia-solvencia').className = 'mb-0 fw-bold text-warning';
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar información del alumno:', error);
+            document.getElementById('alumno-nombre-completo').textContent = 'Error al cargar información';
+            document.getElementById('diferencia-solvencia').innerHTML = '<i class="fas fa-times-circle me-2"></i>Error';
+            document.getElementById('diferencia-solvencia').className = 'mb-0 fw-bold text-danger';
+        }
+    });
+}
+
 $(document).ready(function () {
-    // Cargar períodos al inicializar
+    // Verificar que tenemos un ID de alumno válido
+    if (!ID_ALUMNO || isNaN(ID_ALUMNO)) {
+        console.error('ID de alumno no válido en la URL');
+        $('#notas-body').html('<div class="loading-message">Error: ID de alumno no válido</div>');
+        alert('URL no válida. Debe acceder desde /notas-alumnos/{id_alumno}');
+        return;
+    }
+    
+    console.log('ID_ALUMNO obtenido de la URL:', ID_ALUMNO);
+    
+    // Cargar información inicial
+    cargarInfoAlumno();
     cargarPeriodos();
 });
 
@@ -190,6 +281,7 @@ function cargarPeriodos() {
         },
         error: function(xhr, status, error) {
             console.error('Error al cargar períodos:', error);
+            $('#notas-body').html('<div class="loading-message">Error al cargar períodos</div>');
         }
     });
 }
@@ -232,8 +324,10 @@ function cargarNotas() {
     const notasBody = $('#notas-body');
     notasBody.html('<div class="loading-message">Cargando notas...</div>');
     
+    const apiNotasUrl = `http://localhost:3000/notas/administracion/${ID_ALUMNO}/${selectedPeriodoId}`;
+    
     $.ajax({
-        url: `${apiNotasUrl}/${ID_ALUMNO}/${selectedPeriodoId}`,
+        url: apiNotasUrl,
         type: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -265,21 +359,13 @@ function renderNotasGrid() {
 
 // Función para actualizar headers de bloques
 function actualizarHeadersBloques(bloques) {
-    // Asegurar que tenemos exactamente 4 bloques
-    for (let i = 1; i <= 4; i++) {
-        const bloque = bloques.find(b => b.idBloque === (48 + i)) || bloques[i-1];
-        const headerElement = $(`#bloque-${i}`);
+    // Actualizar headers con los nombres reales de los bloques
+    for (let i = 0; i < Math.min(bloques.length, 4); i++) {
+        const bloque = bloques[i];
+        const headerElement = $(`#bloque-${i + 1}`);
         
         if (bloque) {
             headerElement.text(bloque.nombreBloque);
-            if (bloque.solvente) {
-                headerElement.removeClass('no-solvente').addClass('solvente');
-            } else {
-                headerElement.removeClass('solvente').addClass('no-solvente');
-            }
-        } else {
-            headerElement.text(`Bloque ${i}`);
-            headerElement.removeClass('solvente').addClass('no-solvente');
         }
     }
 }
@@ -300,27 +386,30 @@ function renderNotasBody(bloques) {
                 </div>
             </div>
         `);
+        
         notasBody.append(materiaSlot);
         
-        // Celdas de notas para cada uno de los 4 bloques
-        for (let i = 0; i < 4; i++) {
+        // Celdas de notas para cada bloque (máximo 4)
+        for (let i = 0; i < Math.min(bloques.length, 4); i++) {
             const bloque = bloques[i];
             const notaCell = $('<div class="nota-cell"></div>');
             
-            if (!bloque || !bloque.solvente) {
-                // Bloque no solvente - mostrar bloqueado
-                notaCell.addClass('bloque-no-solvente');
+            // Buscar la nota para esta materia en este bloque
+            const nota = encontrarNotaPorMateria(bloque.notas, materia.NUMERO);
+            
+            if (nota && nota.TOTAL > 0) {
+                notaCell.html(`<div class="nota-value">${nota.TOTAL}</div>`);
             } else {
-                // Bloque solvente - mostrar nota si existe
-                const nota = encontrarNotaPorMateria(bloque.notas, materia.NUMERO);
-                
-                if (nota && nota.TOTAL > 0) {
-                    notaCell.html(`<div class="nota-value">${nota.TOTAL}</div>`);
-                } else {
-                    notaCell.html('<div class="nota-empty">Sin nota</div>');
-                }
+                notaCell.html('<div class="nota-empty">Sin nota</div>');
             }
             
+            notasBody.append(notaCell);
+        }
+        
+        // Si hay menos de 4 bloques, llenar con celdas vacías
+        for (let i = bloques.length; i < 4; i++) {
+            const notaCell = $('<div class="nota-cell"></div>');
+            notaCell.html('<div class="nota-empty">-</div>');
             notasBody.append(notaCell);
         }
     });
@@ -339,5 +428,4 @@ function limpiarGrid() {
     $('#notas-body').html('<div class="loading-message">Seleccione un período para ver las notas...</div>');
 }
 </script>
-
-@endsection 
+@endsection

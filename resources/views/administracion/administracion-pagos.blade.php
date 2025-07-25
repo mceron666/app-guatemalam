@@ -228,9 +228,14 @@ function cargarAlumnos(page = 1) {
                                 <div class="d-flex justify-content-center align-items-center">
                                     <a 
                                         href="/pagos/${alumno.ID_ALUMNO}"
-                                        class="btn btn-primary btn-sm">
+                                        class="btn btn-primary btn-sm me-2">
                                         <i class="bi bi-credit-card"></i> Control de pagos
                                     </a>
+                                    <a 
+                                        href="/notas-alumnos/${alumno.ID_ALUMNO}"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="bi bi-credit-card"></i> Notas escolares
+                                    </a>                                    
                                 </div>
                             </td>
                         </tr>

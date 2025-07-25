@@ -1,13 +1,13 @@
 /* Variables CSS para tema minimalista con rojo oscuro y blanco */
 :root {
-    --verde-oscuro: #0f172a;
-    --verde-principal: #1e293b;
-    --verde-medio: #334155;
-    --verde-claro: #475569;
-    --verde-acento: #ef4444;
-    --verde-hover: #dc2626;
-    --verde-sutil: rgba(239, 68, 68, 0.1);
-    --verde-border: rgba(239, 68, 68, 0.2);
+    --rojo-oscuro: #0f172a;
+    --rojo-principal: #1e293b;
+    --rojo-medio: #334155;
+    --rojo-claro: #475569;
+    --rojo-acento: #ef4444;
+    --rojo-hover: #dc2626;
+    --rojo-sutil: rgba(239, 68, 68, 0.1);
+    --rojo-border: rgba(239, 68, 68, 0.2);
     
     --blanco: #ffffff;
     --blanco-suave: #fafafa;
@@ -21,7 +21,7 @@
     --sombra-sutil: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     --sombra-media: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --sombra-fuerte: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --sombra-verde: 0 4px 14px 0 rgba(239, 68, 68, 0.15);
+    --sombra-rojo: 0 4px 14px 0 rgba(239, 68, 68, 0.15);
     
     --border-sutil: #e2e8f0;
     --border-medio: #cbd5e1;
@@ -45,12 +45,12 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar con verde oscuro */
+/* Sidebar con rojo oscuro */
 #navbar {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: var(--verde-oscuro);
+    background-color: var(--rojo-oscuro);
     color: white;
     width: 280px;
     height: 100vh;
@@ -69,7 +69,7 @@ body {
     align-items: center;
     min-height: 160px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: var(--verde-principal);
+    background-color: var(--rojo-principal);
 }
 
 #navbar img {
@@ -78,7 +78,7 @@ body {
 }
 
 #navbar img:hover {
-    border-color: var(--verde-acento);
+    border-color: var(--rojo-acento);
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
 }
 
@@ -110,10 +110,10 @@ body {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Botones del navbar */
+/* Botones del navbar con diseño elegante */
 #navbar button {
-    background-color: transparent;
-    border: none;
+    background: transparent;
+    border: 2px solid transparent;
     color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
     font-weight: 500;
@@ -122,10 +122,29 @@ body {
     text-align: left;
     padding: 12px 16px;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--sombra-sutil);
+}
+
+#navbar button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+#navbar button:hover::before {
+    left: 100%;
 }
 
 #navbar button i {
@@ -134,25 +153,44 @@ body {
     text-align: center;
     opacity: 0.8;
     transition: opacity 0.2s ease;
+    position: relative;
+    z-index: 2;
+}
+
+#navbar button span {
+    position: relative;
+    z-index: 2;
 }
 
 #navbar button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 #navbar button:hover i {
     opacity: 1;
+    color: var(--rojo-acento);
 }
 
 #navbar button.selected {
-    background-color: var(--verde-acento);
+    background: linear-gradient(135deg, var(--rojo-acento) 0%, var(--rojo-hover) 100%);
     color: white;
     font-weight: 600;
+    border-color: var(--rojo-acento);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 #navbar button.selected i {
     opacity: 1;
+    color: white;
+}
+
+#navbar button.selected::before {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }
 
 /* Top navbar blanco */
@@ -199,8 +237,8 @@ body {
 }
 
 #topnav .nav-item:hover {
-    background-color: var(--verde-sutil);
-    border-color: var(--verde-border);
+    background-color: var(--rojo-sutil);
+    border-color: var(--rojo-border);
 }
 
 #topnav .nav-item i {
@@ -210,7 +248,7 @@ body {
 }
 
 #topnav .nav-item:hover i {
-    color: var(--verde-acento);
+    color: var(--rojo-acento);
 }
 
 #topnav .page-title {
@@ -232,15 +270,15 @@ body {
 }
 
 #topnav .user-profile:hover {
-    background-color: var(--verde-sutil);
-    border-color: var(--verde-border);
+    background-color: var(--rojo-sutil);
+    border-color: var(--rojo-border);
 }
 
 #topnav .user-avatar {
     width: 32px;
     height: 32px;
     border-radius: 6px;
-    background-color: var(--verde-acento);
+    background-color: var(--rojo-acento);
     color: white;
     display: flex;
     align-items: center;
@@ -316,7 +354,7 @@ body.sidebar-collapsed #content {
     color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    border-left: 2px solid var(--verde-acento);
+    border-left: 2px solid var(--rojo-acento);
     background-color: transparent;
 }
 
@@ -324,7 +362,7 @@ body.sidebar-collapsed #content {
 .period-selector-container {
     margin: 16px;
     padding: 16px;
-    background-color: var(--verde-principal);
+    background-color: var(--rojo-principal);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -353,7 +391,7 @@ body.sidebar-collapsed #content {
 
 .period-selector select:focus {
     outline: none;
-    border-color: var(--verde-acento);
+    border-color: var(--rojo-acento);
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
@@ -399,8 +437,8 @@ body.sidebar-collapsed #content {
 }
 
 .dropdown-item:hover {
-    background-color: var(--verde-sutil);
-    color: var(--verde-acento);
+    background-color: var(--rojo-sutil);
+    color: var(--rojo-acento);
 }
 
 .dropdown-divider {
@@ -475,7 +513,7 @@ body.sidebar-collapsed #content {
 
 /* Table styles */
 .table-header {
-    background-color: var(--verde-acento);
+    background-color: var(--rojo-acento);
     color: white;
     font-weight: 600;
 }
@@ -507,89 +545,211 @@ body.sidebar-collapsed #content {
 }
 
 .table tbody tr:hover {
-    background-color: var(--verde-sutil);
+    background-color: var(--rojo-sutil);
 }
 
-/* Button styles */
-.btn-modify {
-    background-color: #f59e0b;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
+/* BOTONES ELEGANTES - Estilos base */
+.btn, 
+.btn-add, 
+.btn-primary, 
+.btn-success, 
+.btn-modify, 
+.btn-delete, 
+.btn-outline-secondary {
+    border-radius: 8px;
     font-weight: 500;
-    font-size: 13px;
-    transition: all 0.2s ease;
+    font-size: 14px;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--sombra-sutil);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Efecto de brillo en hover para botones */
+.btn::before, 
+.btn-add::before, 
+.btn-primary::before, 
+.btn-success::before, 
+.btn-modify::before, 
+.btn-delete::before, 
+.btn-outline-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn:hover::before, 
+.btn-add:hover::before, 
+.btn-primary:hover::before, 
+.btn-success:hover::before, 
+.btn-modify:hover::before, 
+.btn-delete:hover::before, 
+.btn-outline-secondary:hover::before {
+    left: 100%;
+}
+
+/* Botones principales rojos */
+.btn-add, 
+.btn-primary, 
+.btn-success {
+    background: linear-gradient(135deg, var(--rojo-acento) 0%, var(--rojo-hover) 100%);
+    color: white;
+    border-color: var(--rojo-acento);
+    padding: 12px 24px;
+    font-weight: 600;
+}
+
+.btn-add:hover, 
+.btn-primary:hover, 
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--rojo-hover) 0%, #b91c1c 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-rojo);
+    border-color: var(--rojo-hover);
+}
+
+.btn-add:active, 
+.btn-primary:active, 
+.btn-success:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Botón modificar (naranja) */
+.btn-modify {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border-color: #f59e0b;
+    padding: 10px 20px;
 }
 
 .btn-modify:hover {
-    background-color: #d97706;
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-media);
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+    border-color: #d97706;
 }
 
+.btn-modify:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Botón eliminar (rojo más intenso) */
 .btn-delete {
-    background-color: #ef4444;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 500;
-    font-size: 13px;
-    transition: all 0.2s ease;
+    border-color: #dc2626;
+    padding: 10px 20px;
 }
 
 .btn-delete:hover {
-    background-color: #dc2626;
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-media);
-}
-
-.btn-add, .btn-primary {
-    background-color: var(--verde-acento);
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
     color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.3);
+    border-color: #b91c1c;
 }
 
-.btn-add:hover, .btn-primary:hover {
-    background-color: var(--verde-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-verde);
+.btn-delete:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
 }
 
-.btn-success {
-    background-color: var(--verde-acento);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-success:hover {
-    background-color: var(--verde-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-verde);
-}
-
+/* Botón secundario outline */
 .btn-outline-secondary {
-    background-color: transparent;
+    background: linear-gradient(135deg, var(--blanco) 0%, var(--gris-muy-claro) 100%);
     color: var(--gris-texto);
-    border: 1px solid var(--border-medio);
-    border-radius: 6px;
+    border: 2px solid var(--border-medio);
+    padding: 10px 20px;
     font-weight: 500;
-    transition: all 0.2s ease;
 }
 
 .btn-outline-secondary:hover {
-    background-color: var(--gris-muy-claro);
+    background: linear-gradient(135deg, var(--gris-muy-claro) 0%, var(--gris-claro) 100%);
     color: var(--gris-oscuro);
     border-color: var(--border-fuerte);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-media);
+}
+
+.btn-outline-secondary:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Estados de focus para botones */
+.btn:focus,
+.btn-add:focus,
+.btn-primary:focus,
+.btn-success:focus,
+.btn-modify:focus,
+.btn-delete:focus,
+.btn-outline-secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Botones deshabilitados */
+.btn:disabled,
+.btn-add:disabled,
+.btn-primary:disabled,
+.btn-success:disabled,
+.btn-modify:disabled,
+.btn-delete:disabled,
+.btn-outline-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: var(--sombra-sutil) !important;
+}
+
+.btn:disabled::before,
+.btn-add:disabled::before,
+.btn-primary:disabled::before,
+.btn-success:disabled::before,
+.btn-modify:disabled::before,
+.btn-delete:disabled::before,
+.btn-outline-secondary:disabled::before {
+    display: none;
+}
+
+/* Botones pequeños */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* Botones grandes */
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+/* Grupos de botones */
+.btn-group .btn {
+    margin-right: 8px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
 }
 
 /* Card styles */
@@ -623,7 +783,7 @@ body.sidebar-collapsed #content {
 .modal-header {
     border-bottom: 1px solid var(--border-sutil);
     padding: 20px 24px;
-    background-color: var(--verde-acento);
+    background-color: var(--rojo-acento);
     color: white;
 }
 
@@ -654,7 +814,7 @@ body.sidebar-collapsed #content {
 }
 
 .form-control:focus {
-    border-color: var(--verde-acento);
+    border-color: var(--rojo-acento);
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     outline: none;
 }
@@ -673,7 +833,7 @@ body.sidebar-collapsed #content {
 }
 
 .form-select:focus {
-    border-color: var(--verde-acento);
+    border-color: var(--rojo-acento);
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     outline: none;
 }
@@ -705,7 +865,7 @@ body.sidebar-collapsed #content {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:         
         radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
     opacity: 0.6;
@@ -787,14 +947,14 @@ body.sidebar-collapsed #content {
 }
 
 .pagination .page-link:hover {
-    background-color: var(--verde-sutil);
-    color: var(--verde-acento);
-    border-color: var(--verde-border);
+    background-color: var(--rojo-sutil);
+    color: var(--rojo-acento);
+    border-color: var(--rojo-border);
 }
 
 .pagination .page-item.active .page-link {
-    background-color: var(--verde-acento);
-    border-color: var(--verde-acento);
+    background-color: var(--rojo-acento);
+    border-color: var(--rojo-acento);
     color: white;
 }
 
@@ -815,7 +975,7 @@ body.sidebar-collapsed #content {
 }
 
 .bg-success {
-    background-color: var(--verde-acento) !important;
+    background-color: var(--rojo-acento) !important;
     color: white !important;
 }
 
@@ -869,9 +1029,16 @@ body.sidebar-collapsed #content {
         justify-content: center;
         padding: 12px 0;
         margin: 2px 8px;
+        border-radius: 8px;
     }
     #navbar button > *:not(i) {
         display: none;
+    }
+    #navbar button:hover {
+        transform: translateY(-2px);
+    }
+    #navbar button.selected {
+        transform: translateY(-2px);
     }
     #topnav {
         left: 64px;
@@ -886,6 +1053,19 @@ body.sidebar-collapsed #content {
     }
     .period-selector-container {
         display: none;
+    }
+    
+    /* Botones responsive */
+    .btn,
+    .btn-add,
+    .btn-primary,
+    .btn-success,
+    .btn-modify,
+    .btn-delete,
+    .btn-outline-secondary {
+        padding: 10px 16px;
+        font-size: 13px;
+        margin-bottom: 8px;
     }
 }
 
@@ -916,6 +1096,12 @@ body.sidebar-collapsed #content {
         gap: 12px;
         margin: 2px 16px;
     }
+    body:not(.sidebar-collapsed) #navbar button:hover {
+        transform: translateX(4px);
+    }
+    body:not(.sidebar-collapsed) #navbar button.selected {
+        transform: translateX(4px);
+    }
     #topnav {
         left: 0;
     }
@@ -927,5 +1113,17 @@ body.sidebar-collapsed #content {
     }
     body:not(.sidebar-collapsed) #content {
         margin-left: 260px;
+    }
+    
+    /* Botones full width en móvil */
+    .btn,
+    .btn-add,
+    .btn-primary,
+    .btn-success,
+    .btn-modify,
+    .btn-delete,
+    .btn-outline-secondary {
+        width: 100%;
+        margin-bottom: 8px;
     }
 }

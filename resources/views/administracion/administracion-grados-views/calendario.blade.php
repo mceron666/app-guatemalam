@@ -9,14 +9,39 @@
 <div class="header-section">
     <div class="header-title">
         <i class="fas fa-calendar-alt"></i>
-        <span>Calendario Escolar</span>  
-        <div class="font-size: 20px; margin-top: 10px;">
-            Período: <span id="header-periodo-codigo" style="font-weight: 500;">Cargando...</span> |
-            Grado: <span id="header-grado-nombre" style="font-weight: 500;">Cargando...</span>
-        </div>                  
+        <span>Calendario Escolar</span>          
     </div>
 </div>
-
+<!-- Sub-información detallada -->
+<div class="container-fluid mt-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-body py-3">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar-alt fa-2x text-success me-3"></i>
+                        <div>
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <span class="fw-bold">Período: </span>
+                                <span id="header-periodo-codigo" class="fw-bold">Cargando...</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex align-items-center">
+                        <div class="text-end me-3">
+                            <h5 class="mb-0 fw-bold text-success">
+                                <span id="header-grado-nombre">Cargando grado...</span>
+                            </h5>
+                        </div>
+                        <i class="fas fa-graduation-cap fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid mt-4">
     <div class="card shadow w-100">
         <div class="card-body">

@@ -33,6 +33,9 @@
         <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>
+        <button id="institucion" onclick="selectNav('institucion'); loadPage('/institucion')">
+            <i class="fas fa-building"></i> <span>Datos institución</span>
+        </button>        
         <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')">
             <i class="fas fa-calendar-alt"></i> <span>Períodos Escolares</span>
         </button>
@@ -61,7 +64,11 @@
         </button>            
         <button id="administracion-pagos" onclick="selectNav('administracion-pagos'); loadPage('/administracion-pagos')">
             <i class="fa fa-credit-card-alt"></i> <span>Administrar pagos</span>
-        </button>                      
+        </button>    
+        <button id="resultados" onclick="selectNav('actualiza-notas'); loadPage('/actualiza-notas')">
+            <i class="bi bi-calculator me-2"></i><span>Resultados escolares</span>
+        </button>                              
+        <h6 class="navbar-section-title">Consultas</h6>        
     </div>
 </div>
     
@@ -173,6 +180,9 @@
             case '/':
                 title = 'Inicio';
                 break;
+            case '/institucion':
+                title = 'Datos generales de institución';
+                break;                
             case '/materias':
                 title = 'Materias Escolares';
                 break;
@@ -233,7 +243,9 @@
         if (route === '/') {
             selectedMenuId = 'inicio';
         } else if (route === '/administracion-grados' || route.includes('/administracion-grados/')) {
-            selectedMenuId = 'administracion-grados';        
+            selectedMenuId = 'administracion-grados';     
+        } else if (route === '/institucion' ) {
+            selectedMenuId = 'institucion';                     
         } else if (route === '/materias' || route.includes('/materias/')) {
             selectedMenuId = 'materias';
         } else if (route === '/periodos' || route.includes('/periodos/') || 
@@ -251,6 +263,9 @@
         } else if (route === '/administracion-pagos' || route.includes('/administracion-pagos/') || 
                    route.includes('/pagos/')) {
             selectedMenuId = 'administracion-pagos';
+        }else if (route === '/actualiza-notas' || route.includes('/actualiza-notas/'))
+        {
+            selectedMenuId = 'resultados';
         }
         
         // Aplicar la selección si se encontró una coincidencia

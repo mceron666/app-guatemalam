@@ -1,5 +1,4 @@
 /* Variables CSS para tema minimalista con verde oscuro y blanco */
-
 :root {
     --verde-oscuro: #0f172a;
     --verde-principal: #1e293b;
@@ -111,10 +110,10 @@ body {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Botones del navbar */
+/* Botones del navbar con diseño elegante */
 #navbar button {
-    background-color: transparent;
-    border: none;
+    background: transparent;
+    border: 2px solid transparent;
     color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
     font-weight: 500;
@@ -123,10 +122,29 @@ body {
     text-align: left;
     padding: 12px 16px;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--sombra-sutil);
+}
+
+#navbar button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+#navbar button:hover::before {
+    left: 100%;
 }
 
 #navbar button i {
@@ -135,25 +153,44 @@ body {
     text-align: center;
     opacity: 0.8;
     transition: opacity 0.2s ease;
+    position: relative;
+    z-index: 2;
+}
+
+#navbar button span {
+    position: relative;
+    z-index: 2;
 }
 
 #navbar button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 #navbar button:hover i {
     opacity: 1;
+    color: var(--verde-acento);
 }
 
 #navbar button.selected {
-    background-color: var(--verde-acento);
+    background: linear-gradient(135deg, var(--verde-acento) 0%, var(--verde-hover) 100%);
     color: white;
     font-weight: 600;
+    border-color: var(--verde-acento);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 #navbar button.selected i {
     opacity: 1;
+    color: white;
+}
+
+#navbar button.selected::before {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }
 
 /* Top navbar blanco */
@@ -481,7 +518,6 @@ body.sidebar-collapsed #content {
     font-weight: 600;
 }
 
-
 .table {
     margin-bottom: 0;
     color: var(--gris-oscuro);
@@ -512,86 +548,208 @@ body.sidebar-collapsed #content {
     background-color: var(--verde-sutil);
 }
 
-/* Button styles */
-.btn-modify {
-    background-color: #f59e0b;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
+/* BOTONES ELEGANTES - Estilos base */
+.btn, 
+.btn-add, 
+.btn-primary, 
+.btn-success, 
+.btn-modify, 
+.btn-delete, 
+.btn-outline-secondary {
+    border-radius: 8px;
     font-weight: 500;
-    font-size: 13px;
-    transition: all 0.2s ease;
+    font-size: 14px;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--sombra-sutil);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Efecto de brillo en hover para botones */
+.btn::before, 
+.btn-add::before, 
+.btn-primary::before, 
+.btn-success::before, 
+.btn-modify::before, 
+.btn-delete::before, 
+.btn-outline-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn:hover::before, 
+.btn-add:hover::before, 
+.btn-primary:hover::before, 
+.btn-success:hover::before, 
+.btn-modify:hover::before, 
+.btn-delete:hover::before, 
+.btn-outline-secondary:hover::before {
+    left: 100%;
+}
+
+/* Botones principales verdes */
+.btn-add, 
+.btn-primary, 
+.btn-success {
+    background: linear-gradient(135deg, var(--verde-acento) 0%, var(--verde-hover) 100%);
+    color: white;
+    border-color: var(--verde-acento);
+    padding: 12px 24px;
+    font-weight: 600;
+}
+
+.btn-add:hover, 
+.btn-primary:hover, 
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--verde-hover) 0%, #15803d 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-verde);
+    border-color: var(--verde-hover);
+}
+
+.btn-add:active, 
+.btn-primary:active, 
+.btn-success:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Botón modificar (naranja) */
+.btn-modify {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border-color: #f59e0b;
+    padding: 10px 20px;
 }
 
 .btn-modify:hover {
-    background-color: #d97706;
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-media);
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+    border-color: #d97706;
 }
 
+.btn-modify:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Botón eliminar (rojo) */
 .btn-delete {
-    background-color: #ef4444;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 500;
-    font-size: 13px;
-    transition: all 0.2s ease;
+    border-color: #ef4444;
+    padding: 10px 20px;
 }
 
 .btn-delete:hover {
-    background-color: #dc2626;
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-media);
-}
-
-.btn-add, .btn-primary {
-    background-color: var(--verde-acento);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
+    border-color: #dc2626;
 }
 
-.btn-add:hover, .btn-primary:hover {
-    background-color: var(--verde-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-verde);
+.btn-delete:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
 }
 
-.btn-success {
-    background-color: var(--verde-acento);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-success:hover {
-    background-color: var(--verde-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-verde);
-}
-
+/* Botón secundario outline */
 .btn-outline-secondary {
-    background-color: transparent;
+    background: linear-gradient(135deg, var(--blanco) 0%, var(--gris-muy-claro) 100%);
     color: var(--gris-texto);
-    border: 1px solid var(--border-medio);
-    border-radius: 6px;
+    border: 2px solid var(--border-medio);
+    padding: 10px 20px;
     font-weight: 500;
-    transition: all 0.2s ease;
 }
 
 .btn-outline-secondary:hover {
-    background-color: var(--gris-muy-claro);
+    background: linear-gradient(135deg, var(--gris-muy-claro) 0%, var(--gris-claro) 100%);
     color: var(--gris-oscuro);
     border-color: var(--border-fuerte);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-media);
+}
+
+.btn-outline-secondary:active {
+    transform: translateY(0);
+    box-shadow: var(--sombra-sutil);
+}
+
+/* Estados de focus para botones */
+.btn:focus,
+.btn-add:focus,
+.btn-primary:focus,
+.btn-success:focus,
+.btn-modify:focus,
+.btn-delete:focus,
+.btn-outline-secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+/* Botones deshabilitados */
+.btn:disabled,
+.btn-add:disabled,
+.btn-primary:disabled,
+.btn-success:disabled,
+.btn-modify:disabled,
+.btn-delete:disabled,
+.btn-outline-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: var(--sombra-sutil) !important;
+}
+
+.btn:disabled::before,
+.btn-add:disabled::before,
+.btn-primary:disabled::before,
+.btn-success:disabled::before,
+.btn-modify:disabled::before,
+.btn-delete:disabled::before,
+.btn-outline-secondary:disabled::before {
+    display: none;
+}
+
+/* Botones pequeños */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* Botones grandes */
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+/* Grupos de botones */
+.btn-group .btn {
+    margin-right: 8px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
 }
 
 /* Card styles */
@@ -707,7 +865,7 @@ body.sidebar-collapsed #content {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:         
         radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.08) 0%, transparent 50%);
     opacity: 0.6;
@@ -871,9 +1029,16 @@ body.sidebar-collapsed #content {
         justify-content: center;
         padding: 12px 0;
         margin: 2px 8px;
+        border-radius: 8px;
     }
     #navbar button > *:not(i) {
         display: none;
+    }
+    #navbar button:hover {
+        transform: translateY(-2px);
+    }
+    #navbar button.selected {
+        transform: translateY(-2px);
     }
     #topnav {
         left: 64px;
@@ -888,6 +1053,19 @@ body.sidebar-collapsed #content {
     }
     .period-selector-container {
         display: none;
+    }
+    
+    /* Botones responsive */
+    .btn,
+    .btn-add,
+    .btn-primary,
+    .btn-success,
+    .btn-modify,
+    .btn-delete,
+    .btn-outline-secondary {
+        padding: 10px 16px;
+        font-size: 13px;
+        margin-bottom: 8px;
     }
 }
 
@@ -918,6 +1096,12 @@ body.sidebar-collapsed #content {
         gap: 12px;
         margin: 2px 16px;
     }
+    body:not(.sidebar-collapsed) #navbar button:hover {
+        transform: translateX(4px);
+    }
+    body:not(.sidebar-collapsed) #navbar button.selected {
+        transform: translateX(4px);
+    }
     #topnav {
         left: 0;
     }
@@ -929,5 +1113,17 @@ body.sidebar-collapsed #content {
     }
     body:not(.sidebar-collapsed) #content {
         margin-left: 260px;
+    }
+    
+    /* Botones full width en móvil */
+    .btn,
+    .btn-add,
+    .btn-primary,
+    .btn-success,
+    .btn-modify,
+    .btn-delete,
+    .btn-outline-secondary {
+        width: 100%;
+        margin-bottom: 8px;
     }
 }

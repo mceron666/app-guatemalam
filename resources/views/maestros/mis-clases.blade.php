@@ -1,8 +1,6 @@
 @extends("layouts.maestro")
-
 @section("contenido")
 <link href="/css/modal.css" rel="stylesheet">
-
 <style>
 /* Custom styles for Mis Clases */
 .hero-section {
@@ -153,7 +151,7 @@
     font-weight: 500;
 }
 
-/* MODIFICADO: Recuadro de materia no interactuable */
+/* MODIFICADO: Recuadro de materia ahora ES interactuable */
 .subject-box {
     background: white;
     border-radius: 12px;
@@ -168,8 +166,23 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    /* Removido cursor pointer y efectos hover */
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    /* AGREGADO: Efectos interactivos */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.subject-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-decoration: none;
+    color: inherit;
+}
+
+.subject-box:active {
+    transform: translateY(-1px);
 }
 
 .subject-box::before {
@@ -193,6 +206,12 @@
     font-size: 1.8rem;
     margin-bottom: 8px;
     opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+.subject-box:hover .subject-icon {
+    transform: scale(1.1);
+    opacity: 1;
 }
 
 .subject-name {
@@ -203,43 +222,7 @@
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* NUEVO: Botón de evaluación */
-.evaluation-btn {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-.evaluation-btn:hover {
-    background: linear-gradient(135deg, #218838, #1e7e34);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
-}
-
-.evaluation-btn:active {
-    transform: translateY(0);
-}
-
-.evaluation-btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
+/* ELIMINADO: Botón de evaluación ya no es necesario */
 .materia-container {
     display: flex;
     flex-direction: column;
@@ -345,15 +328,10 @@
 </style>
 
 <!-- Hero Section -->
-<div class="hero-section">
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-icon">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <h1 class="hero-title">Mis Clases</h1>
-            <p class="hero-subtitle">Gestiona tus materias asignadas</p>
-        </div>
+<div class="header-section">
+    <div class="header-title">
+        <i class="fas fa-credit-card"></i>
+        <span>Mis clases</span>
     </div>
 </div>
 
@@ -377,7 +355,6 @@
                                 <span id="periodoDescripcion"></span>
                             </small>
                         </div>
-                        <!-- Debug info -->
                     </div>
                     <div class="col-md-4">
                         <div class="stats-card">
@@ -418,9 +395,6 @@ const apiBaseUrl = 'http://localhost:3000';
 let periodoSeleccionado = null;
 let clasesData = [];
 
-// Función para actualizar debug info
-
-// Función para obtener el período seleccionado actual
 function obtenerPeriodoSeleccionado() {
     const selectValue = $('#selectorPeriodo').val();
     if (selectValue && selectValue !== '') {
@@ -449,11 +423,8 @@ function cargarPeriodos() {
                     selector.append(option);
                 });
                 
-                // Seleccionar el primer período por defecto
                 const primerPeriodo = response[0].ID_PERIODO_ESCOLAR;
                 selector.val(primerPeriodo);
-                
-                // IMPORTANTE: Actualizar la variable global después de establecer el valor
                 periodoSeleccionado = parseInt(primerPeriodo);
                 
                 console.log('Período inicial seleccionado:', periodoSeleccionado);
@@ -470,7 +441,6 @@ function cargarPeriodos() {
     });
 }
 
-// Evento change del selector - MEJORADO
 $('#selectorPeriodo').on('change', function() {
     const nuevoValor = $(this).val();
     console.log('Cambio detectado en selector:', nuevoValor);
@@ -498,23 +468,22 @@ function actualizarInfoPeriodo() {
 }
 
 function cargarClasesAsignadas() {
-    // Asegurar que tenemos el período correcto
     obtenerPeriodoSeleccionado();
     
     if (!periodoSeleccionado || ID_PERSONA === 'null') {
         console.log('No se puede cargar clases - Período:', periodoSeleccionado, 'ID_PERSONA:', ID_PERSONA);
         return;
     }
-
+    
     mostrarCargando(true);
     
     const datos = {
         ID_PERSONA: ID_PERSONA,
         ID_PERIODO_ESCOLAR: periodoSeleccionado
     };
-
+    
     console.log('Cargando clases con datos:', datos);
-
+    
     $.ajax({
         url: `${apiBaseUrl}/materias-grado/maestros`,
         type: 'POST',
@@ -593,21 +562,17 @@ function mostrarClases(clases) {
             const materiaHtml = `
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2 materia-col">
                     <div class="materia-container">
-                        <!-- Recuadro no interactuable -->
-                        <div class="subject-box" 
-                             style="background-color: ${colorFondo}; color: ${colorTexto}; animation-delay: ${(index * 0.1) + (materiaIndex * 0.05)}s;">
+                        <!-- MODIFICADO: Ahora todo el recuadro es clickeable -->
+                        <a href="/maestro/evaluaciones/${periodoActual}/${grado.idGrado}/${materia.idMateria}"
+                           class="subject-box"
+                           style="background-color: ${colorFondo}; color: ${colorTexto}; animation-delay: ${(index * 0.1) + (materiaIndex * 0.05)}s;">
                             <div class="subject-content">
                                 <div class="subject-icon">
                                     <i class="bi bi-book-fill"></i>
                                 </div>
                                 <h5 class="subject-name">${materia.nombreMateria}</h5>
                             </div>
-                        </div>
-                        <a 
-                            href="/maestro/evaluaciones/${periodoActual}/${grado.idGrado}/${materia.idMateria}"
-                            class="bevaluation-btn">
-                            <i class="bi bi-clipboard-check"></i> Evaluación
-                        </a>                            
+                        </a>
                     </div>
                 </div>
             `;
