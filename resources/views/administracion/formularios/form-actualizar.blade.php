@@ -1,7 +1,6 @@
 @extends("layouts.header")
 @section("contenido")
 <link href="/css/form.css" rel="stylesheet">
-
 <div class="container mt-4">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-warning text-dark py-3">
@@ -104,9 +103,6 @@
 
             <!-- Botones de acción -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                <button type="button" class="btn btn-secondary me-md-2 px-4 py-2" id="btnVolver">
-                    <i class="bi bi-arrow-left me-2"></i>Volver
-                </button>
                 <button type="button" class="btn btn-warning px-4 py-2" id="btnActualizar">
                     <i class="bi bi-arrow-clockwise me-2"></i>Actualizar Resultados
                 </button>
@@ -182,31 +178,6 @@
         <p>Por favor espere, este proceso puede tomar unos momentos.</p>
     </div>
 </div>
-
-<style>
-.info-item {
-    margin-bottom: 1rem;
-}
-
-.info-value {
-    margin-top: 0.5rem;
-}
-
-.table th {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.table td {
-    vertical-align: middle;
-}
-
-.badge-count {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-}
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

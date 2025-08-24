@@ -53,6 +53,13 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'authsession' => \App\Http\Middleware\AuthMiddleware::class,
-        'auth.custom' => \App\Http\Middleware\CustomAuthentication::class, // Movido aquí desde $routeMiddleware
+        'auth.custom' => \App\Http\Middleware\CustomAuthentication::class,
+        
+        // Nuevos middleware para control de acceso por roles
+        'auth.admin' => \App\Http\Middleware\AdminMiddleware::class,        // Roles G y P
+        'auth.maestro' => \App\Http\Middleware\MaestroMiddleware::class,    // Roles M y P
+        'auth.alumno' => \App\Http\Middleware\AlumnoMiddleware::class,      // Solo rol A
+        'auth.supervisor' => \App\Http\Middleware\SupervisorMiddleware::class, // Solo rol P
+        'role' => \App\Http\Middleware\RoleMiddleware::class,               // Middleware flexible para múltiples roles
     ];
 }

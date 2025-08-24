@@ -142,9 +142,6 @@
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                    <button type="button" class="btn btn-secondary me-md-2 px-4 py-2" id="cancelar">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar
-                    </button>
                     <button type="button" class="btn btn-primary px-4 py-2" id="btnGuardar">
                         <i class="bi bi-save me-2"></i>Guardar
                     </button>
@@ -497,12 +494,7 @@ $(document).ready(function () {
 
     // Función para guardar datos
     function guardarDatos() {
-        hideMessages();
-        
-        if (!validarFormulario()) {
-            return;
-        }
-        
+        hideMessages();    
         const datosInstitucion = recopilarDatosFormulario();
         
         // Mostrar confirmación antes de guardar

@@ -38,12 +38,18 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            background-color: var(--blanco);
-        }
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--blanco-suave);
+    color: var(--gris-oscuro);
+    line-height: 1.5;
+    font-weight: 700;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
         .login-wrapper {
             display: flex;
@@ -71,10 +77,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(15, 23, 42, 0.7) 0%, 
-                rgba(30, 41, 59, 0.6) 30%, 
-                rgba(51, 65, 85, 0.5) 70%, 
+            background: linear-gradient(135deg,
+                rgba(15, 23, 42, 0.7) 0%,
+                rgba(30, 41, 59, 0.6) 30%,
+                rgba(51, 65, 85, 0.5) 70%,
                 rgba(34, 197, 94, 0.3) 100%);
             z-index: 1;
         }
@@ -143,15 +149,15 @@
             margin-bottom: 2rem;
         }
 
-.school-logo {
-    width: 240px;
-    height: 240px;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-    border: 3px solid var(--verde-oscuro);
-    box-shadow: var(--sombra-media);
-    transition: transform 0.3s ease;
-}
+        .school-logo {
+            width: 240px;
+            height: 240px;
+            margin-bottom: 1rem;
+            border-radius: 50%;
+            border: 3px solid var(--verde-oscuro);
+            box-shadow: var(--sombra-media);
+            transition: transform 0.3s ease;
+        }
 
         .school-logo:hover {
             transform: scale(1.05);
@@ -300,11 +306,20 @@
             margin-bottom: 2rem;
             padding: 1.25rem 1.5rem;
             border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .alert-danger {
             border: 1px solid rgba(239, 68, 68, 0.3);
             background-color: rgba(239, 68, 68, 0.1);
             color: #dc2626;
-            font-size: 1rem;
-            font-weight: 500;
+        }
+
+        .alert-success {
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
         }
 
         .footer-text {
@@ -347,24 +362,19 @@
             .login-wrapper {
                 flex-direction: column;
             }
-
             .background-side {
                 flex: 0 0 40vh;
             }
-
             .login-side {
                 flex: 1;
                 padding: 2rem;
             }
-
             .welcome-title {
                 font-size: 2.5rem;
             }
-
             .welcome-subtitle {
                 font-size: 1.1rem;
             }
-
             .login-title {
                 font-size: 1.75rem;
             }
@@ -374,24 +384,19 @@
             .background-side {
                 flex: 0 0 30vh;
             }
-
             .login-side {
                 padding: 1.5rem;
             }
-
             .welcome-title {
                 font-size: 2rem;
             }
-
             .login-container {
                 max-width: 100%;
             }
-
             .form-control {
                 padding: 1rem 1rem 1rem 3rem;
                 font-size: 1rem;
             }
-
             .input-icon {
                 left: 1rem;
                 font-size: 1rem;
@@ -436,9 +441,16 @@
                 </div>
 
                 @if($errors->any())
-                <div class="alert">
+                <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle me-2"></i>
                     {{ $errors->first('auth') }}
+                </div>
+                @endif
+
+                @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ session('success') }}
                 </div>
                 @endif
 
@@ -482,9 +494,8 @@
                         Iniciar Sesión
                     </button>
 
-                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <a href="#" class="forgot-password">Si olvidaste tu contraseña, debes acudir con dirección.</a>
                 </form>
-
             </div>
         </div>
     </div>

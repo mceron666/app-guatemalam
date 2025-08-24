@@ -6,8 +6,8 @@
 
 <div class="header-section">
     <div class="header-title">
-        <i class="fa fa-credit-card-alt"></i>
-        <span>Administrar pagos</span>
+        <i class="fa fa-users" aria-hidden="true"></i>
+        <span>Administrar alumnos</span>
     </div>
     <div class="header-decoration-1"></div>
     <div class="header-decoration-2"></div>

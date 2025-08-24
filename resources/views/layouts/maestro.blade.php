@@ -35,7 +35,10 @@
         </button>
         <button id="clases" onclick="selectNav('clases'); loadPage('/maestro/mis-clases')">
             <i class="fas fa-calendar-alt"></i> <span>Mis clases</span>
-        </button>         
+        </button>      
+        <button id="eventos" onclick="selectNav('eventos'); loadPage('/eventos-proximos')">
+            <i class="fas fa-calendar-alt"></i> <span>Eventos</span>
+        </button>                    
     </div>
 </div>
     
@@ -50,9 +53,6 @@
             </div>
         </div>
         <div class="right-section">
-            <div class="nav-item">
-                <i class="bi bi-gear"></i>
-            </div>
             <div class="user-dropdown" id="userDropdown">
                 <div class="user-profile">
                     <div class="user-avatar">
@@ -85,11 +85,8 @@
                             </span>                                                      
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="bi bi-person me-2"></i> Mi Perfil
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="bi bi-gear me-2"></i> Configuración
+                        <a href="#" class="dropdown-item" onclick="loadPage('/cambiar-perfil'); return false;">
+                            <i class="bi bi-person-gear me-2"></i> Cambiar Perfil
                         </a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST">
@@ -151,6 +148,9 @@
             case '/maestro/mis-clases':
                 title = 'Mis Clases';
                 break;
+            case '/eventos-proximos':
+                title = 'Eventos';
+                break;                
             default:
                 // Evaluación parcial para rutas con parámetros
                 if (route.includes('/maestro/mis-clases')) {
@@ -179,6 +179,8 @@
         } else if (route === '/maestro/mis-clases' || route.includes('/maestro/mis-clases' )
         || route.includes('evaluaciones' )) {
             selectedMenuId = 'clases';
+        } else if (route === '/eventos-proximos' || route.includes('/eventos-proximos' )){
+            selectedMenuId = 'eventos';
         }
         
         // Aplicar la selección si se encontró una coincidencia

@@ -39,6 +39,9 @@
         <button id="calendario" onclick="selectNav('calendario'); loadPage('/alumno/calendario')">
             <i class="fas fa-calendar-week"></i> <span>Calendario semanal</span>
         </button>
+        <button id="eventos" onclick="selectNav('eventos'); loadPage('/eventos-proximos')">
+            <i class="fas fa-credit-card"></i> <span>Eventos</span>
+        </button>             
         <button id="pagos" onclick="selectNav('pagos'); loadPage('/alumno/pagos')">
             <i class="fas fa-credit-card"></i> <span>Pagos</span>
         </button>         
@@ -91,8 +94,8 @@
                             </span>                                                      
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="bi bi-person me-2"></i> Mi Perfil
+                        <a href="#" class="dropdown-item" onclick="loadPage('/cambiar-perfil'); return false;">
+                            <i class="bi bi-person-gear me-2"></i> Cambiar Perfil
                         </a>
                         <a href="#" class="dropdown-item">
                             <i class="bi bi-gear me-2"></i> Configuración
@@ -163,6 +166,9 @@
             case '/alumno/pagos':
                 title = 'Pagos';
                 break;
+            case '/eventos-proximos':
+                title = 'eventos';
+                break;                
             default:
                 // Evaluación parcial para rutas con parámetros
                 if (route.includes('/alumno/notas')) {
@@ -199,7 +205,9 @@
         } else if (route === '/alumno/pagos' || route.includes('/alumno/pagos')) {
             selectedMenuId = 'pagos';
         }
-        
+        else if (route === '/eventos-proximos' || route.includes('/eventos-proximos')) {
+            selectedMenuId = 'eventos';
+        }
         // Aplicar la selección si se encontró una coincidencia
         if (selectedMenuId) {
             const menuElement = document.getElementById(selectedMenuId);

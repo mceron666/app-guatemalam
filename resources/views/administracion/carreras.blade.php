@@ -125,6 +125,7 @@
                         <option value="" selected disabled>Seleccione un tipo</option>
                         <option value="B">Bachiller</option>
                         <option value="P">Perito</option>
+                        <option value="S">Secretariado</option>                        
                         </select>
                     </div>                    
                   </div>

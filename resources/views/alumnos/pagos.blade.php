@@ -1,4 +1,4 @@
-@extends("layouts.header")
+@extends("layouts.alumnos")
 @section("contenido")
 @include('general.modal-eliminacion')
 <link href="/css/modal.css" rel="stylesheet">
@@ -56,12 +56,6 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <!-- Botón de agregar -->
-                <div class="col-md-4 col-lg-4 text-md-end mt-3 mt-md-0">
-                    <button type="button" class="btn btn-primary" id="agregar" data-bs-toggle="modal" data-bs-target="#pagoModal" disabled>
-                        <i class="bi bi-plus-circle me-1"></i>Registrar Pago
-                    </button>
                 </div>
             </div>
             <div class="table-responsive">
@@ -190,6 +184,7 @@
 
 <script>
 const ID_PERSONA = {{ Session::get('usuario')['ID_PERSONA'] ?? 'null' }};
+const ID_ALUMNO = {{ Session::get('usuario')['ID_ALUMNO'] ?? 'null' }};
 const apiBaseUrl = 'http://localhost:3000/pagos';
 
 // Obtener parámetros de la URL
@@ -220,7 +215,6 @@ let pagosDisponibles = [];
 // Función para generar recibo de pago
 function generarRecibo(correlativo) {
     // Obtener el período seleccionado del dropdown como fallback
-    console.log(correlativo);
     const periodoFromDropdown = $('#selectPeriodo').val();
     const periodoToUse = selectedPeriodo || periodoFromDropdown;
     
@@ -242,13 +236,13 @@ function generarRecibo(correlativo) {
 
 // Cargar información del alumno
 function cargarInfoAlumno() {
-    if (!urlParams.alumno) {
+    if (!ID_ALUMNO) {
         console.error('ID de alumno no válido');
         return;
     }
     
     const datos = {
-        ID_ALUMNO: urlParams.alumno
+        ID_ALUMNO: ID_ALUMNO
     };
     
     $.ajax({
@@ -304,13 +298,13 @@ function cargarInfoAlumno() {
 
 // Cargar períodos del alumno
 function cargarPeriodos() {
-    if (!urlParams.alumno) {
+    if (!ID_ALUMNO) {
         console.error('ID de alumno no válido');
         return;
     }
     
     $.ajax({
-        url: `http://localhost:3000/periodos/alumno/${urlParams.alumno}`,
+        url: `http://localhost:3000/periodos/alumno/${ID_ALUMNO}`,
         type: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -362,13 +356,13 @@ function populatePeriodosDropdown(periodos) {
 
 // Cargar pagos registrados
 function cargarPagos(page = 1) {
-    if (!urlParams.alumno || !selectedPeriodo) {
+    if (!ID_ALUMNO || !selectedPeriodo) {
         $('#tablaPagos tbody').html('<tr><td colspan="6" class="text-center">Seleccione un período para ver los pagos</td></tr>');
         return;
     }
     
     const filtros = {
-        ID_ALUMNO: urlParams.alumno,
+        ID_ALUMNO: ID_ALUMNO,
         ID_PERIODO_ESCOLAR: selectedPeriodo,
         ...currentFilters
     };
@@ -418,12 +412,12 @@ function cargarPagos(page = 1) {
 
 // Cargar pagos disponibles para el modal
 function cargarPagosDisponibles() {
-    if (!urlParams.alumno || !selectedPeriodo) {
+    if (!ID_ALUMNO || !selectedPeriodo) {
         return;
     }
     
     const datos = {
-        ID_ALUMNO: urlParams.alumno,
+        ID_ALUMNO: ID_ALUMNO,
         ID_PERIODO_ESCOLAR: selectedPeriodo
     };
     
@@ -490,11 +484,6 @@ function hideError() {
 // Inicializar cuando el documento esté listo
 $(document).ready(function() {
     // Verificar que tenemos parámetros válidos
-    if (!urlParams.alumno) {
-        alert('URL no válida. Debe acceder desde /pagos/{id_alumno}');
-        return;
-    }
-    
     // Cargar información inicial
     cargarInfoAlumno();
     cargarPeriodos();
@@ -516,76 +505,8 @@ $(document).ready(function() {
     });
     
     // Botón agregar
-    $("#agregar").click(function() {
-        hideError();
-        $("#selectPagoDisponible").val("");
-        $("#montoAPagar").val("");
-        $("#selectMetodoPago").val("");
-        $("#observaciones").val("");
-    });
     
-    // Evento para cambio de pago seleccionado
-    $("#selectPagoDisponible").change(function() {
-        const selectedIndex = $(this).val();
-        if (selectedIndex !== "") {
-            const pagoSeleccionado = pagosDisponibles[selectedIndex];
-            $("#montoAPagar").val(parseFloat(pagoSeleccionado.MONTO).toFixed(2));
-        } else {
-            $("#montoAPagar").val("");
-        }
-    });
-    
-    // Botón guardar
-    $("#btnGuardar").click(function() {
-        const selectedIndex = $("#selectPagoDisponible").val();
-        
-        if (!selectedIndex || selectedIndex === "") {
-            showError("Debe seleccionar un pago");
-            return;
-        }
-        
-        if (!$("#selectMetodoPago").val()) {
-            showError("Debe seleccionar un método de pago");
-            return;
-        }
-        
-        const pagoSeleccionado = pagosDisponibles[selectedIndex];
-        
-        const datos = {
-            CORRELATIVO_DE_PAGO: null, // Se genera automáticamente
-            ID_PERIODO_ESCOLAR: selectedPeriodo,
-            ID_ALUMNO: urlParams.alumno,
-            TIPO_PAGO: pagoSeleccionado.TIPO_PAGO,
-            MES_DE_PAGO: pagoSeleccionado.NUMERO,
-            MONTO_PAGADO: parseFloat($("#montoAPagar").val()),
-            METODO_DE_PAGO: $("#selectMetodoPago").val(),
-            OBSERVACIONES: $("#observaciones").val() || null,
-            ACCION: 'I'
-        };
-        
-        console.log('Datos a enviar:', datos); // Para debug
-        
-        $.ajax({
-            url: apiBaseUrl,
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(datos),
-            success: function(response) {
-                if (response.mensaje === "") {
-                    $("#pagoModal").modal("hide");
-                    cargarPagos(currentPage);
-                    cargarPagosDisponibles(); // Recargar pagos disponibles
-                    cargarInfoAlumno(); // Actualizar información del alumno incluyendo solvencia
-                } else {
-                    showError(response.mensaje);
-                }
-            },
-            error: function(err) {
-                console.error(err);
-                showError("Ocurrió un error en la solicitud. Por favor intente nuevamente.");
-            }
-        });
-    });
+    // Botón 
 });
 </script>
 @endsection

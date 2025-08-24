@@ -30,10 +30,10 @@
     <div id="navbar-menu">
         <!-- Title for the menu -->
         <h6 class="navbar-section-title">Datos generales</h6>
-        <button id="inicio" onclick="selectNav('inicio'); loadPage('/')">
+        <button id="inicio" onclick="selectNav('inicio'); loadPage('/', true)">
             <i class="fas fa-home"></i> <span>Inicio</span>
         </button>
-        <button id="institucion" onclick="selectNav('institucion'); loadPage('/institucion')">
+        <button id="institucion" onclick="selectNav('institucion'); loadPage('/institucion', true)">
             <i class="fas fa-building"></i> <span>Datos institución</span>
         </button>        
         <button id="periodos" onclick="selectNav('periodos'); loadPage('/periodos')">
@@ -58,17 +58,22 @@
         <!-- Period Selector -->
         <button id="administracion-grados" onclick="selectNav('administracion-grados'); loadPage('/administracion-grados')">
             <i class="fas fa-book-reader"></i> <span>Administrar grados</span>
-        </button>      
+        </button>    
+        <button id="eventos" onclick="selectNav('eventos'); loadPage('/eventos', true)">
+            <i class="bi bi-calculator me-2"></i><span>Eventos</span>
+        </button>                   
         <button id="administracion-precios" onclick="selectNav('administracion-precios'); loadPage('/precios')">
             <i class="fa-solid fa-dollar-sign"></i> <span>Administrar precios</span>
         </button>            
         <button id="administracion-pagos" onclick="selectNav('administracion-pagos'); loadPage('/administracion-pagos')">
-            <i class="fa fa-credit-card-alt"></i> <span>Administrar pagos</span>
+            <i class="fa fa-users" aria-hidden="true"></i> <span>Administrar alumnos</span>
         </button>    
-        <button id="resultados" onclick="selectNav('actualiza-notas'); loadPage('/actualiza-notas')">
+        <button id="actualiza" onclick="selectNav('actualiza-notas'); loadPage('/actualiza-notas', true)">
+            <i class="bi bi-calculator me-2"></i><span>Actualizar notas</span>
+        </button>    
+        <button id="resultados" onclick="selectNav('resultados'); loadPage('/resultados-alumnos', true)">
             <i class="bi bi-calculator me-2"></i><span>Resultados escolares</span>
-        </button>                              
-        <h6 class="navbar-section-title">Consultas</h6>        
+        </button>                                          
     </div>
 </div>
     
@@ -83,9 +88,6 @@
             </div>
         </div>
         <div class="right-section">
-            <div class="nav-item">
-                <i class="bi bi-gear"></i>
-            </div>
             <div class="user-dropdown" id="userDropdown">
                 <div class="user-profile">
                     <div class="user-avatar">
@@ -118,11 +120,8 @@
                             </span>                                                      
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="bi bi-person me-2"></i> Mi Perfil
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="bi bi-gear me-2"></i> Configuración
+                        <a href="#" class="dropdown-item" onclick="loadPage('/cambiar-perfil', true); return false;">
+                            <i class="bi bi-person-gear me-2"></i> Cambiar Perfil
                         </a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST">
@@ -265,8 +264,16 @@
             selectedMenuId = 'administracion-pagos';
         }else if (route === '/actualiza-notas' || route.includes('/actualiza-notas/'))
         {
-            selectedMenuId = 'resultados';
+            selectedMenuId = 'actualiza';
         }
+        else if (route === '/eventos' || route.includes('/eventos/'))
+        {
+            selectedMenuId = 'eventos';
+        }     
+        else if (route === '/resultados-alumnos' || route.includes('/resultados-alumnos/'))
+        {
+            selectedMenuId = 'resultados';
+        }                   
         
         // Aplicar la selección si se encontró una coincidencia
         if (selectedMenuId) {
@@ -290,32 +297,33 @@
     }
 
     // Modificar la función loadPage para que actualice la selección automáticamente
-    function loadPage(route) {
-        axios.get(route, { 
-            headers: { 
-                "X-Requested-With": "XMLHttpRequest" 
-            } 
-        })
-        .then(response => {
-            document.getElementById('content').innerHTML = response.data;
-            window.history.pushState({}, '', route);
-            
-            // Execute any scripts in the loaded content
-            const scripts = document.getElementById('content').getElementsByTagName('script');
-            for (let i = 0; i < scripts.length; i++) {
-                eval(scripts[i].innerText);
-            }
-            
-            // Update page title and menu selection based on route
-            updatePageTitle(route);
-            
-            // Trigger a custom event to notify that content has been loaded
-            document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { route } }));
-        })
-        .catch(error => {
-            console.error('Error al cargar la página:', error);
-        });
+function loadPage(route, forceReload = false) {
+    if (forceReload) {
+        window.location.href = route; // 🔹 Recarga completa
+        return;
     }
+
+    // 🔹 Si no se forza recarga, carga con Axios
+    axios.get(route, { 
+        headers: { "X-Requested-With": "XMLHttpRequest" } 
+    })
+    .then(response => {
+        document.getElementById('content').innerHTML = response.data;
+        window.history.pushState({}, '', route);
+
+        const scripts = document.getElementById('content').getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+            eval(scripts[i].innerText);
+        }
+
+        updatePageTitle(route);
+        document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { route } }));
+    })
+    .catch(error => {
+        console.error('Error al cargar la página:', error);
+    });
+}
+
 
     // Modificar el event listener del popstate para actualizar la selección
     window.onpopstate = () => {

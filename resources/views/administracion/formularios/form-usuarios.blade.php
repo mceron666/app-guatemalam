@@ -169,16 +169,6 @@
                             </h5>
                         </div>
                         <div class="card-body p-4">
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <div class="alert alert-success d-flex align-items-center" role="alert">
-                                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
-                                        <div>
-                                            Ingrese la información de contacto para emergencias.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombre_contacto_1" class="form-label fw-semibold">
